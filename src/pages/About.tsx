@@ -13,6 +13,7 @@ export default function About() {
                 <p className="text-lg">
                     Bienvenidos a la página de Unah Curoc. Aquí encontrarás información sobre nuestra misión y visión.
                 </p>
+                <a href="/pvoae" className="bg-blue-500 text-2xl text center">Ir a Pagina Voae</a>
             </div>
         </>
     )

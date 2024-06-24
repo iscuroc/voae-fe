@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.zoom:hover {
+    transform: scale(1.1);
+}
