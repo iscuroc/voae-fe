@@ -1,21 +1,17 @@
 import React, { useState } from "react";
 
 interface FiltroProps {
-    aplicarFiltros: (carrera: string, ambito: string, fechaInicio: string, fechaFin: string, busqueda: string) => void;
+    aplicarFiltros: ( ambito: string, fechaInicio: string, fechaFin: string, busqueda: string) => void;
 }
 
 
-const Filtro: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
-    const [carrera, setCarrera] = useState<string>("");
+const FiltroMA: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
+   
     const [fechaInicio, setFechaInicio] = useState<string>("");
     const [fechaFin, setFechaFin] = useState<string>("");
     const [busqueda, setBusqueda] = useState<string>("");
-
     const [ambito, setAmbito] = useState<string>("");
 
-    const handleCarreraChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setCarrera(event.target.value);
-    };
 
     const handleFechaInicioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = event.target.value;
@@ -39,7 +35,7 @@ const Filtro: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
     };
 
     const handleFiltrarClick = () => {
-        aplicarFiltros(carrera, ambito, fechaInicio, fechaFin, busqueda);
+        aplicarFiltros( ambito, fechaInicio, fechaFin, busqueda);
     };
 
     return (
@@ -52,24 +48,17 @@ const Filtro: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
 
             <div className="w-full md:w-3/5 grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="md:col-span-1">
-                    <label className="block text-sm font-medium">Carrera</label>
-                    <select
-                        className="flex h-10 w-full md:w-5/6 items-center rounded-xl border border-black border-input px-3 py-2 text-sm"
-                        value={carrera}
-                        onChange={handleCarreraChange}
-                    >
-                        <option value="">Seleccione Carrera...</option>
-                        <option value="Ingenieria en sistemas">Ingenieria en sistemas</option>
-                        <option value="Ingeniería Agroindustrial">Ingeniería Agroindustrial</option>
-                        <option value="Desarrollo Local">Desarrollo Local</option>
-                        <option value="Administración de Empresas">Administración de Empresas</option>
-                        <option value="Comercio Internacional">Comercio Internacional</option>
-                    </select>
+                    
+                    
+                <label className="block text-sm font-bold "> Juan Perez lopez </label>
+                <label className="block text-sm font-bold "> 20242100777 </label>
+                <label className="block text-sm font-bold "> Ingenieria en Sistemas </label>
+                  
                 </div>
                 <div className="md:col-span-1">
                     <label className="block text-sm font-medium">Fecha</label>
                     <div className="flex space-x-2">
-                        <input
+                    <input
                             className="h-10 px-3 py-2 text-sm rounded-xl border border-input border-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             value={fechaInicio}
                             onChange={handleFechaInicioChange}
@@ -83,7 +72,6 @@ const Filtro: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
                             placeholder="DD-MM-AAAA"
                             type="datetime-local"
                         />
-
                     </div>
                 </div>
                 <div className="md:col-span-1">
@@ -132,7 +120,6 @@ const Filtro: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
                             value={busqueda}
                             onChange={handleBusquedaChange}
                         />
-
                     </div>
                 </div>
             </div>
@@ -146,6 +133,6 @@ const Filtro: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
             </div>
         </>
     );
-};
+}
 
-export default Filtro;
+export default FiltroMA;
