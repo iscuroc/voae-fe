@@ -13,6 +13,8 @@ import DashboardCoordinador from './pages/coordinadores_dashboard/DashboardCoord
 import DashboardEstudiante from './pages/estudiantes_dashboard/DashboardEstudiante';
 import DashboardAdminVoae from './pages/voae_dashboard/DashboardAdminVoae';
 import PaginaMisActividades from './pages/estudiantes_dashboard/PaginaMisActividades';
+import Registro from './pages/Registro';
+import DetallesRegistro from './pages/DetalleRegistro';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
@@ -26,6 +28,8 @@ root.render(
           <Route path="about" element={<About />} />
         </Route>
         <Route path="/login" element={<Login />} />
+        <Route path="/registro" element={<Registro />} />
+        <Route path="/detalles-registro" element={<DetallesRegistro />} />
         {/* Rutas que utilizan el Layout de Login */}
         <Route path="/" element={<Layout_Login />}>
           <Route path="dashboard-estudiante/main" element={<DashboardEstudiante />} />
