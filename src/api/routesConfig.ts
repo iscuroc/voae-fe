@@ -1,8 +1,9 @@
 // rutas de dashboard Estudiantes
 export const estudianteRoutes = {
     "Mis Actividades": "/dashboard-estudiante/mis-actividades",
-    "Actividades en Curso": "/dashboard-estudiante/pestudiantes",
-    "Actividades Solicitadas": "#",
+    "Actividades en Curso": "/dashboard-estudiante/actividades-en-curso",
+    "Actividades Solicitadas": "/dashboard-estudiante/actividades-solicitadas",
+    "Actividades Finalizadas": "/dashboard-estudiante/act-finalizadas",
     "Crear Actividad": "#",
     "Novedades": "#",
     "Mis Horas VOAE": "#",
@@ -14,9 +15,9 @@ export const estudianteRoutes = {
 // routesConfig.ts
 export const coordinadorRoutes = {
   "Crear Actividad": "#",
-  "Actividades en Curso": "#",
+  "Actividades en Curso": "/dashboard-coordinador/actividad-en-curso",
   "Actividades Finalizadas": "/dashboard-coordinador/act-finalizadas",
-  "Gestion de Actividades": "/dashboard-coordinador/pcoordinadores",
+  "Gestion de Actividades": "/dashboard-coordinador/gestion-actividad",
   "Novedades": "#",
   "Horas por Estudiante": "#",
   // Agrega más rutas según sea necesario
@@ -27,8 +28,8 @@ export type CoordinadorRouteKeys = keyof typeof coordinadorRoutes;
 // rutas de dashboard VOAE
 export const voaeRoutes = {
   "Gestion de Solicitudes": "#",
-  "Gestion de Actividades": "/dashboard-voae/pvoae",
-  "Actividades en Curso": "#",
+  "Gestion de Actividades": "/dashboard-voae/gestion-actividad",
+  "Actividades en Curso": "/dashboard-voae/actividad-en-curso",
   "Actividades Finalizadas": "/dashboard-voae/act-finalizadas",
   "Crear Actividad": "#",
   "Novedades": "#",

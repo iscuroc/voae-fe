@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Filtro from "../../components/Filtros";
 import Pagination from "../../components/Pagination";
 
-const PaginaEstudiantes: React.FC = () => {
+const ActividadesSolicitadasEstudiantes: React.FC = () => {
     useEffect(() => {
         document.title = "Estudiantes - UNAH CUROC";
     }, []);
@@ -13,17 +13,7 @@ const PaginaEstudiantes: React.FC = () => {
         { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
         { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Comercio Internacional", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
         { nombre: "Charla a a a aa a a a", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla a aaa  a  a a ", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Comercio Internacional", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "plantacion de arboles", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingeniería Agroindustrial", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingeniería Agroindustrial", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingeniería Agroindustrial", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        
+ 
     ];
     const [filtrarData, setFiltrarData] = useState(initialData); // Estado para datos filtrados
     const [currentPage, setCurrentPage] = useState(1);
@@ -131,4 +121,4 @@ const PaginaEstudiantes: React.FC = () => {
     );
 };
 
-export default PaginaEstudiantes;
+export default ActividadesSolicitadasEstudiantes;
