@@ -13,26 +13,27 @@ export const estudianteRoutes = {
 
 // routesConfig.ts
 export const coordinadorRoutes = {
-    "Crear Actividad": "#",
-    "Actividades en Curso": "#",
-    "Gestion de Actividades": "/dashboard-coordinador/pcoordinadores",
-    "Novedades": "#",
-    "Horas por Estudiante": "#",
-    // Agrega más rutas según sea necesario
+  "Crear Actividad": "#",
+  "Actividades en Curso": "#",
+  "Actividades Finalizadas": "/dashboard-coordinador/act-finalizadas",
+  "Gestion de Actividades": "/dashboard-coordinador/pcoordinadores",
+  "Novedades": "#",
+  "Horas por Estudiante": "#",
+  // Agrega más rutas según sea necesario
 } as const;
 
 export type CoordinadorRouteKeys = keyof typeof coordinadorRoutes;
 
- // rutas de dashboard VOAE
- export const voaeRoutes = {
-    "Gestion de Solicitudes": "#",
-    "Gestion de Actividades": "/dashboard-voae/pvoae",
-    "Actividades en Curso": "#",
-    "Crear Actividad": "#",
-    "Novedades": "#",
-    "Horas por Usuario": "#",
-     // Agrega más rutas según sea necesario
-  } as const;
-  
-  export type VoaeRouteKeys = keyof typeof voaeRoutes;
-  
+// rutas de dashboard VOAE
+export const voaeRoutes = {
+  "Gestion de Solicitudes": "#",
+  "Gestion de Actividades": "/dashboard-voae/pvoae",
+  "Actividades en Curso": "#",
+  "Actividades Finalizadas": "/dashboard-voae/act-finalizadas",
+  "Crear Actividad": "#",
+  "Novedades": "#",
+  "Horas por Usuario": "#",
+   // Agrega más rutas según sea necesario
+} as const;
+
+export type VoaeRouteKeys = keyof typeof voaeRoutes;
