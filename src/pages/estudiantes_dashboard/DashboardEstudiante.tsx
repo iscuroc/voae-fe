@@ -12,7 +12,9 @@ const DashboardEstudiante: React.FC = () => {
     switch (title) {
       case "Mis Actividades":
         return <FiBell size={32} />;
-      case "Actividades en Curso":
+        case "Actividades en Curso":
+        return <FiClock size={32} />;
+          case "Actividades Finalizadas":
         return <FiClock size={32} />;
       case "Actividades Solicitadas":
         return <FiLayers size={32} />;

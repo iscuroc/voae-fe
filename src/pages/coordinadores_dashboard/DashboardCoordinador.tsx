@@ -12,8 +12,10 @@ const DashboardCoordinador: React.FC = () => {
     switch (title) {
       case "Crear Actividad":
         return <FiPlusCircle size={32} />;
-      case "Actividades en Curso":
-        return <FiClock size={32} />;
+        case "Actividades en Curso":
+          return <FiClock size={32} />;
+          case "Actividades Finalizadas":
+            return <FiClock size={32} />;
       case "Gestion de Actividades":
           return <FiEdit size={32} />;
       case "Novedades":
