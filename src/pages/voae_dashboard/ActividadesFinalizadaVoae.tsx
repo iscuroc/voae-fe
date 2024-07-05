@@ -10,21 +10,22 @@ const ActvidadesFinalizadaVoae: React.FC = () => {
     
     const initialData = [
         
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Comercio Internacional", cupos: 20, duracion: "2 horas", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla a a a aa a a a", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla a aaa  a  a a ", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Comercio Internacional", cupos: 20, duracion: "2 horas", final: "20/05/2022 7:00pm" },
-        { nombre: "plantacion de arboles", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingeniería Agroindustrial", cupos: 20, duracion: "2 horas", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingeniería Agroindustrial", cupos: 20, duracion: "2 horas", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingeniería Agroindustrial", cupos: 20, duracion: "2 horas", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 16:50", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Comercio Internacional", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 16:50", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla a a a aa a a a", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 16:50", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 16:50", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 16:50", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla a aaa  a  a a ", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 16:50", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Comercio Internacional", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 16:50", final: "20/05/2022 7:00pm" },
+        { nombre: "plantacion de arboles", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 16:50", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingeniería Agroindustrial", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 16:50", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 16:50", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingeniería Agroindustrial", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 16:50", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 16:50", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingeniería Agroindustrial", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 16:50", final: "20/05/2022 7:00pm" },
         
     ];
+   
     const [filtrarData, setFiltrarData] = useState(initialData); // Estado para datos filtrados
     const [currentPage, setCurrentPage] = useState(1);
     
@@ -39,19 +40,20 @@ const ActvidadesFinalizadaVoae: React.FC = () => {
     const paginatedData = filtrarData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage); // Usar FiltrarData en lugar de initialData
 
     // Función para aplicar filtro
-    const aplicarFiltros = (carrera: string, ambito: string, fechaFin: string, busqueda: string) => {
+    const aplicarFiltros = (carrera: string, ambito: string, fechaInicio: string, fechaFin: string, busqueda: string) => {
         const filtrar = initialData.filter(item => {
-            // Convertir las fechas de fin a objetos Date
-            
+            // Convertir las fechas de inicio y fin a objetos Date
+            const fechaInicioDate = fechaInicio ? new Date(fechaInicio) : null;
             const fechaFinDate = fechaFin ? new Date(fechaFin) : null;
     
-            // Convertir la fecha de los datos a objetos Date (asumiendo que están en "DD/MM/AAAA hh:mm")
-           
+            // Convertir las fechas de los datos a objetos Date (asumiendo que están en "DD/MM/AAAA hh:mm")
+            const inicioDate = new Date(item.inicio.replace(/(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2})/, '$3-$2-$1T$4:$5'));
             const finalDate = new Date(item.final.replace(/(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2})/, '$3-$2-$1T$4:$5'));
     
             return (
                 (carrera === "" || item.carrera === carrera) &&
                 (ambito === "" || item.ambito === ambito) &&
+                (!fechaInicioDate || inicioDate >= fechaInicioDate) &&
                 (!fechaFinDate || finalDate <= fechaFinDate) &&
                 (busqueda === "" || item.nombre.toLowerCase().includes(busqueda.toLowerCase()))
             );
