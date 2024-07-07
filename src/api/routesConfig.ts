@@ -6,7 +6,7 @@ export const estudianteRoutes = {
     "Actividades Finalizadas": "/dashboard-estudiante/act-finalizadas",
     "Crear Actividad": "#",
     "Novedades": "#",
-    "Mis Horas VOAE": "#",
+    "Mis Horas VOAE": "/dashboard-estudiante/mis-horas-voae",
     "Mis Certificados": "#",
   } as const;
   
