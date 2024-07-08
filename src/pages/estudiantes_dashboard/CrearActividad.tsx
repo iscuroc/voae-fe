@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function CrearActividad() {
+const CrearActividad = () => {
   const [nombre, setNombre] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [carrera, setCarrera] = useState('');
@@ -15,14 +15,13 @@ function CrearActividad() {
   const [cupos, setCupos] = useState('');
   const [observaciones, setObservaciones] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('Solicitud enviada:', { 
       nombre, descripcion, carrera, inicio, fechaFinalizacion, 
       objetivos, ambito, coordinador, nombreEstudiante, 
       horasSociales, horasArt, cupos, observaciones 
     });
-    
     
     // Limpiar los campos después del envío
     setNombre('');
@@ -43,7 +42,7 @@ function CrearActividad() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-4xl">
-        <h1 className="text-center text-2xl font-bold mb-4">Formulario de Solicitud para Estudiantes</h1>
+        <h1 className="text-center text-2xl font-bold mb-4">Formulario de Solicitud para Estudiantes VOAE</h1>
         <div className="bg-yellow-500 shadow-lg rounded-lg flex overflow-hidden mb-4">
           <div className="w-1/3 bg-blue-900 p-6 rounded-l-lg flex flex-col items-center">
             <label className="block text-white text-sm font-bold mb-[2.5rem]" htmlFor="nombre">
@@ -106,7 +105,7 @@ function CrearActividad() {
                   value={descripcion}
                   onChange={(e) => setDescripcion(e.target.value)}
                   className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  rows="5"
+                  rows={5}
                   required
                 />
               </div>
@@ -153,7 +152,7 @@ function CrearActividad() {
                   value={objetivos}
                   onChange={(e) => setObjetivos(e.target.value)}
                   className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  rows="3"
+                  rows={3}
                   required
                 />
               </div>
@@ -209,16 +208,18 @@ function CrearActividad() {
                   className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   required
                 >
-                  <option value="">Selecciona las horas Art.140</option>
-                  {[...Array(10)].map((_, index) => (
-                    <option key={index + 1} value={index + 1}>{index + 1}</option>
-                  ))}
+                  <option value="">Horas Art. 140</option>
+                  <option value="10">10</option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                  <option value="25">25</option>
+                  <option value="30">30</option>
                 </select>
               </div>
               <div className="mb-5">
                 <input
                   type="number"
-                  placeholder='Ingrese los cupos'
+                  placeholder='Ingrese el número de cupos'
                   id="cupos"
                   value={cupos}
                   onChange={(e) => setCupos(e.target.value)}
@@ -228,30 +229,27 @@ function CrearActividad() {
               </div>
               <div className="mb-5">
                 <textarea
-                  placeholder='Ingrese las observaciones'
+                  placeholder='Ingrese observaciones'
                   id="observaciones"
                   value={observaciones}
                   onChange={(e) => setObservaciones(e.target.value)}
                   className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  rows="3"
-                  required
+                  rows={3}
                 />
               </div>
+              <button
+                type="submit"
+                className="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
+              >
+                Enviar Solicitud
+              </button>
             </form>
           </div>
-        </div>
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            form="solicitudForm"
-            className="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          >
-            Enviar Solicitud
-          </button>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default CrearActividad;
+

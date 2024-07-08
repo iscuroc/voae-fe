@@ -7,8 +7,8 @@ const NovedadesAdmin: React.FC = () => {
     { id: 2, src: "/ruta/a/tu/imagen2.jpg", title: "Banner 2" },
   ]);
 
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     if (file) {
       const newBanner = {
         id: banners.length + 1,
@@ -26,7 +26,7 @@ const NovedadesAdmin: React.FC = () => {
     }
   };
 
-  const handleDeleteBanner = (id) => {
+  const handleDeleteBanner = (id: number) => {
     setBanners(banners.filter(banner => banner.id !== id));
   };
 
@@ -73,6 +73,7 @@ const NovedadesAdmin: React.FC = () => {
 
   return (
     <div className="novedades-estudiantes">
+      <HeaderLogin />
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6">Novedades Estudiantes</h1>
         
