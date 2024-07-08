@@ -4,7 +4,7 @@ export const estudianteRoutes = {
     "Actividades en Curso": "/dashboard-estudiante/actividades-en-curso",
     "Actividades Solicitadas": "/dashboard-estudiante/actividades-solicitadas",
     "Actividades Finalizadas": "/dashboard-estudiante/act-finalizadas",
-    "Crear Actividad": "#",
+    "Crear Actividad": "/dashboard-estudiante/crear-actividad",
     "Novedades": "#",
     "Mis Horas VOAE": "/dashboard-estudiante/mis-horas-voae",
     "Mis Certificados": "#",
@@ -32,7 +32,7 @@ export const voaeRoutes = {
   "Actividades en Curso": "/dashboard-voae/actividad-en-curso",
   "Actividades Finalizadas": "/dashboard-voae/act-finalizadas",
   "Crear Actividad": "#",
-  "Novedades": "#",
+  "Novedades": "/dashboard-voae/novedades-admin",
   "Horas por Usuario": "#",
    // Agrega más rutas según sea necesario
 } as const;

@@ -29,6 +29,8 @@ import DetallesActividadesVoae from './pages/voae_dashboard/VDetallesActvidad';
 import PaginaGestionVOAE from './pages/voae_dashboard/PaginaGestionVOAE';
 import HorasVoaeEstudiante from './pages/estudiantes_dashboard/HorasVoaeEstudiante';
 import DetalleHorasVoaeEstudiante from './pages/estudiantes_dashboard/DetalleMisHoras';
+import NovedadesAdmin from './pages/voae_dashboard/NovedadesAdmin';
+import CrearActividad from './pages/estudiantes_dashboard/CrearActividad';
 
 
 
@@ -58,6 +60,7 @@ root.render(
           <Route path="dashboard-estudiante/unirse-actividad" element={<UnirseActividad />} />
           <Route path="dashboard-estudiante/mis-horas-voae" element={ <HorasVoaeEstudiante />} />
           <Route path="dashboard-estudiante/mis-horas-voae/detalle-mis-horas" element={ <DetalleHorasVoaeEstudiante />} />
+          <Route path="/dashboard-estudiante/crear-actividad" element={<CrearActividad />} />
           
           <Route path="dashboard-coordinador/act-finalizadas" element={<ActividadesFinalizadaCoordinador />} />
           <Route path="dashboard-coordinador/act-finalizadas/cparticipantes-actividad" element={<CParticipantesActividad />} />
@@ -72,6 +75,7 @@ root.render(
           <Route path="dashboard-voae/actividad-en-curso" element={<ActvidadesEnCursoVoae />} />
           <Route path="dashboard-voae/gestion-actividad" element={<PaginaGestionVOAE />} />
           <Route path="dashboard-voae/detalles-actividades" element={<DetallesActividadesVoae />} />
+          <Route path="dashboard-voae/novedades-admin" element={<NovedadesAdmin />} />
           
         </Route>
 
