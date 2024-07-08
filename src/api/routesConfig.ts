@@ -14,7 +14,7 @@ export const estudianteRoutes = {
 
 // routesConfig.ts
 export const coordinadorRoutes = {
-  "Crear Actividad": "#",
+  "Crear Actividad": "/dashboard-coordinador/crear-actividad",
   "Actividades en Curso": "/dashboard-coordinador/actividad-en-curso",
   "Actividades Finalizadas": "/dashboard-coordinador/act-finalizadas",
   "Gestion de Actividades": "/dashboard-coordinador/gestion-actividad",
@@ -31,7 +31,7 @@ export const voaeRoutes = {
   "Gestion de Actividades": "/dashboard-voae/gestion-actividad",
   "Actividades en Curso": "/dashboard-voae/actividad-en-curso",
   "Actividades Finalizadas": "/dashboard-voae/act-finalizadas",
-  "Crear Actividad": "#",
+  "Crear Actividad": "/dashboard-voae/crear-actividad",
   "Novedades": "/dashboard-voae/novedades-admin",
   "Horas por Usuario": "#",
    // Agrega más rutas según sea necesario
