@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Filtro from "../../components/Filtros";
+import FiltroGS from "../../components/FiltroGestionSolicitudes";
 import Pagination from "../../components/Pagination";
 
 const ActividadesSolicitadasEstudiantes: React.FC = () => {
@@ -10,10 +10,10 @@ const ActividadesSolicitadasEstudiantes: React.FC = () => {
     
     const initialData = [
         // Tu array de datos aquí
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Comercio Internacional", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla a a a aa a a a", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
- 
+        { estudiante: "Jose Alfredo Herrera Posadas", coordinador: "Odair Sauceda", carrera: "Ingenieria en sistemas", ambito: "Academico", inicio: "20/05/2025 4:50pm", final: "20/06/2025 7:00pm", estado: "Pendiente" },
+        {estudiante: "Juan Carlos Rodriguez Lopez", coordinador: "Odair Sauceda", carrera: "Ingenieria en sistemas", ambito: "Social", inicio: "20/05/2025 4:50pm", final: "20/06/2025 7:00pm", estado: "Aprobado" },
+        {estudiante: "Naria Alejandra Garcia Perez", coordinador: "Odair Sauceda", carrera: "Ingenieria en sistemas", ambito: "Academico", inicio: "20/05/2025 4:50pm", final: "20/06/2025 7:00pm", estado: "Rechazado" },
+       
     ];
     const [filtrarData, setFiltrarData] = useState(initialData); // Estado para datos filtrados
     const [currentPage, setCurrentPage] = useState(1);
@@ -29,7 +29,7 @@ const ActividadesSolicitadasEstudiantes: React.FC = () => {
     const paginatedData = filtrarData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage); // Usar FiltrarData en lugar de initialData
 
     // Función para aplicar filtro
-    const aplicarFiltros = (carrera: string, ambito: string, fechaInicio: string, fechaFin: string, busqueda: string) => {
+    const aplicarFiltros = (carrera: string, ambito: string, fechaInicio: string, fechaFin: string) => {
         const filtrar = initialData.filter(item => {
             // Convertir las fechas de inicio y fin a objetos Date
             const fechaInicioDate = fechaInicio ? new Date(fechaInicio) : null;
@@ -43,8 +43,7 @@ const ActividadesSolicitadasEstudiantes: React.FC = () => {
                 (carrera === "" || item.carrera === carrera) &&
                 (ambito === "" || item.ambito === ambito) &&
                 (!fechaInicioDate || inicioDate >= fechaInicioDate) &&
-                (!fechaFinDate || finalDate <= fechaFinDate) &&
-                (busqueda === "" || item.nombre.toLowerCase().includes(busqueda.toLowerCase()))
+                (!fechaFinDate || finalDate <= fechaFinDate)
             );
         });
         setFiltrarData(filtrar);
@@ -54,7 +53,7 @@ const ActividadesSolicitadasEstudiantes: React.FC = () => {
     return (
         <div className="container mx-auto p-4">
             <div className="block md:flex items-center justify-center mb-4 mt-2">
-            <Filtro aplicarFiltros={aplicarFiltros} />
+            <FiltroGS aplicarFiltros={aplicarFiltros} />
             </div>
 
             <div className="rounded-xl">
@@ -62,43 +61,39 @@ const ActividadesSolicitadasEstudiantes: React.FC = () => {
                     <table className="border-collapse block md:table min-w-full table-auto bg-white border border-gray-200">
                         <thead className="block md:table-header-group">
                             <tr className="border text-sm border-gray-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto md:relative bg-yellow-500 text-black">
-                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Nombre</th>
-                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Ubicación</th>
-                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Ámbito</th>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Estudiante</th>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Coordinador</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Carrera</th>
-                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Cupos</th>
-                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Duración</th>
-                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Inicio</th>
-                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Final</th>
-                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Unirse</th>
-                            </tr>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Ámbito</th>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Fecha Inicio</th>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Fecha Final</th>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Estado</th>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Revision</th>
+                                </tr>
                         </thead>
                         <tbody className="block md:table-row-group text-sm md:text-xs">
                             {paginatedData.map((item, index) => (
                                 <tr key={index} className="bg-yellow-500 md:bg-white text-left md:text-center hover:bg-gray-200 transition-colors duration-200 border border-gray-500 md:border-none block md:table-row">
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Nombre:</span>{item.nombre}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Estudiante:</span>{item.estudiante}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Ubicación:</span>{item.ubicacion}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Coordinador:</span>{item.coordinador}
+                                    </td>
+                                   <td className="p-1 md:border md:border-gray-500 block md:table-cell">
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Carrera:</span>{item.carrera}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
                                         <span className="inline-block w-1/3 md:hidden font-bold mr-4">Ámbito:</span>{item.ambito}
                                     </td>
-                                    <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Carrera:</span>{item.carrera}
+                                   <td className="p-1 md:border md:border-gray-500 block md:table-cell">
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Fecha Inicio:</span>{item.inicio}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Cupos:</span>{item.cupos}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Fecha Final:</span>{item.final}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Duración:</span>{item.duracion}
-                                    </td>
-                                    <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Inicio:</span>{item.inicio}
-                                    </td>
-                                    <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Final:</span>{item.final}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Estado:</span>{item.estado}
                                     </td>
                                     <td className="p-1 md:border text-center md:border-gray-500 block md:table-cell relative">
                                         <a href="#" className="flex justify-center items-center font-bold group"  title="Unirse">
@@ -122,3 +117,4 @@ const ActividadesSolicitadasEstudiantes: React.FC = () => {
 };
 
 export default ActividadesSolicitadasEstudiantes;
+
