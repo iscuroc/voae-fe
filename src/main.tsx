@@ -36,6 +36,7 @@ import CrearActividadCoordinador from './pages/coordinadores_dashboard/CrearActi
 
 
 
+
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(
@@ -80,6 +81,7 @@ root.render(
           <Route path="dashboard-voae/detalles-actividades" element={<DetallesActividadesVoae />} />
           <Route path="dashboard-voae/novedades-admin" element={<NovedadesAdmin />} />
           <Route path="dashboard-voae/crear-actividad" element={<CrearActividadVoae />} />
+
           
         </Route>
 

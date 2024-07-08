@@ -14,15 +14,14 @@ const CrearActividad = () => {
   const [horasArt, setHorasArt] = useState('');
   const [cupos, setCupos] = useState('');
   const [observaciones, setObservaciones] = useState('');
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+
     e.preventDefault();
     console.log('Solicitud enviada:', { 
       nombre, descripcion, carrera, inicio, fechaFinalizacion, 
       objetivos, ambito, coordinador, nombreEstudiante, 
       horasSociales, horasArt, cupos, observaciones 
     });
-    
     // Limpiar los campos después del envío
     setNombre('');
     setDescripcion('');
@@ -42,7 +41,9 @@ const CrearActividad = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-4xl">
+
         <h1 className="text-center text-2xl font-bold mb-4">Formulario de Solicitud para Estudiantes VOAE</h1>
+
         <div className="bg-yellow-500 shadow-lg rounded-lg flex overflow-hidden mb-4">
           <div className="w-1/3 bg-blue-900 p-6 rounded-l-lg flex flex-col items-center">
             <label className="block text-white text-sm font-bold mb-[2.5rem]" htmlFor="nombre">
@@ -219,7 +220,9 @@ const CrearActividad = () => {
               <div className="mb-5">
                 <input
                   type="number"
+
                   placeholder='Ingrese el número de cupos'
+
                   id="cupos"
                   value={cupos}
                   onChange={(e) => setCupos(e.target.value)}
