@@ -16,7 +16,7 @@ const UnirseActividad: React.FC = () => {
 
   return (
     <>
-      <div className="my-5"></div>
+      <div className="my-2"></div>
       <div className=" h-full overflow-hidden flex items-center justify-center space-x-8">
         <div className="bg-blue-900 lg:w-4/5 md:w-6/12 w-full  mx-2 shadow-xl relative rounded-lg">
           <div className="p-4 md:p-8">
