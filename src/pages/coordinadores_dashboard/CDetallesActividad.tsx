@@ -32,8 +32,8 @@ const CDetallesActividad: React.FC = () => {
 
   return (
     <>
-      <div className="my-5"></div>
-      <div className="h-full mx-5 overflow-hidden flex flex-col md:flex-row items-center justify-center space-y-8 lg:space-y-0 lg:space-x-6">
+      <div className="my-3"></div>
+      <div className="h-full mx-3 overflow-hidden flex flex-col md:flex-row items-center justify-center space-y-8 lg:space-y-0 lg:space-x-4">
         <div className="bg-blue-900 w-full lg:w-5/12 md:w-6/12 shadow-xl relative rounded-lg ">
           <div className="p-3 md:p-6">
             <h2 className="text-base md:text-2xl font-bold mb-6 text-center text-white">Detalles de la Actividad</h2>

@@ -46,9 +46,18 @@ export default function Header_login() {
                     >
                         <LuLayoutDashboard className='mr-1' /> Dashboard
                     </NavLink>
-                    <a href="/calendario" className="px-4 py-2 text-sm text-white hover:underline flex items-center">
+                    <NavLink
+                        to={
+                            location.pathname.includes('dashboard-coordinador')
+                                ? "/dashboard-coordinador/calendario"
+                                : location.pathname.includes('dashboard-estudiante')
+                                    ? "/dashboard-estudiante/calendario"
+                                    : "/dashboard-voae/calendario"
+                        }
+                        className="px-4 py-2 text-sm text-white hover:underline flex items-center"
+                    >
                         <FaRegCalendarAlt className='mr-1' /> Calendario
-                    </a>
+                    </NavLink>
                     <a href="/notificaciones" className="px-4 py-2 text-sm text-white hover:underline flex items-center">
                         <IoNotificationsOutline className='mr-1' /> Notificaciones
                     </a>

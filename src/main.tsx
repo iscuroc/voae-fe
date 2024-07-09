@@ -33,6 +33,7 @@ import NovedadesAdmin from './pages/voae_dashboard/NovedadesAdmin';
 import CrearActividad from './pages/estudiantes_dashboard/CrearActividad';
 import CrearActividadVoae from './pages/voae_dashboard/CrearActividadVoae';
 import CrearActividadCoordinador from './pages/coordinadores_dashboard/CrearActividadCoordinador';
+import Calendario from './components/PaginaDeCalendar';
 
 
 
@@ -63,15 +64,17 @@ root.render(
           <Route path="dashboard-estudiante/unirse-actividad" element={<UnirseActividad />} />
           <Route path="dashboard-estudiante/mis-horas-voae" element={ <HorasVoaeEstudiante />} />
           <Route path="dashboard-estudiante/mis-horas-voae/detalle-mis-horas" element={ <DetalleHorasVoaeEstudiante />} />
-          <Route path="/dashboard-estudiante/crear-actividad" element={<CrearActividad />} />
-          
+          <Route path="dashboard-estudiante/crear-actividad" element={<CrearActividad />} />
+          <Route path="dashboard-estudiante/calendario" element={<Calendario />} />
+
           <Route path="dashboard-coordinador/act-finalizadas" element={<ActividadesFinalizadaCoordinador />} />
           <Route path="dashboard-coordinador/act-finalizadas/cparticipantes-actividad" element={<CParticipantesActividad />} />
           <Route path="dashboard-coordinador/main" element={<DashboardCoordinador />} />
           <Route path="dashboard-coordinador/detalles-actividad" element={<CDetallesActividad />} />
           <Route path="dashboard-coordinador/actividad-en-curso" element={<ActvidadesEnCursoCoordinador />} />
           <Route path="dashboard-coordinador/gestion-actividad" element={<PaginaGestionCoordinadores />} />
-          <Route path="/dashboard-coordinador/crear-actividad" element={<CrearActividadCoordinador />} />
+          <Route path="dashboard-coordinador/crear-actividad" element={<CrearActividadCoordinador />} />
+          <Route path="dashboard-coordinador/calendario" element={<Calendario />} />
 
           <Route path="dashboard-voae/act-finalizadas/vparticipantes-actividad" element={<VParticipantesActividad />} />
           <Route path="dashboard-voae/act-finalizadas" element={<ActividadesFinalizadaVoae />} />
@@ -81,6 +84,7 @@ root.render(
           <Route path="dashboard-voae/detalles-actividades" element={<DetallesActividadesVoae />} />
           <Route path="dashboard-voae/novedades-admin" element={<NovedadesAdmin />} />
           <Route path="dashboard-voae/crear-actividad" element={<CrearActividadVoae />} />
+          <Route path="dashboard-voae/calendario" element={<Calendario />} />
 
           
         </Route>
