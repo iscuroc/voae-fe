@@ -1,30 +1,32 @@
 import React, { useEffect, useState } from "react";
-import Filtro from "../../components/Filtros";
-import Pagination from "../../components/Pagination";
+import Filtro from "./Filtros";
+import Pagination from "./Pagination";
+import { NavLink } from "react-router-dom";
 
-const ActividadesFinalizadaCoordinador: React.FC = () => {
+const PaginaGestionActividad: React.FC = () => {
     useEffect(() => {
-        document.title = "Coordinador - UNAH CUROC";
+        document.title = "Coordinadores - UNAH CUROC";
     }, []);
 
-    
+      
     const initialData = [
-        
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Comercio Internacional", cupos: 20, duracion: "2 horas", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla a a a aa a a a", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla a aaa  a  a a ", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Comercio Internacional", cupos: 20, duracion: "2 horas", final: "20/05/2022 7:00pm" },
-        { nombre: "plantacion de arboles", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingeniería Agroindustrial", cupos: 20, duracion: "2 horas", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingeniería Agroindustrial", cupos: 20, duracion: "2 horas", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingeniería Agroindustrial", cupos: 20, duracion: "2 horas", final: "20/05/2022 7:00pm" },
+        // Tu array de datos aquí
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Comercio Internacional", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Comercio Internacional", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingeniería Agroindustrial", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingeniería Agroindustrial", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingeniería Agroindustrial", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
         
     ];
+
     const [filtrarData, setFiltrarData] = useState(initialData); // Estado para datos filtrados
     const [currentPage, setCurrentPage] = useState(1);
     
@@ -39,19 +41,20 @@ const ActividadesFinalizadaCoordinador: React.FC = () => {
     const paginatedData = filtrarData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage); // Usar FiltrarData en lugar de initialData
 
     // Función para aplicar filtro
-    const aplicarFiltros = (carrera: string, ambito: string, fechaFin: string, busqueda: string) => {
+    const aplicarFiltros = (carrera: string, ambito: string, fechaInicio: string, fechaFin: string, busqueda: string) => {
         const filtrar = initialData.filter(item => {
-            // Convertir las fechas de fin a objeto Date
-            
+            // Convertir las fechas de inicio y fin a objetos Date
+            const fechaInicioDate = fechaInicio ? new Date(fechaInicio) : null;
             const fechaFinDate = fechaFin ? new Date(fechaFin) : null;
     
-            // Convertir la fecha de los datos a objetos Date (asumiendo que están en "DD/MM/AAAA hh:mm")
-           
+            // Convertir las fechas de los datos a objetos Date (asumiendo que están en "DD/MM/AAAA hh:mm")
+            const inicioDate = new Date(item.inicio.replace(/(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2})/, '$3-$2-$1T$4:$5'));
             const finalDate = new Date(item.final.replace(/(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2})/, '$3-$2-$1T$4:$5'));
     
             return (
                 (carrera === "" || item.carrera === carrera) &&
                 (ambito === "" || item.ambito === ambito) &&
+                (!fechaInicioDate || inicioDate >= fechaInicioDate) &&
                 (!fechaFinDate || finalDate <= fechaFinDate) &&
                 (busqueda === "" || item.nombre.toLowerCase().includes(busqueda.toLowerCase()))
             );
@@ -77,8 +80,9 @@ const ActividadesFinalizadaCoordinador: React.FC = () => {
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Carrera</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Cupos</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Duración</th>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Inicio</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Final</th>
-                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Participantes</th>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Acción</th>
                             </tr>
                         </thead>
                         <tbody className="block md:table-row-group text-sm md:text-xs">
@@ -102,18 +106,29 @@ const ActividadesFinalizadaCoordinador: React.FC = () => {
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
                                         <span className="inline-block w-1/3 md:hidden font-bold mr-4">Duración:</span>{item.duracion}
                                     </td>
-
+                                    <td className="p-1 md:border md:border-gray-500 block md:table-cell">
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Inicio:</span>{item.inicio}
+                                    </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
                                         <span className="inline-block w-1/3 md:hidden font-bold mr-4">Final:</span>{item.final}
                                     </td>
                                     <td className="p-1 md:border text-center md:border-gray-500 block md:table-cell relative">
-                                        <a href="/dashboard-coordinador/act-finalizadas/cparticipantes-actividad" className="flex justify-center items-center font-bold group"  title="Unirse">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={32} height={32} color={"#000000"} fill={"none"} className="group-hover:text-blue-500 hidden md:block">
+                                    <NavLink
+                                        to={
+                                            location.pathname.includes('dashboard-coordinador')
+                                                ? "/dashboard-coordinador/detalles-actividad"
+                                                : location.pathname.includes('dashboard-estudiante')
+                                                    ? "#"
+                                                    : "/dashboard-voae/detalles-actividades"
+                                        }
+                                        className="flex justify-center items-center font-bold group"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={32} height={32} color={"#000000"} fill={"none"} className="group-hover:text-blue-500 hidden md:block">
                                                 <path d="M21.544 11.045C21.848 11.4713 22 11.6845 22 12C22 12.3155 21.848 12.5287 21.544 12.955C20.1779 14.8706 16.6892 19 12 19C7.31078 19 3.8221 14.8706 2.45604 12.955C2.15201 12.5287 2 12.3155 2 12C2 11.6845 2.15201 11.4713 2.45604 11.045C3.8221 9.12944 7.31078 5 12 5C16.6892 5 20.1779 9.12944 21.544 11.045Z" stroke="currentColor" strokeWidth="1.5" />
                                                 <path d="M15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15C13.6569 15 15 13.6569 15 12Z" stroke="currentColor" strokeWidth="1.5" />
                                             </svg>
                                             <span className="hover:text-blue-500 group-hover:text-blue-500 md:hidden">Ver detalles</span>
-                                        </a>
+                                    </NavLink>
                                     </td>
                                 </tr>
                             ))}
@@ -127,4 +142,4 @@ const ActividadesFinalizadaCoordinador: React.FC = () => {
     );
 };
 
-export default ActividadesFinalizadaCoordinador;
+export default PaginaGestionActividad;

@@ -1,7 +1,7 @@
 
 import { Outlet } from 'react-router-dom';
-import Header_login from '../Header_login';
-import Sidebar from '../Sidebar';
+import Header_login from '../components/Header_login';
+import Sidebar from '../components/Sidebar';
 
 export default function Layout_Login(){
   return (
