@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Calendar, { CalendarProps } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import './CalendarPage.css';
+import './DiseñCalendario.css';
 import { NavLink } from 'react-router-dom';
 
 interface Actividad {

@@ -24,7 +24,7 @@ const initialParticipants = [
     { cuenta: '20182100007', tipoHora: 'Beca' , cantidad: '4'},
 ];
 
-const CParticipantesActividad: React.FC = () => {
+const ParticipantesActividad: React.FC = () => {
   const [participants] = useState(initialParticipants);
 
   useEffect(() => {
@@ -60,7 +60,7 @@ const CParticipantesActividad: React.FC = () => {
                       </tr>
                     ))}
                   </tbody>
-                </table>
+                </table> 
               </div>
               <div className="flex flex-col justify-between ml-4 mt-4 lg:mt-0">
                 <button
@@ -78,4 +78,4 @@ const CParticipantesActividad: React.FC = () => {
   );
 };
 
-export default CParticipantesActividad;
+export default ParticipantesActividad;
