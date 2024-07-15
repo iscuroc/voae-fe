@@ -18,19 +18,10 @@ const Sidebar: React.FC = () => {
               <span className="text-sm font-bold text-white ml-2">UNAH CUROC</span>
             </a>
           </li>
-          <li>
-            <NavLink
-              to="/perfil"
-              className={({ isActive }) => `flex items-center py-3 px-6 hover:bg-gray-700 ${isActive ? "bg-gray-700" : ""}`}
-            >
-              <CiUser className="h-6 w-6 mr-2" />
-              Perfil
-            </NavLink>
-          </li>
           {location.pathname.includes('dashboard-coordinador') && (
             <>
               <li>
-                <NavLink
+              <NavLink
                   to="/dashboard-coordinador/main"
                   className={({ isActive }) => `flex items-center py-3 px-6 hover:bg-gray-700 ${isActive ? "bg-gray-700" : ""}`}
                 >
@@ -38,6 +29,15 @@ const Sidebar: React.FC = () => {
                   Dashboard
                 </NavLink>
               </li>
+              <li>
+          <NavLink
+              to="/perfil"
+              className={({ isActive }) => `flex items-center py-3 px-6 hover:bg-gray-700 ${isActive ? "bg-gray-700" : ""}`}
+            >
+              <CiUser className="h-6 w-6 mr-2" />
+              Perfil
+            </NavLink>
+          </li>
               <li>
                 <NavLink
                   to="/dashboard-coordinador/calendario"
@@ -62,6 +62,15 @@ const Sidebar: React.FC = () => {
               </li>
               <li>
                 <NavLink
+                to="/perfil"
+                className={({ isActive }) => `flex items-center py-3 px-6 hover:bg-gray-700 ${isActive ? "bg-gray-700" : ""}`}
+                >
+                  <CiUser className="h-6 w-6 mr-2" />
+                  Perfil
+                </NavLink>
+          </li>
+              <li>
+                <NavLink
                   to="/dashboard-estudiante/calendario"
                   className={({ isActive }) => `flex items-center py-3 px-6 hover:bg-gray-700 ${isActive ? "bg-gray-700" : ""}`}
                 >
@@ -69,6 +78,7 @@ const Sidebar: React.FC = () => {
                   Calendario
                 </NavLink>
               </li>
+              
             </>
           )}
           {location.pathname.includes('dashboard-voae') && (
@@ -82,6 +92,15 @@ const Sidebar: React.FC = () => {
                   Dashboard
                 </NavLink>
               </li>
+              <li>
+                <NavLink
+                  to="/perfil"
+                  className={({ isActive }) => `flex items-center py-3 px-6 hover:bg-gray-700 ${isActive ? "bg-gray-700" : ""}`}
+                >
+                  <CiUser className="h-6 w-6 mr-2" />
+                  Perfil
+                </NavLink>
+          </li>
               <li>
                 <NavLink
                   to="/dashboard-voae/calendario"

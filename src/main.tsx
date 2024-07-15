@@ -28,15 +28,14 @@ import ActvidadesEnCursoVoae from './pages/voae_dashboard/ActvidadesEnCursoVoae'
 import DetallesActividadesVoae from './pages/voae_dashboard/VDetallesActvidad';
 import PaginaGestionVOAE from './pages/voae_dashboard/PaginaGestionVOAE';
 import HorasVoaeEstudiante from './pages/estudiantes_dashboard/HorasVoaeEstudiante';
-import DetalleHorasVoaeEstudiante from './pages/estudiantes_dashboard/DetalleMisHoras';
 import NovedadesAdmin from './pages/voae_dashboard/NovedadesAdmin';
 import CrearActividad from './pages/estudiantes_dashboard/CrearActividad';
 import CrearActividadVoae from './pages/voae_dashboard/CrearActividadVoae';
 import CrearActividadCoordinador from './pages/coordinadores_dashboard/CrearActividadCoordinador';
 import Calendario from './components/PaginaDeCalendar';
-
-
-
+import Perfil from './components/PaginaPerfil';
+import EditarPerfil from './components/EditarPerfil';
+import CambiarContrasena from './components/CambiarContrasena';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
@@ -48,13 +47,14 @@ root.render(
         <Route path="/" element={<Layout />}>
           <Route index element={<App />} />
           <Route path="about" element={<About />} />
+          <Route path="login" element={<Login />} />
+          <Route path="registro" element={<Registro />} />
+          <Route path="detalle-registro" element={<DetalleRegistro />} />
         </Route>
-        <Route path="/login" element={<Login />} />
-        <Route path="/registro" element={<Registro />} />
-        <Route path="/detalle-registro" element={<DetalleRegistro />} />
-       
+
         {/* Rutas que utilizan el Layout de Login */}
         <Route path="/" element={<Layout_Login />}>
+          {/* Rutas para Estudiantes */}
           <Route path="dashboard-estudiante/main" element={<DashboardEstudiante />} />
           <Route path="dashboard-estudiante/actividades-solicitadas" element={<ActividadesSolicitadasEstudiantes />} />
           <Route path="dashboard-estudiante/actividades-en-curso" element={<ActvidadesEnCursoEstudiantes />} />
@@ -63,10 +63,10 @@ root.render(
           <Route path="dashboard-estudiante/mis-actividades" element={<PaginaMisActividades />} />
           <Route path="dashboard-estudiante/unirse-actividad" element={<UnirseActividad />} />
           <Route path="dashboard-estudiante/mis-horas-voae" element={ <HorasVoaeEstudiante />} />
-          <Route path="dashboard-estudiante/mis-horas-voae/detalle-mis-horas" element={ <DetalleHorasVoaeEstudiante />} />
           <Route path="dashboard-estudiante/crear-actividad" element={<CrearActividad />} />
           <Route path="dashboard-estudiante/calendario" element={<Calendario />} />
-
+          
+          {/* Rutas para Coordinadores */}
           <Route path="dashboard-coordinador/act-finalizadas" element={<ActividadesFinalizadaCoordinador />} />
           <Route path="dashboard-coordinador/act-finalizadas/cparticipantes-actividad" element={<CParticipantesActividad />} />
           <Route path="dashboard-coordinador/main" element={<DashboardCoordinador />} />
@@ -75,7 +75,8 @@ root.render(
           <Route path="dashboard-coordinador/gestion-actividad" element={<PaginaGestionCoordinadores />} />
           <Route path="dashboard-coordinador/crear-actividad" element={<CrearActividadCoordinador />} />
           <Route path="dashboard-coordinador/calendario" element={<Calendario />} />
-
+          
+          {/* Rutas para VOAE */}
           <Route path="dashboard-voae/act-finalizadas/vparticipantes-actividad" element={<VParticipantesActividad />} />
           <Route path="dashboard-voae/act-finalizadas" element={<ActividadesFinalizadaVoae />} />
           <Route path="dashboard-voae/main" element={<DashboardAdminVoae />} />
@@ -85,10 +86,13 @@ root.render(
           <Route path="dashboard-voae/novedades-admin" element={<NovedadesAdmin />} />
           <Route path="dashboard-voae/crear-actividad" element={<CrearActividadVoae />} />
           <Route path="dashboard-voae/calendario" element={<Calendario />} />
-
-          
         </Route>
-
+        
+        <Route path="/" element={<Layout_Login />}>
+          <Route path="perfil" element={<Perfil />} />
+          <Route path="editar-perfil" element={<EditarPerfil />} />
+          <Route path="cambiar-contrasena" element={<CambiarContrasena />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   </>
