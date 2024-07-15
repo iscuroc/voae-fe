@@ -6,36 +6,28 @@ import './index.css';
 import Login from './pages/Login';
 import Registro from './pages/Registro';
 import DetalleRegistro from './pages/DetalleRegistro';
-import Layout from './components/layouts/Layout';
-import Layout_Login from './components/layouts/Layout_Login';
-import ActividadesFinalizada from './pages/estudiantes_dashboard/ActividadesFinalizada';
-import ActividadesFinalizadaVoae from './pages/voae_dashboard/ActividadesFinalizadaVoae';
-import ActividadesFinalizadaCoordinador from './pages/coordinadores_dashboard/ActividadesFinalizadaCoordinador';
-import ParticipantesActividad from './pages/estudiantes_dashboard/ParticipantesActividad';
-import CParticipantesActividad from './pages/coordinadores_dashboard/CParticipantesActividad';
-import VParticipantesActividad from './pages/voae_dashboard/VParticipantesActividad';
+import Layout from './layouts/Layout';
+import Layout_Login from './layouts/Layout_Login';
 import DashboardCoordinador from './pages/coordinadores_dashboard/DashboardCoordinador';
 import DashboardEstudiante from './pages/estudiantes_dashboard/DashboardEstudiante';
 import DashboardAdminVoae from './pages/voae_dashboard/DashboardAdminVoae';
 import PaginaMisActividades from './pages/estudiantes_dashboard/PaginaMisActividades';
-import ActvidadesEnCursoCoordinador from './pages/coordinadores_dashboard/ActvidadesEnCursoCoordinador';
-import PaginaGestionCoordinadores from './pages/coordinadores_dashboard/PaginaGestionCoorinadores';
-import CDetallesActividad from './pages/coordinadores_dashboard/CDetallesActividad';
-import ActvidadesEnCursoEstudiantes from './pages/estudiantes_dashboard/ActvidadesEnCursoEstudiantes';
-import ActividadesSolicitadasEstudiantes from './pages/estudiantes_dashboard/ActividadesSolicitadasEstudiantes';
 import UnirseActividad from './pages/estudiantes_dashboard/UnirseActividades';
-import ActvidadesEnCursoVoae from './pages/voae_dashboard/ActvidadesEnCursoVoae';
-import DetallesActividadesVoae from './pages/voae_dashboard/VDetallesActvidad';
-import PaginaGestionVOAE from './pages/voae_dashboard/PaginaGestionVOAE';
 import HorasVoaeEstudiante from './pages/estudiantes_dashboard/HorasVoaeEstudiante';
 import NovedadesAdmin from './pages/voae_dashboard/NovedadesAdmin';
-import CrearActividad from './pages/estudiantes_dashboard/CrearActividad';
-import CrearActividadVoae from './pages/voae_dashboard/CrearActividadVoae';
-import CrearActividadCoordinador from './pages/coordinadores_dashboard/CrearActividadCoordinador';
-import Calendario from './components/PaginaDeCalendar';
 import Perfil from './components/PaginaPerfil';
 import EditarPerfil from './components/EditarPerfil';
 import CambiarContrasena from './components/CambiarContrasena';
+import Calendario from './components/PaginaDeCalendario';
+import ActvidadesEnCurso from './components/ActvidadesEnCurso';
+import GestionSolicitudes from './components/GestionSolicitudes';
+import CrearActividad from './components/CrearActividad';
+import PaginaGestionActividad from './components/PaginaGestionActividad';
+import DetallesActividad from './components/DetallesActividad';
+import ActvidadesFinalizada from './components/ActividadesFinalizada';
+import ParticipantesActividad from './components/ParticipantesActividad';
+import PaginaGestionSolicitudesVOAE from './pages/voae_dashboard/PaginaAprobarSolicitudesVOAE';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
@@ -54,38 +46,43 @@ root.render(
 
         {/* Rutas que utilizan el Layout de Login */}
         <Route path="/" element={<Layout_Login />}>
-          {/* Rutas para Estudiantes */}
+        {/* Dashboard de estudiantes */}
+
           <Route path="dashboard-estudiante/main" element={<DashboardEstudiante />} />
-          <Route path="dashboard-estudiante/actividades-solicitadas" element={<ActividadesSolicitadasEstudiantes />} />
-          <Route path="dashboard-estudiante/actividades-en-curso" element={<ActvidadesEnCursoEstudiantes />} />
-          <Route path="dashboard-estudiante/act-finalizadas" element={<ActividadesFinalizada />} />
+          <Route path="dashboard-estudiante/actividades-solicitadas" element={<GestionSolicitudes />} />
+          <Route path="dashboard-estudiante/actividades-en-curso" element={<ActvidadesEnCurso />} />
+          <Route path="dashboard-estudiante/act-finalizadas" element={<ActvidadesFinalizada />} />
           <Route path="dashboard-estudiante/act-finalizadas/participantes-actividad" element={<ParticipantesActividad />} />
           <Route path="dashboard-estudiante/mis-actividades" element={<PaginaMisActividades />} />
           <Route path="dashboard-estudiante/unirse-actividad" element={<UnirseActividad />} />
           <Route path="dashboard-estudiante/mis-horas-voae" element={ <HorasVoaeEstudiante />} />
           <Route path="dashboard-estudiante/crear-actividad" element={<CrearActividad />} />
           <Route path="dashboard-estudiante/calendario" element={<Calendario />} />
-          
-          {/* Rutas para Coordinadores */}
-          <Route path="dashboard-coordinador/act-finalizadas" element={<ActividadesFinalizadaCoordinador />} />
-          <Route path="dashboard-coordinador/act-finalizadas/cparticipantes-actividad" element={<CParticipantesActividad />} />
+
+        {/* Dashboard de coordinadores */}
+          <Route path="dashboard-coordinador/act-finalizadas" element={<ActvidadesFinalizada />} />
+          <Route path="dashboard-coordinador/act-finalizadas/cparticipantes-actividad" element={<ParticipantesActividad />} />
           <Route path="dashboard-coordinador/main" element={<DashboardCoordinador />} />
-          <Route path="dashboard-coordinador/detalles-actividad" element={<CDetallesActividad />} />
-          <Route path="dashboard-coordinador/actividad-en-curso" element={<ActvidadesEnCursoCoordinador />} />
-          <Route path="dashboard-coordinador/gestion-actividad" element={<PaginaGestionCoordinadores />} />
-          <Route path="dashboard-coordinador/crear-actividad" element={<CrearActividadCoordinador />} />
+          <Route path="dashboard-coordinador/detalles-actividad" element={<DetallesActividad />} />
+          <Route path="dashboard-coordinador/actividad-en-curso" element={<ActvidadesEnCurso />} />
+          <Route path="dashboard-coordinador/gestion-actividad" element={<PaginaGestionActividad />} />
+          <Route path="dashboard-coordinador/crear-actividad" element={<CrearActividad />} />
           <Route path="dashboard-coordinador/calendario" element={<Calendario />} />
-          
-          {/* Rutas para VOAE */}
-          <Route path="dashboard-voae/act-finalizadas/vparticipantes-actividad" element={<VParticipantesActividad />} />
-          <Route path="dashboard-voae/act-finalizadas" element={<ActividadesFinalizadaVoae />} />
+              
+        {/* Dashboard de voae */}
+          <Route path="dashboard-voae/act-finalizadas/vparticipantes-actividad" element={<ParticipantesActividad />} />
+          <Route path="dashboard-voae/act-finalizadas" element={<ActvidadesFinalizada />} />
+
           <Route path="dashboard-voae/main" element={<DashboardAdminVoae />} />
-          <Route path="dashboard-voae/actividad-en-curso" element={<ActvidadesEnCursoVoae />} />
-          <Route path="dashboard-voae/gestion-actividad" element={<PaginaGestionVOAE />} />
-          <Route path="dashboard-voae/detalles-actividades" element={<DetallesActividadesVoae />} />
+          <Route path="dashboard-voae/actividad-en-curso" element={<ActvidadesEnCurso />} />
+          <Route path="dashboard-voae/gestion-actividad" element={<PaginaGestionActividad />} />
+          <Route path="dashboard-voae/detalles-actividades" element={<DetallesActividad />} />
           <Route path="dashboard-voae/novedades-admin" element={<NovedadesAdmin />} />
-          <Route path="dashboard-voae/crear-actividad" element={<CrearActividadVoae />} />
+          <Route path="dashboard-voae/crear-actividad" element={<CrearActividad />} />
           <Route path="dashboard-voae/calendario" element={<Calendario />} />
+          <Route path="dashboard-voae/gestionar-solicitud" element={<GestionSolicitudes />} />
+          <Route path="dashboard-voae/gestion-solicitud" element={<PaginaGestionSolicitudesVOAE />} />
+
         </Route>
         
         <Route path="/" element={<Layout_Login />}>

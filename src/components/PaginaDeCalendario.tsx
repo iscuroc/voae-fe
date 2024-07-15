@@ -1,8 +1,8 @@
 // src/components/CalendarPage.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Calendar, { CalendarProps } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import './CalendarPage.css';
+import './DiseñCalendario.css';
 import { NavLink } from 'react-router-dom';
 
 interface Actividad {
@@ -22,6 +22,11 @@ const actividades: Actividad[] = [
 const Calendario: React.FC = () => {
   const [date, setDate] = useState<Date | null>(null);
   const [selectedActivities, setSelectedActivities] = useState<Actividad[]>([]);
+
+  useEffect(() => {
+    // titulo de la pestaña del navegador
+    document.title = "Calendario - UNAH COPAN";
+}, []);
 
   const handleDateChange: CalendarProps['onChange'] = (value) => {
     const selectedDate = value as Date;
