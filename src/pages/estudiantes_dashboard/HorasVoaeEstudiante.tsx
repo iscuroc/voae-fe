@@ -48,7 +48,7 @@ const HorasVoaeEstudiante: React.FC = () => {
                   <td className="p-4 border-b border-gray-200">{horas}</td>
                   <td className="p-4 border-b border-gray-200">
                     <a
-                      href="/dashboard-estudiante/mis-horas-voae/detalle-mis-horas"
+                      href="/dashboard-estudiante/mis-actividades"
                       className="block text-center bg-yellow-500 text-black font-bold py-2 rounded-lg hover:bg-yellow-600 transition duration-300">
                     Ver </a>
                   </td>
