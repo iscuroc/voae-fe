@@ -15,7 +15,7 @@ const Sidebar: React.FC = () => {
           <li>
             <a className="flex items-center justify-center" href="/">
               <img src="https://res.cloudinary.com/dxc3qadsk/image/upload/v1719073675/curoc-removebg-preview_f5xnoe.png" alt="logo unah" className="w-11 h-11" />
-              <span className="text-sm font-bold text-white ml-2">UNAH CUROC</span>
+              <span className="text-sm font-bold text-white ml-2">UNAH COPAN</span>
             </a>
           </li>
           <li>

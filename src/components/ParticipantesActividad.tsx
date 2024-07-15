@@ -28,7 +28,7 @@ const ParticipantesActividad: React.FC = () => {
   const [participants] = useState(initialParticipants);
 
   useEffect(() => {
-    document.title = "Participantes de la Actividad - UNAH CUROC";
+    document.title = "Participantes de la Actividad - UNAH COPAN";
   }, []);
 
   const handleGoBack = () => {

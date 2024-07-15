@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 
 const ActvidadesEnCurso: React.FC = () => {
     useEffect(() => {
-        document.title = "Estudiantes - UNAH CUROC";
+        document.title = "Actividades en Curso - UNAH COPAN";
 
     }, []);
     const initialData = [

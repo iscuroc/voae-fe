@@ -4,6 +4,7 @@ const CrearActividad = () => {
   const [nombre, setNombre] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [carrera, setCarrera] = useState('');
+  const [carrerasDis, setCarrerasDis] = useState('');
   const [inicio, setInicio] = useState('');
   const [fechaFinalizacion, setFechaFinalizacion] = useState('');
   const [objetivos, setObjetivos] = useState('');
@@ -26,6 +27,7 @@ const CrearActividad = () => {
     setNombre('');
     setDescripcion('');
     setCarrera('');
+    setCarrerasDis('');
     setInicio('');
     setFechaFinalizacion('');
     setObjetivos('');
@@ -55,6 +57,9 @@ const CrearActividad = () => {
             <label className="block text-white text-sm font-bold mb-[3.3rem]" htmlFor="carrera">
               Carrera:
             </label>
+            <label className="block text-white text-sm font-bold mb-[3.3rem]" htmlFor="carrera">
+              Carresca disponles para incribirse:
+            </label>
             <label className="block text-white text-sm font-bold mb-[2rem]" htmlFor="inicio">
               Inicio:
             </label>
@@ -68,10 +73,10 @@ const CrearActividad = () => {
               Ámbito:
             </label>
             <label className="block text-white text-sm font-bold mb-[2.5rem]" htmlFor="coordinador">
-              Coordinador:
+              Coordinador de carrera:
             </label>
             <label className="block text-white text-sm font-bold mb-[2rem]" htmlFor="nombreEstudiante">
-              Nombre Estudiante:
+              Coordinador de actividad:
             </label>
             <label className="block text-white text-sm font-bold mb-[2rem]" htmlFor="horasSociales">
               Horas Sociales becados:
@@ -127,6 +132,22 @@ const CrearActividad = () => {
                 </select>
               </div>
               <div className="mb-5">
+                <select
+                  id="carrera"
+                  value={carrerasDis}
+                  onChange={(e) => setCarrerasDis(e.target.value)}
+                  className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  required
+                >
+                  <option value="">Selecciona una carrera</option>
+                  <option value="Carrera 1">Carrera 1</option>
+                  <option value="Carrera 2">Carrera 2</option>
+                  <option value="Carrera 3">Carrera 3</option>
+                  <option value="Carrera 4">Carrera 4</option>
+                  <option value="Carrera 5">Carrera 5</option>
+                </select>
+              </div>
+              <div className="mb-5">
                 <input
                   type="date"
                   id="inicio"
@@ -158,15 +179,19 @@ const CrearActividad = () => {
                 />
               </div>
               <div className="mb-5">
-                <input
-                  type="text"
-                  placeholder='Ingrese el ámbito'
-                  id="ambito"
+              <select
+                  id="carrera"
                   value={ambito}
-                  onChange={(e) => setAmbito(e.target.value)}
+                  onChange={(e) => setHorasArt(e.target.value)}
                   className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   required
-                />
+                >
+                  <option value="">Selecciona un ambito</option>
+                  <option value="social">Social</option>
+                  <option value="deportiva">Deportivas</option>
+                  <option value="cientifica">Cientificas</option>
+                  <option value="cultural">Cultural</option>
+                </select>
               </div>
               <div className="mb-5">
                 <input
@@ -202,20 +227,17 @@ const CrearActividad = () => {
                 />
               </div>
               <div className="mb-5">
-                <select
-                  id="horasArt"
+              <input
+                  type="number"
+
+                  placeholder='Ingrese el número de horas'
+
+                  id="horas"
                   value={horasArt}
-                  onChange={(e) => setHorasArt(e.target.value)}
+                  onChange={(e) => setCupos(e.target.value)}
                   className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   required
-                >
-                  <option value="">Horas Art. 140</option>
-                  <option value="10">10</option>
-                  <option value="15">15</option>
-                  <option value="20">20</option>
-                  <option value="25">25</option>
-                  <option value="30">30</option>
-                </select>
+                />
               </div>
               <div className="mb-5">
                 <input

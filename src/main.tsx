@@ -16,7 +16,6 @@ import UnirseActividad from './pages/estudiantes_dashboard/UnirseActividades';
 import HorasVoaeEstudiante from './pages/estudiantes_dashboard/HorasVoaeEstudiante';
 import DetalleHorasVoaeEstudiante from './pages/estudiantes_dashboard/DetalleMisHoras';
 import NovedadesAdmin from './pages/voae_dashboard/NovedadesAdmin';
-import PaginaGestionSolicitudesVOAE from './pages/voae_dashboard/PaginaGestionSolicitudesVOAE';
 import Calendario from './components/PaginaDeCalendario';
 import ActvidadesEnCurso from './components/ActvidadesEnCurso';
 import GestionSolicitudes from './components/GestionSolicitudes';
@@ -25,6 +24,7 @@ import PaginaGestionActividad from './components/PaginaGestionActividad';
 import DetallesActividad from './components/DetallesActividad';
 import ActvidadesFinalizada from './components/ActividadesFinalizada';
 import ParticipantesActividad from './components/ParticipantesActividad';
+import PaginaGestionSolicitudesVOAE from './pages/voae_dashboard/PaginaAprobarSolicitudesVOAE';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 

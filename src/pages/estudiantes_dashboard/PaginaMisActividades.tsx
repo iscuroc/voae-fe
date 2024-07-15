@@ -10,19 +10,19 @@ export default function PaginaMisActividades() {
 
     const initialData = [
         // Tu array de datos aquí
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Arboles", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas", duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas", duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Discurso", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas", duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Caminata", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas", duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas", duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Tarde de pelicula", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas", duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas", duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
+        { nombre: "Arboles", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
+        { nombre: "Discurso", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
+        { nombre: "Caminata", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
+        { nombre: "Tarde de pelicula", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
        
     ];
 
@@ -79,6 +79,7 @@ export default function PaginaMisActividades() {
                                     <th className=" p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Nombre</th>
                                     <th className=" p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Ubicación</th>
                                     <th className=" p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Ámbito</th>
+                                    <th className=" p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Encargado</th>
                                     <th className=" p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Carrera</th>
                                     <th className=" p-2  font-bold md:border md:border-grey-500 text-left block md:table-cell">Duración</th>
                                     <th className=" p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Inicio</th>
@@ -99,7 +100,9 @@ export default function PaginaMisActividades() {
                                         <td className="p-1 md:border md:border-gray-500 block md:table-cell">
                                             <span className="inline-block w-1/3 md:hidden font-bold mr-4">Carrera:</span>{item.carrera}
                                         </td>
-
+                                        <td className="p-1 md:border md:border-gray-500 block md:table-cell">
+                                            <span className="inline-block w-1/3 md:hidden font-bold mr-4">Encarado:</span>{item.encargado}
+                                        </td>
                                         <td className="p-1 md:border md:border-gray-500 block md:table-cell">
                                             <span className="inline-block w-1/3 md:hidden font-bold mr-4">Duración:</span>{item.duracion}
                                         </td>
