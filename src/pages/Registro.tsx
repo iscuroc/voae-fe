@@ -5,7 +5,7 @@ import Header from '../components/Header';
 
 const Registro: React.FC = () => {
     useEffect(() => {
-        document.title = "Registro - UNAH CUROC";
+        document.title = "Registro - UNAH COPAN";
     }, []);
 
     return (

@@ -5,7 +5,7 @@ import logo2 from '../assets/logo2.jpeg';
 export default function Main() {
     useEffect(() => {
         // titulo de la pestaña del navegador
-        document.title = "Inicio - UNAH CUROC";
+        document.title = "Inicio - UNAH COPAN";
     }, []);
 
     return (

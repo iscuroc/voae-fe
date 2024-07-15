@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 
 const PaginaGestionActividad: React.FC = () => {
     useEffect(() => {
-        document.title = "Coordinadores - UNAH CUROC";
+        document.title = "Coordinadores - UNAH COPAN";
     }, []);
 
       
