@@ -2,7 +2,7 @@ import axios from 'axios';
 import useAuth from './useAuth';
 
 const axiosInstance = axios.create({
-  // process.env.URL_BACK
+  
   baseURL: import.meta.env.URL_BACK,
   headers: {
     'Content-Type': 'application/json',
