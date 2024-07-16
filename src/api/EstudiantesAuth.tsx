@@ -1,20 +1,15 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
+// components/EstudianteRoute.tsx
+import { Outlet, Navigate } from 'react-router-dom';
+import useAuth from '../api/useAuth';
 
-interface Props {
-  children: React.ReactNode;
-}
+const EstudianteRoute = () => {
+  const { accessToken, userRole } = useAuth();
 
-const EstudianteRoute: React.FC<Props> = ({ children }) => {
-  const accessToken = localStorage.getItem('access_token');
-  const userRole = Number(localStorage.getItem('user_role'));
-
-  // Verificar si el token de acceso existe y si el rol es de estudiante
   if (!accessToken || userRole !== 0) {
     return <Navigate to="/login" />;
   }
 
-  return <>{children}</>;
+  return <Outlet />;
 };
 
 export default EstudianteRoute;

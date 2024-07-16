@@ -20,7 +20,6 @@ export const coordinadorRoutes = {
   "Gestion de Actividades": "/dashboard-coordinador/gestion-actividad",
   "Novedades": "#",
   "Horas por Estudiante": "#",
-  // Agrega más rutas según sea necesario
 } as const;
 
 export type CoordinadorRouteKeys = keyof typeof coordinadorRoutes;

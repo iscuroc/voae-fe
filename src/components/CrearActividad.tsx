@@ -149,7 +149,7 @@ const CrearActividad = () => {
               </div>
               <div className="mb-5">
                 <input
-                  type="date"
+                  type="datetime-local"
                   id="inicio"
                   value={inicio}
                   onChange={(e) => setInicio(e.target.value)}
@@ -159,7 +159,7 @@ const CrearActividad = () => {
               </div>
               <div className="mb-5">
                 <input
-                  type="date"
+                  type="datetime-local"
                   id="fechaFinalizacion"
                   value={fechaFinalizacion}
                   onChange={(e) => setFechaFinalizacion(e.target.value)}
