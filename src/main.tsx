@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import App from './App';
 import About from './pages/About';
 import './index.css';
-import Login from './pages/Login';
 import Registro from './pages/Registro';
 import DetalleRegistro from './pages/DetalleRegistro';
 import Layout from './layouts/Layout';
@@ -28,6 +27,7 @@ import ActvidadesFinalizada from './components/ActividadesFinalizada';
 import ParticipantesActividad from './components/ParticipantesActividad';
 import PaginaGestionSolicitudesVOAE from './pages/voae_dashboard/PaginaAprobarSolicitudesVOAE';
 import { AuthProvider } from './api/AuthContext';
+import Login from './pages/Login';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
