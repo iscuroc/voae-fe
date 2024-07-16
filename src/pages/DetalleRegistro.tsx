@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import logo1 from '../assets/logo.png';
 import logo2 from '../assets/logo2.jpeg';
-import Header from '../components/Header';
 
 const DetallesRegistro: React.FC = () => {
     useEffect(() => {
@@ -10,7 +9,6 @@ const DetallesRegistro: React.FC = () => {
 
     return (
         <>
-            <Header />
             <div className="ml-5 mr-5 h-full  md:mt-5 bg-white overflow-hidden flex items-center justify-center">
                 <div className="flex flex-col md:flex-row w-full h-full items-center justify-center space-y-6 md:space-y-0 md:space-x-8">
                     {/* Imágenes */}
