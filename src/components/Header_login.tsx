@@ -5,10 +5,12 @@ import { FaRegCalendarAlt } from 'react-icons/fa';
 import { IoNotificationsOutline } from 'react-icons/io5';
 import { LuLayoutDashboard } from 'react-icons/lu';
 import { PiNut } from 'react-icons/pi';
+import useAuth from '../api/useAuth';
 
 export default function Header_login() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const location = useLocation();
+    const { email, logout } = useAuth();
 
     return (
         <>
@@ -18,7 +20,7 @@ export default function Header_login() {
                     <span className="text-xs font-bold text-white ml-2">UNAH COPAN</span>
                 </a>
                 <nav className="ml-auto hidden md:flex gap-4 text-white">
-                    <a href="/login" className="text-sm hover:underline">@Nombre Usuario</a>
+                    <a href="/login" className="text-sm hover:underline">@{email}</a>
                 </nav>
                 <button 
                     className="ml-auto md:hidden text-white focus:outline-none"
@@ -64,7 +66,7 @@ export default function Header_login() {
                     <a href="/configuracion" className="px-4 py-2 text-sm text-white hover:underline flex items-center">
                         <PiNut className='mr-1' /> Configuración
                     </a>
-                    <a href="/logout" className="px-4 py-2 text-sm text-white hover:underline flex items-center">
+                    <a onClick={logout} href='/' className="px-4 py-2 text-sm text-white hover:underline flex items-center">
                         <CiLogout className='mr-1' /> Cerrar Sesión
                     </a>
                 </nav>

@@ -5,8 +5,11 @@ import { IoNotificationsOutline } from "react-icons/io5";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { PiNut } from "react-icons/pi";
 import { NavLink } from "react-router-dom";
+import useAuth from "../api/useAuth";
 
 const Sidebar: React.FC = () => {
+  const { logout } = useAuth();
+
   return (
     <aside className="bg-blue-900 text-white h-screen w-44 hidden md:flex text-sm bottom-0 fixed"> {/* Ajustar top */}
       {/* Opciones de navegación */}
@@ -131,13 +134,14 @@ const Sidebar: React.FC = () => {
             </NavLink>
           </li>
           <li>
-            <button
-              
+          <a
+              onClick={logout}
+              href="/"
               className={`flex items-center py-3 px-6 hover:bg-red-700`}
             >
               <CiLogout className="h-6 w-6 mr-2" />
               Cerrar Sesión
-            </button>
+            </a>
           </li>
         </ul>
       </nav>

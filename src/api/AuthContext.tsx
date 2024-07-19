@@ -12,17 +12,19 @@ export interface AuthContextType {
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [userRole, setUserRole] = useState<number | null>(null);
-  const [email, setEmail] = useState<string | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(localStorage.getItem('accessToken'));
+  const [userRole, setUserRole] = useState<number | null>(Number(localStorage.getItem('userRole')));
+  const [email, setEmail] = useState<string | null>(localStorage.getItem('email'));
 
   const login = (token: string, role: number, email: string) => {
+    localStorage.setItem('accessToken', token);
     setAccessToken(token);
     setUserRole(role);
     setEmail(email);
   };
 
   const logout = () => {
+    localStorage.removeItem('accessToken');
     setAccessToken(null);
     setUserRole(null);
     setEmail(null);
