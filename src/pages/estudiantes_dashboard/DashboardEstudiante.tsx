@@ -5,7 +5,7 @@ import { estudianteRoutes, EstudianteRouteKeys } from "../../api/routesConfig";
 
 const DashboardEstudiante: React.FC = () => {
   useEffect(() => {
-    document.title = "Dashboard";
+    document.title = "Dashboard - UNAH COPAN";
   }, []);
 
   const getIconByTitle = (title: EstudianteRouteKeys) => {

@@ -1,15 +1,16 @@
-// components/Login.tsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../api/axiosInstance';
 import logo1 from '../assets/logo.png';
 import logo2 from '../assets/logo2.jpeg';
 import useAuth from '../api/useAuth';
+import { FiLoader } from 'react-icons/fi';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<string>(''); 
+  const [error, setError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -20,6 +21,8 @@ const Login: React.FC = () => {
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
+    setIsLoading(true);
+    setError('');
     try {
       const response = await axiosInstance.post('/login', {
         email,
@@ -37,21 +40,23 @@ const Login: React.FC = () => {
         navigate('/');
       }
     } catch {
-      setError('Correo o contraseña incorrectos.'); 
+      setError('Correo o contraseña incorrectos.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <>
       <div className="ml-5 mr-5 h-full md:mt-20 md:mb-11 bg-white overflow-hidden flex items-center justify-center">
-        <div className="flex flex-col md:flex-row w-full h-full items-center justify-center space-y-6 md:space-y-0 md:space-x-8">
+        <div className="flex flex-col md:flex-row w-full h-full mb-10 items-center justify-center space-y-6 md:space-y-0 md:space-x-8">
           <div className="flex items-center justify-center">
             <img src={logo1} alt="Logo 1" className="w-48 h-32 mr-7 md:mr-0 mt-5 md:mt-0 md:w-80 md:h-52" />
           </div>
           <div className="hidden md:flex items-center justify-center">
             <img src={logo2} alt="Logo 2" className="w-48 h-32 md:w-80 md:h-52" />
           </div>
-          <div className="bg-yellow-500 w-full sm:w-8/12 md:w-6/12 lg:w-5/12 xl:w-4/12 shadow-2xl rounded-lg p-4 sm:p-4">
+          <div className="bg-yellow-500 w-full  sm:w-8/12 md:w-6/12 lg:w-5/12 xl:w-4/12 shadow-2xl rounded-lg p-4 sm:p-4">
             <form className="p-1" onSubmit={handleLogin}>
               <div className="flex items-center text-lg mb-6 md:mb-8 relative">
                 <svg className="absolute ml-3" width="24" viewBox="0 0 24 24">
@@ -84,8 +89,11 @@ const Login: React.FC = () => {
                   {error}
                 </div>
               )}
-              <button className="bg-gradient-to-b from-blue-800 to-blue-900 font-medium p-2 md:p-4 text-white uppercase w-full rounded-md shadow-xl hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                Login
+              <button
+                className="bg-gradient-to-b from-blue-800 to-blue-900 font-medium p-2 md:p-4 text-white uppercase w-full rounded-md shadow-xl hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 flex items-center justify-center"
+                disabled={isLoading}
+              >
+                {isLoading ? (<FiLoader className="mr-2 animate-spin" />) : ('Login')}
               </button>
             </form>
             <div className="flex flex-col items-center space-y-2 mt-2">

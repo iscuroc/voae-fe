@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const EditarPerfil = () => {
+    useEffect(() => {
+        document.title = "Editar Perfil - UNAH COPAN";
+      }, []);
+      
     const [user, setUser] = useState({
         nombre: 'Juan Perez',
         telefono: '87456321',
@@ -18,17 +22,12 @@ const EditarPerfil = () => {
         }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        // Lógica para guardar los cambios.
-        console.log('Perfil actualizado:', user);
-        navigate('/perfil');
-    };
+    
 
     return (
         <div className="max-w-4xl mx-auto p-8 bg-gradient-to-r from-blue-50 to-blue-100 shadow-lg rounded-lg">
             <h1 className="text-3xl font-bold text-gray-800 mb-6">Editar Perfil</h1>
-            <form onSubmit={handleSubmit}>
+            <form >
                 <div className="mb-4">
                     <label htmlFor="nombre" className="block text-gray-700 font-semibold">Nombre</label>
                     <input
@@ -71,7 +70,7 @@ const EditarPerfil = () => {
                     </button>
                     <button
                         type="button"
-                        onClick={() => navigate('/perfil')}
+                        onClick={() => navigate(-1)}
                         className="px-4 py-2 bg-gray-300 text-black rounded-lg hover:bg-gray-400 transition-colors shadow-md"
                     >
                         Regresar

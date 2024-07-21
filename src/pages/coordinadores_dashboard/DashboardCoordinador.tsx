@@ -5,19 +5,19 @@ import { coordinadorRoutes, CoordinadorRouteKeys } from "../../api/routesConfig"
 
 const DashboardCoordinador: React.FC = () => {
   useEffect(() => {
-    document.title = "Dashboard";
+    document.title = "Dashboard - UNAH COPAN";
   }, []);
 
   const getIconByTitle = (title: CoordinadorRouteKeys) => {
     switch (title) {
       case "Crear Actividad":
         return <FiPlusCircle size={32} />;
-        case "Actividades en Curso":
-          return <FiClock size={32} />;
-          case "Actividades Finalizadas":
-            return <FiClock size={32} />;
+      case "Actividades en Curso":
+        return <FiClock size={32} />;
+      case "Actividades Finalizadas":
+        return <FiClock size={32} />;
       case "Gestion de Actividades":
-          return <FiEdit size={32} />;
+        return <FiEdit size={32} />;
       case "Novedades":
         return <FiInfo size={32} />;
       case "Horas por Estudiante":

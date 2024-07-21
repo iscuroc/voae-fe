@@ -49,8 +49,8 @@ root.render(
 
           {/* Rutas que utilizan el Layout de Login */}
           <Route path="/" element={<Layout_Login />}>
+          
             {/* Dashboard de estudiantes */}
-
             <Route path="dashboard-estudiante/main" element={<DashboardEstudiante />} />
             <Route path="dashboard-estudiante/actividades-solicitadas" element={<GestionSolicitudes />} />
             <Route path="dashboard-estudiante/actividades-en-curso" element={<ActvidadesEnCurso />} />
@@ -61,6 +61,9 @@ root.render(
             <Route path="dashboard-estudiante/mis-horas-voae" element={<HorasVoaeEstudiante />} />
             <Route path="dashboard-estudiante/crear-actividad" element={<CrearActividad />} />
             <Route path="dashboard-estudiante/calendario" element={<Calendario />} />
+            <Route path="dashboard-estudiante/perfil" element={<Perfil />} />
+            <Route path="dashboard-estudiante/editar-perfil" element={<EditarPerfil />} />
+            <Route path="dashboard-estudiante/cambiar-contrasena" element={<CambiarContrasena />} />
 
             {/* Dashboard de coordinadores */}
             <Route path="dashboard-coordinador/act-finalizadas" element={<ActvidadesFinalizada />} />
@@ -71,11 +74,13 @@ root.render(
             <Route path="dashboard-coordinador/gestion-actividad" element={<PaginaGestionActividad />} />
             <Route path="dashboard-coordinador/crear-actividad" element={<CrearActividad />} />
             <Route path="dashboard-coordinador/calendario" element={<Calendario />} />
+            <Route path="dashboard-coordinador/perfil" element={<Perfil />} />
+            <Route path="dashboard-coordinador/editar-perfil" element={<EditarPerfil />} />
+            <Route path="dashboard-coordinador/cambiar-contrasena" element={<CambiarContrasena />} />
 
             {/* Dashboard de voae */}
             <Route path="dashboard-voae/act-finalizadas/vparticipantes-actividad" element={<ParticipantesActividad />} />
             <Route path="dashboard-voae/act-finalizadas" element={<ActvidadesFinalizada />} />
-
             <Route path="dashboard-voae/main" element={<DashboardAdminVoae />} />
             <Route path="dashboard-voae/actividad-en-curso" element={<ActvidadesEnCurso />} />
             <Route path="dashboard-voae/gestion-actividad" element={<PaginaGestionActividad />} />
@@ -85,14 +90,11 @@ root.render(
             <Route path="dashboard-voae/calendario" element={<Calendario />} />
             <Route path="dashboard-voae/gestionar-solicitud" element={<GestionSolicitudes />} />
             <Route path="dashboard-voae/gestion-solicitud" element={<PaginaGestionSolicitudesVOAE />} />
-
+            <Route path="dashboard-voae/perfil" element={<Perfil />} />
+            <Route path="dashboard-voae/editar-perfil" element={<EditarPerfil />} />
+            <Route path="dashboard-voae/cambiar-contrasena" element={<CambiarContrasena />} />
           </Route>
 
-          <Route path="/" element={<Layout_Login />}>
-            <Route path="perfil" element={<Perfil />} />
-            <Route path="editar-perfil" element={<EditarPerfil />} />
-            <Route path="cambiar-contrasena" element={<CambiarContrasena />} />
-          </Route>
         </Routes>
       </BrowserRouter>
     </AuthProvider>

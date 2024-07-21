@@ -3,7 +3,6 @@ import { CiLogout, CiUser } from "react-icons/ci";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { LuLayoutDashboard } from "react-icons/lu";
-import { PiNut } from "react-icons/pi";
 import { NavLink } from "react-router-dom";
 import useAuth from "../api/useAuth";
 
@@ -24,7 +23,7 @@ const Sidebar: React.FC = () => {
           {location.pathname.includes('dashboard-coordinador') && (
             <>
               <li>
-              <NavLink
+                <NavLink
                   to="/dashboard-coordinador/main"
                   className={({ isActive }) => `flex items-center py-3 px-6 hover:bg-gray-700 ${isActive ? "bg-gray-700" : ""}`}
                 >
@@ -33,14 +32,14 @@ const Sidebar: React.FC = () => {
                 </NavLink>
               </li>
               <li>
-          <NavLink
-              to="/perfil"
-              className={({ isActive }) => `flex items-center py-3 px-6 hover:bg-gray-700 ${isActive ? "bg-gray-700" : ""}`}
-            >
-              <CiUser className="h-6 w-6 mr-2" />
-              Perfil
-            </NavLink>
-          </li>
+                <NavLink
+                  to="/dashboard-coordinador/perfil"
+                  className={({ isActive }) => `flex items-center py-3 px-6 hover:bg-gray-700 ${isActive ? "bg-gray-700" : ""}`}
+                >
+                  <CiUser className="h-6 w-6 mr-2" />
+                  Perfil
+                </NavLink>
+              </li>
               <li>
                 <NavLink
                   to="/dashboard-coordinador/calendario"
@@ -65,13 +64,13 @@ const Sidebar: React.FC = () => {
               </li>
               <li>
                 <NavLink
-                to="/perfil"
-                className={({ isActive }) => `flex items-center py-3 px-6 hover:bg-gray-700 ${isActive ? "bg-gray-700" : ""}`}
+                  to="/dashboard-estudiante/perfil"
+                  className={({ isActive }) => `flex items-center py-3 px-6 hover:bg-gray-700 ${isActive ? "bg-gray-700" : ""}`}
                 >
                   <CiUser className="h-6 w-6 mr-2" />
                   Perfil
                 </NavLink>
-          </li>
+              </li>
               <li>
                 <NavLink
                   to="/dashboard-estudiante/calendario"
@@ -81,7 +80,7 @@ const Sidebar: React.FC = () => {
                   Calendario
                 </NavLink>
               </li>
-              
+
             </>
           )}
           {location.pathname.includes('dashboard-voae') && (
@@ -97,13 +96,13 @@ const Sidebar: React.FC = () => {
               </li>
               <li>
                 <NavLink
-                  to="/perfil"
+                  to="/dashboard-voae/perfil"
                   className={({ isActive }) => `flex items-center py-3 px-6 hover:bg-gray-700 ${isActive ? "bg-gray-700" : ""}`}
                 >
                   <CiUser className="h-6 w-6 mr-2" />
                   Perfil
                 </NavLink>
-          </li>
+              </li>
               <li>
                 <NavLink
                   to="/dashboard-voae/calendario"
@@ -125,16 +124,7 @@ const Sidebar: React.FC = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink
-              to="/configuracion"
-              className={({ isActive }) => `flex items-center py-3 px-6 hover:bg-gray-700 ${isActive ? "bg-gray-700" : ""}`}
-            >
-              <PiNut className="h-6 w-6 mr-2" />
-              Configuración
-            </NavLink>
-          </li>
-          <li>
-          <a
+            <a
               onClick={logout}
               href="/"
               className={`flex items-center py-3 px-6 hover:bg-red-700`}

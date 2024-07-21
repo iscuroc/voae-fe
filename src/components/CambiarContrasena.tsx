@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const CambiarContrasena: React.FC = () => {
+    useEffect(() => {
+        document.title = "Cambiar Contraseña - UNAH COPAN";
+      }, []);
+      
     const [passwords, setPasswords] = useState({
         currentPassword: '',
         newPassword: '',
@@ -18,20 +22,10 @@ const CambiarContrasena: React.FC = () => {
         });
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (passwords.newPassword !== passwords.confirmNewPassword) {
-            alert('Las nuevas contraseñas no coinciden');
-            return;
-        }
-        // Lógica para cambiar la contraseña
-        console.log('Contraseña cambiada', passwords);
-    };
-
     return (
         <div className="max-w-4xl mx-auto p-8 bg-gradient-to-r from-blue-50 to-blue-100 shadow-lg rounded-lg">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">Cambiar Contraseña</h2>
-            <form onSubmit={handleSubmit}>
+            <form>
                 <div>
                     <label className="block text-gray-700">Contraseña Actual</label>
                     <input
@@ -71,7 +65,7 @@ const CambiarContrasena: React.FC = () => {
                     </button>
                     <button
                         type="button"
-                        onClick={() => navigate('/perfil')}
+                        onClick={() => navigate(-1)}
                         className="px-4 py-2 bg-gray-300 text-black rounded-lg hover:bg-gray-400 transition-colors shadow-md"
                     >
                         Regresar

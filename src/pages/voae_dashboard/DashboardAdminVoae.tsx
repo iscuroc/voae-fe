@@ -5,7 +5,7 @@ import { voaeRoutes, VoaeRouteKeys } from "../../api/routesConfig";
 
 const DashboardAdminVoae: React.FC = () => {
   useEffect(() => {
-    document.title = "Dashboard";
+    document.title = "Dashboard - UNAH COPAN";
   }, []);
 
   const getIconByTitle = (title: VoaeRouteKeys) => {

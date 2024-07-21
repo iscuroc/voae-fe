@@ -4,7 +4,6 @@ import { CiLogout, CiUser } from 'react-icons/ci';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 import { IoNotificationsOutline } from 'react-icons/io5';
 import { LuLayoutDashboard } from 'react-icons/lu';
-import { PiNut } from 'react-icons/pi';
 import useAuth from '../api/useAuth';
 
 export default function Header_login() {
@@ -33,9 +32,18 @@ export default function Header_login() {
             </header>
             {isMenuOpen && (
                 <nav className="bg-blue-900 md:hidden">
-                    <a href="/perfil" className="px-4 py-2 text-sm text-white hover:underline flex items-center">
+                    <NavLink
+                        to={
+                            location.pathname.includes('dashboard-coordinador')
+                                ? "/dashboard-coordinador/perfil"
+                                : location.pathname.includes('dashboard-estudiante')
+                                    ? "/dashboard-estudiante/perfil"
+                                    : "/dashboard-voae/perfil"
+                        }
+                        className="px-4 py-2 text-sm text-white hover:underline flex items-center"
+                    >
                         <CiUser className='mr-1' /> Perfil
-                    </a>
+                    </NavLink>
                     <NavLink
                         to={
                             location.pathname.includes('dashboard-coordinador')
@@ -62,9 +70,6 @@ export default function Header_login() {
                     </NavLink>
                     <a href="/notificaciones" className="px-4 py-2 text-sm text-white hover:underline flex items-center">
                         <IoNotificationsOutline className='mr-1' /> Notificaciones
-                    </a>
-                    <a href="/configuracion" className="px-4 py-2 text-sm text-white hover:underline flex items-center">
-                        <PiNut className='mr-1' /> Configuración
                     </a>
                     <a onClick={logout} href='/' className="px-4 py-2 text-sm text-white hover:underline flex items-center">
                         <CiLogout className='mr-1' /> Cerrar Sesión
