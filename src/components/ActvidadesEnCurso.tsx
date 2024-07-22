@@ -10,20 +10,20 @@ const ActvidadesEnCurso: React.FC = () => {
     }, []);
     const initialData = [
         // Tu array de datos aquí
-        { nombre: "Charla", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingeniería en Sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", estado: 'En Curso' },
-        { nombre: "Charla1", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Social", carrera: "Licenciatura en Desarrollo Local", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", estado: 'Aprobado' },
-        { nombre: "Charla1", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Social", carrera: "Licenciatura en Desarrollo Local", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", estado: 'En Curso' },
-        { nombre: "Charla1", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Social", carrera: "Técnico en Producción Agrícola", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", estado: 'Finalizado' },
-        { nombre: "Charla", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingeniería en Sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", estado: 'En Curso' },
-        { nombre: "Charla2", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingeniería Agroindustrial", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", estado: 'En Curso' },
-        { nombre: "Charla2", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Técnico en Administración de Empresas Cafetaleras", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", estado: 'En Curso' },
-        { nombre: "Charla2", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingeniería Agroindustrial", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", estado: 'En Curso' },
-        { nombre: "Charla", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingeniería en Sistemas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", estado: 'En Curso' },
-        { nombre: "Charla2", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingeniería Agroindustrial", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", estado: 'En Curso' },
-        { nombre: "Charla3", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Academico", carrera: "Licenciatura en Administración de Empresas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", estado: 'Finalziado' },
-        { nombre: "Charla3", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Academico", carrera: "Licenciatura en Comercio Internacional", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", estado: 'Aprobado' },
-        { nombre: "Charla3", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Academico", carrera: "Licenciatura en Administración de Empresas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", estado: 'En Curso' },
-        { nombre: "Charla3", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Academico", carrera: "Licenciatura en Administración de Empresas", cupos: 20, duracion: "2 horas", inicio: "20/05/2022 4:50pm", estado: 'En Curso' },
+        { nombre: "Charla", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingeniería en Sistemas", cupos: 20, duracion: "2 horas", inicio: "2024-07-12 01:14:23", estado: 'En Curso' },
+        { nombre: "Charla1", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Social", carrera: "Licenciatura en Desarrollo Local", cupos: 20, duracion: "2 horas", inicio: "2024-07-22 01:14:23", estado: 'Aprobado' },
+        { nombre: "Charla1", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Social", carrera: "Licenciatura en Desarrollo Local", cupos: 20, duracion: "2 horas", inicio: "2024-07-13 01:14:23", estado: 'En Curso' },
+        { nombre: "Charla1", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Social", carrera: "Técnico en Producción Agrícola", cupos: 20, duracion: "2 horas", inicio: "2024-07-14 01:14:23", estado: 'Finalizado' },
+        { nombre: "Charla", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingeniería en Sistemas", cupos: 20, duracion: "2 horas", inicio: "2024-07-23 01:14:23", estado: 'En Curso' },
+        { nombre: "Charla2", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingeniería Agroindustrial", cupos: 20, duracion: "2 horas", inicio: "2024-07-24 01:14:23", estado: 'En Curso' },
+        { nombre: "Charla2", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Técnico en Administración de Empresas Cafetaleras", cupos: 20, duracion: "2 horas", inicio: "2024-07-11 01:14:23", estado: 'En Curso' },
+        { nombre: "Charla2", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingeniería Agroindustrial", cupos: 20, duracion: "2 horas", inicio: "2024-07-10 01:14:23", estado: 'En Curso' },
+        { nombre: "Charla", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingeniería en Sistemas", cupos: 20, duracion: "2 horas", inicio: "2024-07-12 01:14:23", estado: 'En Curso' },
+        { nombre: "Charla2", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingeniería Agroindustrial", cupos: 20, duracion: "2 horas", inicio: "2024-07-22 01:14:23", estado: 'En Curso' },
+        { nombre: "Charla3", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Academico", carrera: "Licenciatura en Administración de Empresas", cupos: 20, duracion: "2 horas", inicio: "2024-07-18 01:14:23", estado: 'Finalziado' },
+        { nombre: "Charla3", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Academico", carrera: "Licenciatura en Comercio Internacional", cupos: 20, duracion: "2 horas", inicio: "2024-07-11 01:14:23", estado: 'Aprobado' },
+        { nombre: "Charla3", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Academico", carrera: "Licenciatura en Administración de Empresas", cupos: 20, duracion: "2 horas", inicio: "2024-07-15 01:14:23", estado: 'En Curso' },
+        { nombre: "Charla3", imagen: 'https://edufcm.unah.edu.hn/assets/EDUFCM/paginas/actividad-deportiva-torneo-relampago-de-futbol/_resampled/ResizedImageWzYwMCw3NTBd/Torneo-de-Futbol.jpg', ubicacion: "Biblioteca", ambito: "Academico", carrera: "Licenciatura en Administración de Empresas", cupos: 20, duracion: "2 horas", inicio: "2024-07-25 01:14:23", estado: 'En Curso' },
     ];
 
     const [filtrarData, setFiltrarData] = useState(initialData.filter(item => item.estado === 'En Curso')); // Estado para datos filtrados
@@ -40,26 +40,28 @@ const ActvidadesEnCurso: React.FC = () => {
     const paginatedData = filtrarData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage); // Usar FiltrarData en lugar de initialData
 
     // Función para aplicar filtro
-    const aplicarFiltros = (carrera: string, ambito: string, fechaInicio: string, busqueda: string) => {
+    const aplicarFiltros = (carrera: string, ambito: string, fechaInicio: string, fechaFin: string, busqueda: string) => {
+        const fechaInicioDate = fechaInicio ? new Date(fechaInicio.split('T')[0]) : null; // Obtener solo la fecha
+        const fechaFinDate = fechaFin ? new Date(fechaFin.split('T')[0]) : null; // Obtener solo la fecha
+    
         const filtrar = initialData.filter(item => {
-            // Convertir las fechas de inicio a objetos Date
-            const fechaInicioDate = fechaInicio ? new Date(fechaInicio) : null;
-
-            // Convertir las fechas de los datos a objetos Date (asumiendo que están en "DD/MM/AAAA hh:mm")
-            const inicioDate = new Date(item.inicio.replace(/(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2})/, '$3-$2-$1T$4:$5'));
-
+            const inicioDate = new Date(item.inicio.split(' ')[0]); // Obtener solo la fecha desde la cadena de inicio
+    
             return (
-                item.estado === 'En Curso' && // Filtrar solo actividades en curso
+                item.estado === 'En Curso' &&
                 (carrera === "" || item.carrera === carrera) &&
                 (ambito === "" || item.ambito === ambito) &&
                 (!fechaInicioDate || inicioDate >= fechaInicioDate) &&
+                (!fechaFinDate || inicioDate <= fechaFinDate) &&
                 (busqueda === "" || item.nombre.toLowerCase().includes(busqueda.toLowerCase()))
             );
         });
+    
         setFiltrarData(filtrar);
         setCurrentPage(1); // Reiniciar la página actual al aplicar filtros
     };
-
+    
+    
     return (
         <>
             <div className="container mx-auto p-4">

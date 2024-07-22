@@ -1,45 +1,46 @@
-// src/components/CalendarPage.tsx
 import React, { useEffect, useState } from 'react';
 import Calendar, { CalendarProps } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './DiseñCalendario.css';
 import { NavLink } from 'react-router-dom';
+import { format, parseISO, isSameDay } from 'date-fns';
 
 interface Actividad {
-  fecha: Date;
+  fecha: Date; // Fecha completa con hora
   titulo: string;
-  hora: string;
   id: number;
 }
 
+// Usar la fecha en formato ISO directamente sin ajustar el huso horario
 const actividades: Actividad[] = [
-  { fecha: new Date(2024, 6, 7), titulo: 'Reunión de proyecto', hora: '10:00 AM', id: 1 },
-  { fecha: new Date(2024, 6, 7), titulo: 'Taller de capacitación', hora: '2:00 PM', id: 2 },
-  { fecha: new Date(2024, 6, 15), titulo: 'Entrega de informe', hora: '11:00 AM', id: 3 },
-  { fecha: new Date(2024, 6, 20), titulo: 'Presentación', hora: '3:00 PM', id: 4 },
+  { fecha: parseISO('2024-07-12T16:14:23'), titulo: 'Reunión de proyecto', id: 1 },
+  { fecha: parseISO('2024-07-12T19:14:23'), titulo: 'Taller de capacitación',  id: 2 },
+  { fecha: parseISO('2024-07-15T17:14:23'), titulo: 'Entrega de informe',  id: 3 },
+  { fecha: parseISO('2024-07-20T16:14:23'), titulo: 'Presentación', id: 4 },
 ];
+
+const formatDate = (date: Date) => format(date, 'yyyy-MM-dd'); // Formatear solo la fecha
 
 const Calendario: React.FC = () => {
   const [date, setDate] = useState<Date | null>(null);
   const [selectedActivities, setSelectedActivities] = useState<Actividad[]>([]);
 
   useEffect(() => {
-    // titulo de la pestaña del navegador
     document.title = "Calendario - UNAH COPAN";
-}, []);
+  }, []);
 
   const handleDateChange: CalendarProps['onChange'] = (value) => {
     const selectedDate = value as Date;
     setDate(selectedDate);
     const dayActivities = actividades.filter(actividad =>
-      actividad.fecha.toDateString() === selectedDate.toDateString()
+      isSameDay(actividad.fecha, selectedDate)
     );
     setSelectedActivities(dayActivities);
   };
 
   const tileContent: CalendarProps['tileContent'] = ({ date }) => {
     const dayActivities = actividades.some(actividad =>
-      actividad.fecha.toDateString() === date.toDateString()
+      isSameDay(actividad.fecha, date)
     );
 
     return dayActivities ? <span className="dot"></span> : null;
@@ -56,27 +57,27 @@ const Calendario: React.FC = () => {
       </div>
       {date && selectedActivities.length > 0 && (
         <div className="activity-panel absolute top-0 left-0 right-0 mx-auto mt-6 p-4 bg-white rounded-lg shadow-lg w-20 md:w-96 z-20">
-          <h2 className="text-lg font-bold mb-2">Actividades para {date.toDateString()}</h2>
+          <h2 className="text-lg font-bold mb-2">Actividades para {formatDate(date)}</h2>
           <ul>
             {selectedActivities.map(activity => (
               <li key={activity.id} className="mb-2">
                 <div className="block md:flex justify-between items-center border-4 border-yellow-500 p-2">
                   <div>
                     <p className="font-medium">{activity.titulo}</p>
-                    <p className="text-sm text-gray-600">{activity.hora}</p>
+                    <p className="text-sm text-gray-600">{format(activity.fecha, 'hh:mm a')}</p>
                   </div>
                   <NavLink
-                        to={
-                            location.pathname.includes('dashboard-coordinador')
-                                ? "/dashboard-coordinador/detalles-actividad"
-                                : location.pathname.includes('dashboard-estudiante')
-                                    ? "/dashboard-estudiante/unirse-actividad"
-                                    : "/dashboard-voae/detalles-actividades"
-                        }
-                        className="px-4 py-2 text-sm text-blue-500 hover:underline flex items-center"
-                    >
-                      Ver detalles
-                    </NavLink>
+                    to={
+                      location.pathname.includes('dashboard-coordinador')
+                        ? "/dashboard-coordinador/detalles-actividad"
+                        : location.pathname.includes('dashboard-estudiante')
+                          ? "/dashboard-estudiante/unirse-actividad"
+                          : "/dashboard-voae/detalles-actividades"
+                    }
+                    className="px-4 py-2 text-sm text-blue-500 hover:underline flex items-center"
+                  >
+                    Ver detalles
+                  </NavLink>
                 </div>
               </li>
             ))}
