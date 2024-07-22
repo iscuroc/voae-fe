@@ -84,14 +84,14 @@ const Filtro: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
                             value={fechaInicio}
                             onChange={handleFechaInicioChange}
                             placeholder="DD-MM-AAAA"
-                            type="datetime-local"
+                            type="date"
                         />
                         <input
                             className="h-10 px-3 py-2 text-sm rounded-xl border border-input border-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             value={fechaFin}
                             onChange={handleFechaFinChange}
                             placeholder="DD-MM-AAAA"
-                            type="datetime-local"
+                            type="date"
                         />
                     </div>
                 </div>
