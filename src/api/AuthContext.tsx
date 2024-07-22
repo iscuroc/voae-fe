@@ -18,13 +18,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = (token: string, role: number, email: string) => {
     localStorage.setItem('accessToken', token);
+    localStorage.setItem('email', email);
+    localStorage.setItem('userRole', userRole !== null ? userRole.toString() : '');
     setAccessToken(token);
     setUserRole(role);
     setEmail(email);
   };
-
+  
   const logout = () => {
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('email');
+    localStorage.removeItem('userRole');
     setAccessToken(null);
     setUserRole(null);
     setEmail(null);

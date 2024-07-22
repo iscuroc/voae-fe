@@ -4,7 +4,6 @@ import useAuth from '../api/useAuth';
 
 const EstudianteRoute = () => {
   const { accessToken, userRole } = useAuth();
-
   if (!accessToken || userRole !== 0) {
     return <Navigate to="/login" />;
   }

@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import logo1 from '../assets/logo.png';
 import logo2 from '../assets/logo2.jpeg';
-import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../api/axiosInstance';
 import { MdOutlineAlternateEmail } from 'react-icons/md';
 import { FiLoader } from 'react-icons/fi';
+import axios from 'axios';
 
 interface ApiResponse {
     email: string;
 }
 
+const verificarEmailUnah = /^[a-zA-Z0-9._%+-]+@unah\.(edu\.)?hn$/;
+
 const Registro: React.FC = () => {
     const [email, setEmail] = useState<string>('');
     const [error, setError] = useState<string>('');
     const [isLoading, setIsLoading] = useState(false); 
-    const navigate = useNavigate();
+    const [successMessage, setSuccessMessage] = useState<string>('');
 
     useEffect(() => {
         document.title = "Registro - UNAH COPAN";
@@ -24,14 +26,40 @@ const Registro: React.FC = () => {
         event.preventDefault();
         setIsLoading(true);
         setError('');
+
+        // Validate email format
+        if (!verificarEmailUnah.test(email)) {
+            setError('Debe ser un correo intitucional correcto (ejemplo@unah.edu.hn o ejemplo@unah.hn)');
+            setIsLoading(false);
+            return;
+        }
+
         try {
             const response = await axiosInstance.post<ApiResponse>('/register', { email });
-            const responseEmail = response.data.email;
-            if (responseEmail) {
-                navigate('/');
+           
+            if (response.status === 200) {
+                setSuccessMessage('El correo se ha enviado correctamente. Verifica tu bandeja de entrada o SPAM.');
             }
-        } catch {
-            setError('Error al registrarse, vuelva a intentarlo');
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error)) {
+                if (error.response && error.response.status === 409) {
+                    const responseData = error.response.data;
+                    if (responseData.errors && responseData.errors.length > 0) {
+                        const errorDetail = responseData.errors[0];
+                        if (errorDetail.code === 'Authentication.EmailInUse') {
+                            setError('El correo institucional ya está en uso');
+                        } else {
+                            setError('Error al registrarse, vuelva a intentarlo');
+                        }
+                    } else {
+                        setError('Error al registrarse, vuelva a intentarlo');
+                    }
+                } else {
+                    setError('Error al registrarse, vuelva a intentarlo');
+                }
+            } else {
+                setError('Error al registrarse, vuelva a intentarlo');
+            }
         } finally {
             setIsLoading(false);
         }
@@ -62,7 +90,9 @@ const Registro: React.FC = () => {
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
                             </div>
-                            {error && <div className="mt-4 text-center text-red-600 my-2">{error}</div>}
+                            {error && <div className="mt-4 text-center text-sm font-bold text-red-600 my-2">{error}</div>}
+                            {successMessage && <div className="mt-4 text-center text-sm font-bold text-green-600 my-2">{successMessage}</div>}
+
                             <button
                                 type="submit"
                                 className="bg-gradient-to-b mt-4 from-blue-800 to-blue-900 font-medium p-2 md:p-4 text-white uppercase w-full rounded-md shadow-xl hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 flex items-center justify-center"

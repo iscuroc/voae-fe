@@ -19,7 +19,7 @@ export default function Header_login() {
                     <span className="text-xs font-bold text-white ml-2">UNAH COPAN</span>
                 </a>
                 <nav className="ml-auto hidden md:flex gap-4 text-white">
-                    <a href="/login" className="text-sm hover:underline">@{email}</a>
+                    <h2 className="text-sm hover:underline">{email}</h2>
                 </nav>
                 <button 
                     className="ml-auto md:hidden text-white focus:outline-none"

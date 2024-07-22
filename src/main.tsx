@@ -44,13 +44,13 @@ root.render(
             <Route path="about" element={<About />} />
             <Route path="login" element={<Login />} />
             <Route path="registro" element={<Registro />} />
-            <Route path="detalle-registro" element={<DetalleRegistro />} />
+            <Route path="confirm-email" element={<DetalleRegistro />} />
           </Route>
-
           {/* Rutas que utilizan el Layout de Login */}
           <Route path="/" element={<Layout_Login />}>
           
             {/* Dashboard de estudiantes */}
+            {/* <Route path="/" element={<EstudianteRoute />}> */}
             <Route path="dashboard-estudiante/main" element={<DashboardEstudiante />} />
             <Route path="dashboard-estudiante/actividades-solicitadas" element={<GestionSolicitudes />} />
             <Route path="dashboard-estudiante/actividades-en-curso" element={<ActvidadesEnCurso />} />
@@ -64,6 +64,7 @@ root.render(
             <Route path="dashboard-estudiante/perfil" element={<Perfil />} />
             <Route path="dashboard-estudiante/editar-perfil" element={<EditarPerfil />} />
             <Route path="dashboard-estudiante/cambiar-contrasena" element={<CambiarContrasena />} />
+            {/* </Route> */}
 
             {/* Dashboard de coordinadores */}
             <Route path="dashboard-coordinador/act-finalizadas" element={<ActvidadesFinalizada />} />

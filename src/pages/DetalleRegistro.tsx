@@ -1,15 +1,144 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import logo1 from '../assets/logo.png';
 import logo2 from '../assets/logo2.jpeg';
+import axiosInstance from '../api/axiosInstance';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { FiLoader } from 'react-icons/fi';
+
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
+
+interface FormData {
+    names: string;
+    lastnames: string;
+    accountNumber: string;
+    password: string;
+    passwordConfirmation: string;
+    emailConfirmationToken: string;
+}
+
+interface ErrorDetail {
+    code: string;
+    description: string;
+}
 
 const DetallesRegistro: React.FC = () => {
     useEffect(() => {
         document.title = "Registro - UNAH COPAN";
     }, []);
 
+    const navigate = useNavigate();
+
+    const [formData, setFormData] = useState<FormData>({
+        names: '',
+        lastnames: '',
+        accountNumber: '',
+        password: '',
+        passwordConfirmation: '',
+        emailConfirmationToken: ''
+    });
+
+    const [errors, setErrors] = useState({
+        password: '',
+        passwordConfirmation: '',
+        general: ''
+    });
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { id, value } = e.target;
+        setFormData(prevState => ({ ...prevState, [id]: value }));
+    };
+
+    const validateForm = (): boolean => {
+        const newErrors = {
+            password: '',
+            passwordConfirmation: '',
+            general: ''
+        };
+        let isValid = true;
+
+        // Password validation
+        if (!passwordRegex.test(formData.password)) {
+            newErrors.password = 'La contraseña debe tener al menos 8 caracteres, una letra minúscula, una letra mayúscula, un dígito y un carácter especial.';
+            isValid = false;
+        }
+
+        // Password confirmation
+        if (formData.password !== formData.passwordConfirmation) {
+            newErrors.passwordConfirmation = 'Las contraseñas no coinciden.';
+            isValid = false;
+        }
+
+        setErrors(newErrors);
+        return isValid;
+    };
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (validateForm()) {
+            setIsLoading(true); // Start loading
+            try {
+                await axiosInstance.post('/confirmuser', formData);
+                navigate('/login');
+            } catch (error: unknown) {
+                if (axios.isAxiosError(error)) {
+                    if (error.response) {
+                        const { status, data } = error.response;
+                        if (status === 401 || status === 409) {
+                            const responseData = data as { type?: string, errors?: ErrorDetail[] };
+                            if (responseData.errors && responseData.errors.length > 0) {
+                                const errorDetail = responseData.errors[0];
+                                switch (errorDetail.code) {
+                                    case 'Authentication.InvalidToken':
+                                        setErrors(prevErrors => ({ ...prevErrors, general: 'El token de confirmación es inválido.' }));
+                                        break;
+                                    case 'Authentication.TokenExpired':
+                                        setErrors(prevErrors => ({ ...prevErrors, general: 'El token de confirmación ha expirado.' }));
+                                        break;
+                                    case 'Authentication.EmailAlreadyConfirmed':
+                                        setErrors(prevErrors => ({ ...prevErrors, general: 'El correo electrónico ya ha sido confirmado.' }));
+                                        break;
+                                    case 'Authentication.InvalidAccountNumber':
+                                        setErrors(prevErrors => ({ ...prevErrors, general: 'Número de cuenta inválido.' }));
+                                        break;
+                                    case 'Authentication.AccountNumberInUse':
+                                        setErrors(prevErrors => ({ ...prevErrors, general: 'Número de cuenta ya en uso.' }));
+                                        break;
+                                    default:
+                                        setErrors(prevErrors => ({ ...prevErrors, general: 'Error al confirmar usuario, vuelva a intentarlo.' }));
+                                }
+                            } else {
+                                setErrors(prevErrors => ({ ...prevErrors, general: 'Error al confirmar usuario, vuelva a intentarlo.' }));
+                            }
+                        } else {
+                            setErrors(prevErrors => ({ ...prevErrors, general: 'Error al confirmar usuario, vuelva a intentarlo.' }));
+                        }
+                    } else {
+                        setErrors(prevErrors => ({ ...prevErrors, general: 'Error al confirmar usuario, vuelva a intentarlo.' }));
+                    }
+                } else {
+                    setErrors(prevErrors => ({ ...prevErrors, general: 'Error al confirmar usuario, vuelva a intentarlo.' }));
+                }
+            } finally {
+                setIsLoading(false);
+            }
+        }
+    };
+
+    useEffect(() => {
+        // Extract the email confirmation token from URL query params
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        if (token) {
+            setFormData(prevState => ({ ...prevState, emailConfirmationToken: token }));
+        }
+    }, []);
+
     return (
         <>
-            <div className="ml-5 mr-5 h-full  md:mt-5 bg-white overflow-hidden flex items-center justify-center">
+            <div className="ml-5 mr-5 h-full md:mt-5 bg-white overflow-hidden flex items-center justify-center">
                 <div className="flex flex-col md:flex-row w-full h-full items-center justify-center space-y-6 md:space-y-0 md:space-x-8">
                     {/* Imágenes */}
                     <div className="flex items-center justify-center">
@@ -18,41 +147,38 @@ const DetallesRegistro: React.FC = () => {
                     <div className="hidden md:flex items-center justify-center">
                         <img src={logo2} alt="Logo 2" className="w-48 h-32 md:w-80 md:h-52" />
                     </div>
-                    {/* Formulario de Login */}
+                    {/* Formulario de Registro */}
                     <div className="bg-yellow-500 w-full sm:w-8/12 md:w-6/12 lg:w-5/12 xl:w-4/12 shadow-2xl rounded-lg p-4 sm:p-4">
-                        <form className="grid grid-cols-2 gap-2 p-1">
+                        <form className="flex flex-col space-y-4 p-1" onSubmit={handleSubmit}>
                             <div className="flex flex-col mb-4">
-                                <label htmlFor="firstName" className="text-sm font-medium">Nombre</label>
+                                <label htmlFor="names" className="text-sm font-medium">Nombre</label>
                                 <input
                                     type="text"
-                                    id="firstName"
+                                    id="names"
+                                    value={formData.names}
+                                    onChange={handleInputChange}
                                     className="bg-gray-200 p-2 focus:outline-none rounded-md shadow-lg focus:ring-2 focus:ring-blue-500 text-sm"
                                     placeholder="Nombre"
                                 />
                             </div>
                             <div className="flex flex-col mb-4">
-                                <label htmlFor="lastName" className="text-sm font-medium">Apellidos</label>
+                                <label htmlFor="lastnames" className="text-sm font-medium">Apellidos</label>
                                 <input
                                     type="text"
-                                    id="lastName"
+                                    id="lastnames"
+                                    value={formData.lastnames}
+                                    onChange={handleInputChange}
                                     className="bg-gray-200 p-2 focus:outline-none rounded-md shadow-lg focus:ring-2 focus:ring-blue-500 text-sm"
                                     placeholder="Apellidos"
                                 />
                             </div>
-                            <div className="flex flex-col col-span-2 mb-4">
-                                <label htmlFor="email" className="text-sm font-medium">Correo Institucional</label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    className="bg-gray-200 p-2 focus:outline-none rounded-md shadow-lg focus:ring-2 focus:ring-blue-500 text-sm"
-                                    placeholder="Correo Institucional"
-                                />
-                            </div>
-                            <div className="flex flex-col col-span-2 mb-4">
-                                <label htmlFor="username" className="text-sm font-medium">Número de cuenta</label>
+                            <div className="flex flex-col mb-4">
+                                <label htmlFor="accountNumber" className="text-sm font-medium">Número de cuenta</label>
                                 <input
                                     type="text"
-                                    id="username"
+                                    id="accountNumber"
+                                    value={formData.accountNumber}
+                                    onChange={handleInputChange}
                                     className="bg-gray-200 p-2 focus:outline-none rounded-md shadow-lg focus:ring-2 focus:ring-blue-500 text-sm"
                                     placeholder="Número de cuenta"
                                 />
@@ -62,33 +188,40 @@ const DetallesRegistro: React.FC = () => {
                                 <input
                                     type="password"
                                     id="password"
+                                    value={formData.password}
+                                    onChange={handleInputChange}
                                     className="bg-gray-200 p-2 focus:outline-none rounded-md shadow-lg focus:ring-2 focus:ring-blue-500 text-sm"
                                     placeholder="Contraseña"
                                 />
+                                {errors.password && <p className="text-red-600 text-sm mt-1">{errors.password}</p>}
                             </div>
                             <div className="flex flex-col mb-4">
-                                <label htmlFor="confirmPassword" className="text-sm font-medium">Confirmar Contraseña</label>
+                                <label htmlFor="passwordConfirmation" className="text-sm font-medium">Confirmar Contraseña</label>
                                 <input
                                     type="password"
-                                    id="confirmPassword"
+                                    id="passwordConfirmation"
+                                    value={formData.passwordConfirmation}
+                                    onChange={handleInputChange}
                                     className="bg-gray-200 p-2 focus:outline-none rounded-md shadow-lg focus:ring-2 focus:ring-blue-500 text-sm"
                                     placeholder="Confirmar Contraseña"
                                 />
+                                {errors.passwordConfirmation && <p className="text-red-600 text-sm mt-1">{errors.passwordConfirmation}</p>}
                             </div>
-                            <div className="col-span-2">
-                                <button className="bg-gradient-to-b from-blue-800 to-blue-900 font-medium p-2 md:p-4 text-white uppercase w-full rounded-md shadow-xl hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                    Regístrate
-                                </button>
-                            </div>
+                            {errors.general && <p className="text-red-600 text-sm mt-1">{errors.general}</p>}
+
+                            <button
+                                className="bg-gradient-to-b from-blue-800 to-blue-900 font-medium p-2 md:p-4 text-white uppercase w-full rounded-md shadow-xl hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 flex items-center justify-center"
+                                disabled={isLoading}
+                            >
+                                {isLoading ? (<FiLoader className="mr-2 animate-spin" />) : ('confirmar')}
+                            </button>
+
                         </form>
-                        {/* <div className="flex flex-col items-center space-y-2 mt-4">
-                            <a href="/login" className="text-sm text-blue-900 hover:underline">¿Ya tienes una cuenta? Iniciar Sesión</a>
-                        </div> */}
                     </div>
                 </div>
             </div>
         </>
     );
-}
+};
 
 export default DetallesRegistro;
