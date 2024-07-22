@@ -1,38 +1,48 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Carrera, obtenerTodasLasCarreras } from "../api/consultas";
 
 interface FiltroProps {
     aplicarFiltros: (carrera: string, ambito: string, fechaInicio: string, fechaFin: string, busqueda: string) => void;
 }
 
-
 const Filtro: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
+    const [carreras, setCarreras] = useState<Carrera[]>([]);
     const [carrera, setCarrera] = useState<string>("");
+    
     const [fechaInicio, setFechaInicio] = useState<string>("");
     const [fechaFin, setFechaFin] = useState<string>("");
     const [busqueda, setBusqueda] = useState<string>("");
-
     const [ambito, setAmbito] = useState<string>("");
+
+    // Cargar las carreras desde la API
+    useEffect(() => {
+        const fetchCarreras = async () => {
+            try {
+                const resultado = await obtenerTodasLasCarreras();
+                setCarreras(resultado);
+            } catch (error) {
+                console.error('Error al cargar las carreras:', error);
+            }
+        };
+
+        fetchCarreras();
+    }, []);
 
     const handleCarreraChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setCarrera(event.target.value);
     };
 
     const handleFechaInicioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const inputValue = event.target.value;
-        setFechaInicio(inputValue);
-
+        setFechaInicio(event.target.value);
     };
 
     const handleFechaFinChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const inputValue = event.target.value;
-        setFechaFin(inputValue);
+        setFechaFin(event.target.value);
     };
-
 
     const handleBusquedaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setBusqueda(event.target.value);
     };
-
 
     const handleAmbitoChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setAmbito(event.target.value);
@@ -59,11 +69,11 @@ const Filtro: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
                         onChange={handleCarreraChange}
                     >
                         <option value="">Seleccione Carrera...</option>
-                        <option value="Ingenieria en sistemas">Ingenieria en sistemas</option>
-                        <option value="Ingeniería Agroindustrial">Ingeniería Agroindustrial</option>
-                        <option value="Desarrollo Local">Desarrollo Local</option>
-                        <option value="Administración de Empresas">Administración de Empresas</option>
-                        <option value="Comercio Internacional">Comercio Internacional</option>
+                        {carreras.map(carrera => (
+                            <option key={carrera.id} value={carrera.name}>
+                                {carrera.name}
+                            </option>
+                        ))}
                     </select>
                 </div>
                 <div className="md:col-span-1">
@@ -83,7 +93,6 @@ const Filtro: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
                             placeholder="DD-MM-AAAA"
                             type="datetime-local"
                         />
-
                     </div>
                 </div>
                 <div className="md:col-span-1">
@@ -132,7 +141,6 @@ const Filtro: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
                             value={busqueda}
                             onChange={handleBusquedaChange}
                         />
-
                     </div>
                 </div>
             </div>

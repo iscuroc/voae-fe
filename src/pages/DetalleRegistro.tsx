@@ -5,6 +5,7 @@ import axiosInstance from '../api/axiosInstance';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FiLoader } from 'react-icons/fi';
+import { Carrera, obtenerTodasLasCarreras } from '../api/consultas';
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
 
@@ -15,6 +16,7 @@ interface FormData {
     password: string;
     passwordConfirmation: string;
     emailConfirmationToken: string;
+    careerId: number; 
 }
 
 interface ErrorDetail {
@@ -35,9 +37,11 @@ const DetallesRegistro: React.FC = () => {
         accountNumber: '',
         password: '',
         passwordConfirmation: '',
-        emailConfirmationToken: ''
+        emailConfirmationToken: '',
+        careerId: 0,
     });
 
+    const [carrera, setCarreras] = useState<Carrera[]>([]);
     const [errors, setErrors] = useState({
         password: '',
         passwordConfirmation: '',
@@ -46,7 +50,20 @@ const DetallesRegistro: React.FC = () => {
 
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    useEffect(() => {
+        // Cargar carreras
+        const fetchcarrera = async () => {
+            try {
+                const resultado = await obtenerTodasLasCarreras();
+                setCarreras(resultado);
+            } catch (error) {
+                console.error('Error al obtener las carreras:', error);
+            }
+        };
+        fetchcarrera();
+    }, []);
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { id, value } = e.target;
         setFormData(prevState => ({ ...prevState, [id]: value }));
     };
@@ -128,7 +145,7 @@ const DetallesRegistro: React.FC = () => {
     };
 
     useEffect(() => {
-        // Extract the email confirmation token from URL query params
+        // Extrae el token de la url
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get('token');
         if (token) {
@@ -184,6 +201,22 @@ const DetallesRegistro: React.FC = () => {
                                 />
                             </div>
                             <div className="flex flex-col mb-4">
+                                <label htmlFor="careerId" className="text-sm font-medium">Carrera</label>
+                                <select
+                                    id="careerId"
+                                    value={formData.careerId}
+                                    onChange={handleInputChange}
+                                    className="bg-gray-200 p-2 focus:outline-none rounded-md shadow-lg focus:ring-2 focus:ring-blue-500 text-sm"
+                                >
+                                    <option value={0}>Selecciona una carrera</option>
+                                    {carrera.map(career => (
+                                        <option key={career.id} value={career.id}>
+                                            {career.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="flex flex-col mb-4">
                                 <label htmlFor="password" className="text-sm font-medium">Contraseña</label>
                                 <input
                                     type="password"
@@ -207,15 +240,14 @@ const DetallesRegistro: React.FC = () => {
                                 />
                                 {errors.passwordConfirmation && <p className="text-red-600 text-sm mt-1">{errors.passwordConfirmation}</p>}
                             </div>
+                            
                             {errors.general && <p className="text-red-600 text-sm mt-1">{errors.general}</p>}
-
                             <button
                                 className="bg-gradient-to-b from-blue-800 to-blue-900 font-medium p-2 md:p-4 text-white uppercase w-full rounded-md shadow-xl hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 flex items-center justify-center"
                                 disabled={isLoading}
                             >
                                 {isLoading ? (<FiLoader className="mr-2 animate-spin" />) : ('confirmar')}
                             </button>
-
                         </form>
                     </div>
                 </div>

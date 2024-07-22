@@ -48,7 +48,7 @@ root.render(
           </Route>
           {/* Rutas que utilizan el Layout de Login */}
           <Route path="/" element={<Layout_Login />}>
-          
+            
             {/* Dashboard de estudiantes */}
             {/* <Route path="/" element={<EstudianteRoute />}> */}
             <Route path="dashboard-estudiante/main" element={<DashboardEstudiante />} />
