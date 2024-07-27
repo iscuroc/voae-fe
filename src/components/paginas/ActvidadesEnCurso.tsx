@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Filtro from "./Filtros";
-import Pagination from "./Pagination";
 import { NavLink } from "react-router-dom";
+import Filtro from "../Filtros";
+import Pagination from "../Pagination";
 
 const ActvidadesEnCurso: React.FC = () => {
     useEffect(() => {
@@ -27,17 +27,17 @@ const ActvidadesEnCurso: React.FC = () => {
     ];
 
     const [filtrarData, setFiltrarData] = useState(initialData.filter(item => item.estado === 'En Curso')); // Estado para datos filtrados
-    const [currentPage, setCurrentPage] = useState(1);
+    const [PaginaInicial, setPaginaInicial] = useState(1);
 
     //funcion de paginacion
     const itemsPerPage = 12;
-    const totalPages = Math.ceil(filtrarData.length / itemsPerPage); // Usar FiltrarData en lugar de initialData
+    const TotalPaginas = Math.ceil(filtrarData.length / itemsPerPage); // Usar FiltrarData en lugar de initialData
 
     const handlePageChange = (page: number) => {
-        setCurrentPage(page);
+        setPaginaInicial(page);
     };
 
-    const paginatedData = filtrarData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage); // Usar FiltrarData en lugar de initialData
+    const paginatedData = filtrarData.slice((PaginaInicial - 1) * itemsPerPage, PaginaInicial * itemsPerPage); // Usar FiltrarData en lugar de initialData
 
     // Función para aplicar filtro
     const aplicarFiltros = (carrera: string, ambito: string, fechaInicio: string, fechaFin: string, busqueda: string) => {
@@ -58,7 +58,7 @@ const ActvidadesEnCurso: React.FC = () => {
         });
     
         setFiltrarData(filtrar);
-        setCurrentPage(1); // Reiniciar la página actual al aplicar filtros
+        setPaginaInicial(1); // Reiniciar la página actual al aplicar filtros
     };
     
     
@@ -106,7 +106,7 @@ const ActvidadesEnCurso: React.FC = () => {
                     ))}
                 </div>
 
-                <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+                <Pagination PaginaInicial={PaginaInicial} TotalPaginas={TotalPaginas} onPageChange={handlePageChange} />
             </div>
         </>
     );

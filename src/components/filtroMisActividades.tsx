@@ -1,22 +1,19 @@
 import React, { useState } from "react";
 
 interface FiltroProps {
-    aplicarFiltros: ( ambito: string, fechaInicio: string, fechaFin: string, busqueda: string) => void;
+    aplicarFiltros: (ambito: string, fechaInicio: string, fechaFin: string, busqueda: string) => void;
 }
 
-
 const FiltroMA: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
-   
     const [fechaInicio, setFechaInicio] = useState<string>("");
     const [fechaFin, setFechaFin] = useState<string>("");
     const [busqueda, setBusqueda] = useState<string>("");
     const [ambito, setAmbito] = useState<string>("");
-
+    const [showResetButton, setShowResetButton] = useState<boolean>(false);
 
     const handleFechaInicioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = event.target.value;
         setFechaInicio(inputValue);
-
     };
 
     const handleFechaFinChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,19 +21,29 @@ const FiltroMA: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
         setFechaFin(inputValue);
     };
 
-
     const handleBusquedaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setBusqueda(event.target.value);
     };
-
 
     const handleAmbitoChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setAmbito(event.target.value);
     };
 
     const handleFiltrarClick = () => {
-        aplicarFiltros( ambito, fechaInicio, fechaFin, busqueda);
+        aplicarFiltros(ambito, fechaInicio, fechaFin, busqueda);
+        setShowResetButton(true);
     };
+
+    const resetFilters = () => {
+        setFechaInicio("");
+        setFechaFin("");
+        setBusqueda("");
+        setAmbito("");
+        aplicarFiltros("", "", "", "");
+        setShowResetButton(false);
+    };
+
+    const areFiltersApplied = fechaInicio || fechaFin || busqueda || ambito;
 
     return (
         <>
@@ -48,29 +55,26 @@ const FiltroMA: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
 
             <div className="w-full md:w-3/5 grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="md:col-span-1">
-                    
-                    
-                <label className="block text-sm font-bold "> Juan Perez lopez </label>
-                <label className="block text-sm font-bold "> 20242100777 </label>
-                <label className="block text-sm font-bold "> Ingenieria en Sistemas </label>
-                  
+                    <label className="block text-sm font-bold">Juan Perez Lopez</label>
+                    <label className="block text-sm font-bold">20242100777</label>
+                    <label className="block text-sm font-bold">Ingenieria en Sistemas</label>
                 </div>
                 <div className="md:col-span-1">
                     <label className="block text-sm font-medium">Fecha</label>
                     <div className="flex space-x-2">
-                    <input
+                        <input
                             className="h-10 px-3 py-2 text-sm rounded-xl border border-input border-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             value={fechaInicio}
                             onChange={handleFechaInicioChange}
                             placeholder="DD-MM-AAAA"
-                            type="datetime-local"
+                            type="date"
                         />
                         <input
                             className="h-10 px-3 py-2 text-sm rounded-xl border border-input border-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             value={fechaFin}
                             onChange={handleFechaFinChange}
                             placeholder="DD-MM-AAAA"
-                            type="datetime-local"
+                            type="date"
                         />
                     </div>
                 </div>
@@ -114,7 +118,7 @@ const FiltroMA: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
                             />
                         </svg>
                         <input
-                            className="flex h-10 w-full rounded-xl border border-black border-input bg-background px-3 py-2 text-sm "
+                            className="flex h-10 w-full rounded-xl border border-black border-input bg-background px-3 py-2 text-sm"
                             placeholder="Nombre de actividad"
                             type="search"
                             value={busqueda}
@@ -125,11 +129,20 @@ const FiltroMA: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
             </div>
             <div className="col-span-1 md:col-span-2 flex justify-center md:justify-end mt-6 md:mt-24 ml-0 md:ml-5">
                 <button
-                    className="h-10 px-6 py-2 text-sm font-medium text-white bg-blue-900 rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    className="h-10 px-6 py-2 text-sm font-medium text-white bg-blue-900 rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 mr-2"
                     onClick={handleFiltrarClick}
                 >
                     Filtrar
                 </button>
+                {showResetButton && (
+                    <button
+                        className={`h-10 px-6 py-2 text-sm font-medium text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 ${areFiltersApplied ? "bg-red-500 hover:bg-red-400 focus:ring-red-500" : "bg-gray-400 cursor-not-allowed"}`}
+                        onClick={resetFilters}
+                        disabled={!areFiltersApplied}
+                    >
+                        Resetear
+                    </button>
+                )}
             </div>
         </>
     );

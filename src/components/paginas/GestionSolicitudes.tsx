@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import FiltroGS from "./FiltroGestionSolicitudes";
-import Pagination from "./Pagination";
 import { NavLink } from "react-router-dom";
+import FiltroGS from "../FiltroGestionSolicitudes";
+import Pagination from "../Pagination";
 
 const GestionSolicitudes: React.FC = () => {
     useEffect(() => {
@@ -11,44 +11,43 @@ const GestionSolicitudes: React.FC = () => {
     
     const initialData = [
         // Tu array de datos aquí
-        { estudiante: "Jose Alfredo Herrera Posadas", coordinador: "Odair Sauceda", carrera: "Ingenieria en sistemas", ambito: "Academico", inicio: "20/05/2025 4:50pm", final: "20/06/2025 7:00pm", estado: "Pendiente" },
-        {estudiante: "Juan Carlos Rodriguez Lopez", coordinador: "Odair Sauceda", carrera: "Ingenieria en sistemas", ambito: "Social", inicio: "20/05/2025 4:50pm", final: "20/06/2025 7:00pm", estado: "Aprobado" },
-        {estudiante: "Naria Alejandra Garcia Perez", coordinador: "Odair Sauceda", carrera: "Ingenieria en sistemas", ambito: "Academico", inicio: "20/05/2025 4:50pm", final: "20/06/2025 7:00pm", estado: "Rechazado" },
+        { estudiante: "Jose Alfredo Herrera Posadas", coordinador: "Odair Sauceda", carrera: "Ingenieria en sistemas", ambito: "Academico", inicio: "2024-07-12 01:14:23", final: "20/06/2025 7:00pm", estado: "Pendiente" },
+        {estudiante: "Juan Carlos Rodriguez Lopez", coordinador: "Odair Sauceda", carrera: "Ingenieria en sistemas", ambito: "Social", inicio: "2024-07-10 01:14:23", final: "20/06/2025 7:00pm", estado: "Aprobado" },
+        {estudiante: "Naria Alejandra Garcia Perez", coordinador: "Odair Sauceda", carrera: "Ingenieria en sistemas", ambito: "Academico", inicio: "2024-07-05 01:14:23", final: "20/06/2025 7:00pm", estado: "Rechazado" },
        
     ];
     const [filtrarData, setFiltrarData] = useState(initialData); // Estado para datos filtrados
-    const [currentPage, setCurrentPage] = useState(1);
+    const [PaginaInicial, setPaginaInicial] = useState(1);
     
     //funcion de paginacion
     const itemsPerPage = 10;
-    const totalPages = Math.ceil(filtrarData.length / itemsPerPage); // Usar FiltrarData en lugar de initialData
+    const TotalPaginas = Math.ceil(filtrarData.length / itemsPerPage); // Usar FiltrarData en lugar de initialData
 
     const handlePageChange = (page: number) => {
-        setCurrentPage(page);
+        setPaginaInicial(page);
     };
 
-    const paginatedData = filtrarData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage); // Usar FiltrarData en lugar de initialData
+    const paginatedData = filtrarData.slice((PaginaInicial - 1) * itemsPerPage, PaginaInicial * itemsPerPage); // Usar FiltrarData en lugar de initialData
 
-    // Función para aplicar filtro
-    const aplicarFiltros = (carrera: string, ambito: string, fechaInicio: string, fechaFin: string) => {
-        const filtrar = initialData.filter(item => {
-            // Convertir las fechas de inicio y fin a objetos Date
-            const fechaInicioDate = fechaInicio ? new Date(fechaInicio) : null;
-            const fechaFinDate = fechaFin ? new Date(fechaFin) : null;
+     // Función para aplicar filtro
+     const aplicarFiltros = (carrera: string, ambito: string, fechaInicio: string, fechaFin: string, estado: string) => {
+        const fechaInicioDate = fechaInicio ? new Date(fechaInicio.split('T')[0]) : null; // Obtener solo la fecha
+        const fechaFinDate = fechaFin ? new Date(fechaFin.split('T')[0]) : null; // Obtener solo la fecha
     
-            // Convertir las fechas de los datos a objetos Date (asumiendo que están en "DD/MM/AAAA hh:mm")
-            const inicioDate = new Date(item.inicio.replace(/(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2})/, '$3-$2-$1T$4:$5'));
-            const finalDate = new Date(item.final.replace(/(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2})/, '$3-$2-$1T$4:$5'));
+        const filtrar = initialData.filter(item => {
+            const inicioDate = new Date(item.inicio.split(' ')[0]); // Obtener solo la fecha desde la cadena de inicio
     
             return (
                 (carrera === "" || item.carrera === carrera) &&
                 (ambito === "" || item.ambito === ambito) &&
                 (!fechaInicioDate || inicioDate >= fechaInicioDate) &&
-                (!fechaFinDate || finalDate <= fechaFinDate)
+                (!fechaFinDate || inicioDate <= fechaFinDate) &&
+                (estado === "" || item.estado === estado) 
             );
         });
+    
         setFiltrarData(filtrar);
-        setCurrentPage(1); // Reiniciar la página actual al aplicar filtros
+        setPaginaInicial(1); // Reiniciar la página actual al aplicar filtros
     };
     
     return (
@@ -102,7 +101,7 @@ const GestionSolicitudes: React.FC = () => {
                                             location.pathname.includes('dashboard-coordinador')
                                                 ? "#"
                                                 : location.pathname.includes('dashboard-estudiante')
-                                                    ? "#"
+                                                    ? "/dashboard-estudiante/detalles-actividad"
                                                     : "/dashboard-voae/gestion-solicitud"
                                         }
                                         className="flex justify-center items-center font-bold group"
@@ -122,7 +121,7 @@ const GestionSolicitudes: React.FC = () => {
                 </div>
             </div>
 
-            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+            <Pagination PaginaInicial={PaginaInicial} TotalPaginas={TotalPaginas} onPageChange={handlePageChange} />
         </div>
     );
 };

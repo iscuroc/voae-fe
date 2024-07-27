@@ -13,7 +13,7 @@ interface Actividad {
 
 // Usar la fecha en formato ISO directamente sin ajustar el huso horario
 const actividades: Actividad[] = [
-  { fecha: parseISO('2024-07-12T16:14:23'), titulo: 'Reunión de proyecto', id: 1 },
+  { fecha: parseISO('2024-07-12T11:14:23'), titulo: 'Reunión de proyecto', id: 1 },
   { fecha: parseISO('2024-07-12T19:14:23'), titulo: 'Taller de capacitación',  id: 2 },
   { fecha: parseISO('2024-07-15T17:14:23'), titulo: 'Entrega de informe',  id: 3 },
   { fecha: parseISO('2024-07-20T16:14:23'), titulo: 'Presentación', id: 4 },
@@ -24,6 +24,7 @@ const formatDate = (date: Date) => format(date, 'yyyy-MM-dd'); // Formatear solo
 const Calendario: React.FC = () => {
   const [date, setDate] = useState<Date | null>(null);
   const [selectedActivities, setSelectedActivities] = useState<Actividad[]>([]);
+  const [showPanel, setShowPanel] = useState<boolean>(false); // Estado para controlar la visibilidad del panel
 
   useEffect(() => {
     document.title = "Calendario - UNAH COPAN";
@@ -36,6 +37,7 @@ const Calendario: React.FC = () => {
       isSameDay(actividad.fecha, selectedDate)
     );
     setSelectedActivities(dayActivities);
+    setShowPanel(dayActivities.length > 0); // Mostrar el panel si hay actividades
   };
 
   const tileContent: CalendarProps['tileContent'] = ({ date }) => {
@@ -46,18 +48,28 @@ const Calendario: React.FC = () => {
     return dayActivities ? <span className="dot"></span> : null;
   };
 
+  const handleClosePanel = () => {
+    setShowPanel(false);
+  };
+
   return (
     <div className="flex justify-center items-center h-full bg-gray-100 relative">
-      <div className="bg-white p-2 md:p-6 rounded-lg shadow-lg  w-full relative z-10">
+      <div className="bg-white p-2 md:p-6 rounded-lg shadow-lg w-full relative z-10">
         <Calendar
           onChange={handleDateChange}
           tileContent={tileContent}
           className="react-calendar"
         />
       </div>
-      {date && selectedActivities.length > 0 && (
+      {showPanel && (
         <div className="activity-panel absolute top-0 left-0 right-0 mx-auto mt-6 p-4 bg-white rounded-lg shadow-lg w-20 md:w-96 z-20">
-          <h2 className="text-lg font-bold mb-2">Actividades para {formatDate(date)}</h2>
+          <button
+            className="absolute top-1 right-2 text-gray-500 font-bold underline hover:text-gray-700"
+            onClick={handleClosePanel}
+          >
+            Cerrar
+          </button>
+          <h2 className="text-sm md:text-lg font-bold mb-2">Actividades para el {formatDate(date!)}</h2>
           <ul>
             {selectedActivities.map(activity => (
               <li key={activity.id} className="mb-2">

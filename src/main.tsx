@@ -14,20 +14,20 @@ import PaginaMisActividades from './pages/estudiantes_dashboard/PaginaMisActivid
 import UnirseActividad from './pages/estudiantes_dashboard/UnirseActividades';
 import HorasVoaeEstudiante from './pages/estudiantes_dashboard/HorasVoaeEstudiante';
 import NovedadesAdmin from './pages/voae_dashboard/NovedadesAdmin';
-import Perfil from './components/PaginaPerfil';
 import EditarPerfil from './components/EditarPerfil';
 import CambiarContrasena from './components/CambiarContrasena';
 import Calendario from './components/PaginaDeCalendario';
-import ActvidadesEnCurso from './components/ActvidadesEnCurso';
-import GestionSolicitudes from './components/GestionSolicitudes';
-import CrearActividad from './components/CrearActividad';
-import PaginaGestionActividad from './components/PaginaGestionActividad';
-import DetallesActividad from './components/DetallesActividad';
-import ActvidadesFinalizada from './components/ActividadesFinalizada';
-import ParticipantesActividad from './components/ParticipantesActividad';
 import PaginaGestionSolicitudesVOAE from './pages/voae_dashboard/PaginaAprobarSolicitudesVOAE';
 import { AuthProvider } from './api/AuthContext';
 import Login from './pages/Login';
+import ActvidadesFinalizada from './components/paginas/ActividadesFinalizada';
+import ActvidadesEnCurso from './components/paginas/ActvidadesEnCurso';
+import CrearActividad from './components/paginas/CrearActividad';
+import DetallesActividad from './components/paginas/DetallesActividad';
+import GestionSolicitudes from './components/paginas/GestionSolicitudes';
+import PaginaGestionActividad from './components/paginas/PaginaGestionActividad';
+import Perfil from './components/paginas/PaginaPerfil';
+import ParticipantesActividad from './components/paginas/ParticipantesActividad';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
@@ -64,6 +64,7 @@ root.render(
             <Route path="dashboard-estudiante/perfil" element={<Perfil />} />
             <Route path="dashboard-estudiante/editar-perfil" element={<EditarPerfil />} />
             <Route path="dashboard-estudiante/cambiar-contrasena" element={<CambiarContrasena />} />
+            <Route path="dashboard-estudiante/detalles-actividad" element={<DetallesActividad />} />
             {/* </Route> */}
 
             {/* Dashboard de coordinadores */}

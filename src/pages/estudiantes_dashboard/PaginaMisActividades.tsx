@@ -9,56 +9,59 @@ export default function PaginaMisActividades() {
     }, []);
 
     const initialData = [
-        // Tu array de datos aquí
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Arboles", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Discurso", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Caminata", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Tarde de pelicula", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "20/05/2022 4:50pm", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Arboles", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-11 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-10 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Discurso", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-09 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-08 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-07 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-06 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-07 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-08 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-05 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-04 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-03 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-02 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-01 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Caminata", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Tarde de pelicula", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
        
     ];
 
     const [filtrarData, setFiltrarData] = useState(initialData); // Estado para datos filtrados
-    const [currentPage, setCurrentPage] = useState(1);
+    const [PaginaInicial, setPaginaInicial] = useState(1);
     
     //funcion de paginacion
-    const itemsPerPage = 10;
-    const totalPages = Math.ceil(filtrarData.length / itemsPerPage); // Usar FiltrarData en lugar de initialData
+    const itemsPerPaginas = 10;
+    const TotalPaginas = Math.ceil(filtrarData.length / itemsPerPaginas); // Usar FiltrarData en lugar de initialData
 
-    const handlePageChange = (page: number) => {
-        setCurrentPage(page);
+    const handlePaginasChange = (Paginas: number) => {
+        setPaginaInicial(Paginas);
     };
 
-    const paginatedData = filtrarData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage); // Usar FiltrarData en lugar de initialData
+    const paginatedData = filtrarData.slice((PaginaInicial - 1) * itemsPerPaginas, PaginaInicial * itemsPerPaginas); // Usar FiltrarData en lugar de initialData
 
     // Función para aplicar filtro
     const aplicarFiltros = ( ambito: string, fechaInicio: string, fechaFin: string, busqueda: string) => {
-        const filtrar = initialData.filter(item => {
-            // Convertir las fechas de inicio y fin a objetos Date
-            const fechaInicioDate = fechaInicio ? new Date(fechaInicio) : null;
-            const fechaFinDate = fechaFin ? new Date(fechaFin) : null;
+        const fechaInicioDate = fechaInicio ? new Date(fechaInicio.split('T')[0]) : null; // Obtener solo la fecha
+        const fechaFinDate = fechaFin ? new Date(fechaFin.split('T')[0]) : null; // Obtener solo la fecha
     
-            // Convertir las fechas de los datos a objetos Date (asumiendo que están en "DD/MM/AAAA hh:mm")
-            const inicioDate = new Date(item.inicio.replace(/(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2})/, '$3-$2-$1T$4:$5'));
-            const finalDate = new Date(item.final.replace(/(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2})/, '$3-$2-$1T$4:$5'));
+        const filtrar = initialData.filter(item => {
+            const inicioDate = new Date(item.inicio.split(' ')[0]); // Obtener solo la fecha desde la cadena de inicio
     
             return (
                 (ambito === "" || item.ambito === ambito) &&
                 (!fechaInicioDate || inicioDate >= fechaInicioDate) &&
-                (!fechaFinDate || finalDate <= fechaFinDate) &&
+                (!fechaFinDate || inicioDate <= fechaFinDate) &&
                 (busqueda === "" || item.nombre.toLowerCase().includes(busqueda.toLowerCase()))
             );
         });
+    
         setFiltrarData(filtrar);
-        setCurrentPage(1); // Reiniciar la página actual al aplicar filtros
+        setPaginaInicial(1); // Reiniciar la página actual al aplicar filtros
     };
     
 
@@ -120,7 +123,7 @@ export default function PaginaMisActividades() {
                     </div>
                 </div>
 
-                <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+                <Pagination PaginaInicial={PaginaInicial} TotalPaginas={TotalPaginas} onPageChange={handlePaginasChange} />
 
             </div>
         </>

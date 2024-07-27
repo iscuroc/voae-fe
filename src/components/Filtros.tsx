@@ -8,11 +8,11 @@ interface FiltroProps {
 const Filtro: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
     const [carreras, setCarreras] = useState<Carrera[]>([]);
     const [carrera, setCarrera] = useState<string>("");
-    
     const [fechaInicio, setFechaInicio] = useState<string>("");
     const [fechaFin, setFechaFin] = useState<string>("");
     const [busqueda, setBusqueda] = useState<string>("");
     const [ambito, setAmbito] = useState<string>("");
+    const [showResetButton, setShowResetButton] = useState<boolean>(false);
 
     // Cargar las carreras desde la API
     useEffect(() => {
@@ -50,7 +50,21 @@ const Filtro: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
 
     const handleFiltrarClick = () => {
         aplicarFiltros(carrera, ambito, fechaInicio, fechaFin, busqueda);
+        setShowResetButton(true);
     };
+
+    const resetFilters = () => {
+        setCarrera("");
+        setFechaInicio("");
+        setFechaFin("");
+        setBusqueda("");
+        setAmbito("");
+        aplicarFiltros("", "", "", "", "");
+        setShowResetButton(false);
+    };
+
+    const areFiltersApplied = carrera || fechaInicio || fechaFin || busqueda || ambito;
+
 
     return (
         <>
@@ -146,11 +160,20 @@ const Filtro: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
             </div>
             <div className="col-span-1 md:col-span-2 flex justify-center md:justify-end mt-6 md:mt-24 ml-0 md:ml-5">
                 <button
-                    className="h-10 px-6 py-2 text-sm font-medium text-white bg-blue-900 rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    className="h-10 px-6 py-2 text-sm font-medium text-white bg-blue-900 rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 mr-2"
                     onClick={handleFiltrarClick}
                 >
                     Filtrar
                 </button>
+                {showResetButton && (
+                    <button
+                        className={`h-10 px-6 py-2 text-sm font-medium text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 ${areFiltersApplied ? "bg-red-500 hover:bg-red-400 focus:ring-red-500" : "bg-gray-400 cursor-not-allowed"}`}
+                        onClick={resetFilters}
+                        disabled={!areFiltersApplied}
+                    >
+                        Resetear
+                    </button>
+                )}
             </div>
         </>
     );
