@@ -28,6 +28,7 @@ import GestionSolicitudes from './components/paginas/GestionSolicitudes';
 import PaginaGestionActividad from './components/paginas/PaginaGestionActividad';
 import Perfil from './components/paginas/PaginaPerfil';
 import ParticipantesActividad from './components/paginas/ParticipantesActividad';
+import MisCertificados from './components/paginas/MisCertificados';
 import HorasVOAE from './components/paginas/HorasVoae';
 
 
@@ -60,6 +61,7 @@ root.render(
             <Route path="dashboard-estudiante/mis-actividades" element={<PaginaMisActividades />} />
             <Route path="dashboard-estudiante/unirse-actividad" element={<UnirseActividad />} />
             <Route path="dashboard-estudiante/mis-horas-voae" element={<HorasVoaeEstudiante />} />
+            <Route path="dashboard-estudiante/mis-certificados" element={<MisCertificados />} />
             <Route path="dashboard-estudiante/crear-actividad" element={<CrearActividad />} />
             <Route path="dashboard-estudiante/calendario" element={<Calendario />} />
             <Route path="dashboard-estudiante/perfil" element={<Perfil />} />

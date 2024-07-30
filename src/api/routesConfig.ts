@@ -7,7 +7,7 @@ export const estudianteRoutes = {
     "Crear Actividad": "/dashboard-estudiante/crear-actividad",
     "Novedades": "#",
     "Mis Horas VOAE": "/dashboard-estudiante/mis-horas-voae",
-    "Mis Certificados": "#",
+    "Mis Certificados": "/dashboard-estudiante/mis-certificados",
   } as const;
   
   export type EstudianteRouteKeys = keyof typeof estudianteRoutes;
