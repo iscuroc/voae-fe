@@ -1,7 +1,6 @@
 import React from "react";
 import { CiLogout, CiUser } from "react-icons/ci";
 import { FaRegCalendarAlt } from "react-icons/fa";
-import { IoNotificationsOutline } from "react-icons/io5";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { NavLink } from "react-router-dom";
 import useAuth from "../api/useAuth";
@@ -10,7 +9,7 @@ const Sidebar: React.FC = () => {
   const { logout } = useAuth();
 
   return (
-    <aside className="bg-blue-900 text-white h-screen w-44 hidden md:flex text-sm bottom-0 fixed"> {/* Ajustar top */}
+    <aside className="bg-blue-900 text-white h-screen w-40 hidden md:flex text-sm bottom-0 fixed"> {/* Ajustar top */}
       {/* Opciones de navegación */}
       <nav className="mt-5">
         <ul className="space-y-2">
@@ -114,15 +113,7 @@ const Sidebar: React.FC = () => {
               </li>
             </>
           )}
-          <li>
-            <NavLink
-              to="/notificaciones"
-              className={({ isActive }) => `flex items-center py-3 px-6 hover:bg-gray-700 ${isActive ? "bg-gray-700" : ""}`}
-            >
-              <IoNotificationsOutline className="h-6 w-6 mr-2" />
-              Notificaciones
-            </NavLink>
-          </li>
+          <hr className="my-4 border-t border-gray-300" />
           <li>
             <a
               onClick={logout}

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import logo1 from '../assets/logo.png';
-import logo2 from '../assets/logo2.jpeg';
-import axiosInstance from '../api/axiosInstance';
+import logo1 from '../../assets/logo.png';
+import logo2 from '../../assets/logo2.jpeg';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FiLoader } from 'react-icons/fi';
-import { Carrera, obtenerTodasLasCarreras } from '../api/consultas';
+import axiosInstance from '../../api/axiosInstance';
+import { Carrera, obtenerTodasLasCarreras } from '../../api/consultas';
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
 
@@ -97,7 +97,7 @@ const DetallesRegistro: React.FC = () => {
         if (validateForm()) {
             setIsLoading(true); // Start loading
             try {
-                await axiosInstance.post('/confirmuser', formData);
+                await axiosInstance.post('/auth/confirmuser', formData);
                 navigate('/login');
             } catch (error: unknown) {
                 if (axios.isAxiosError(error)) {

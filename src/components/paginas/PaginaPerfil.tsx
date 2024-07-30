@@ -6,20 +6,40 @@ const Perfil = () => {
         document.title = "Perfil - UNAH COPAN";
       }, []);
 
-    const [user] = useState({
-        nombre: 'Juan Perez',
-        correo: 'jperez@unah.hn',
-        foto: 'https://via.placeholder.com/150',
-        NºCuenta: '20212100459',
-        telefono: '87456321',
-        fechaNacimiento: '24-05-2000',
-        carrera: 'Ingeniería en Sistemas',
-    });
+      interface User {
+        nombre: string;
+        correo: string;
+        NºCuenta: string;
+        carrera: string;
+        ultima: string;
+      }
+      
+      const obtenerFechaHoraActual = (): string => {
+        const fecha = new Date();
+        return fecha.toLocaleString('es-ES', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+        });
+      };
+      
+        const ultimaSesion = localStorage.getItem('ultimaSesion') || obtenerFechaHoraActual();
+        localStorage.setItem('ultimaSesion', obtenerFechaHoraActual());
+      
+        const [user] = useState<User>({
+          nombre: 'Juan Perez',
+          correo: 'jperez@unah.hn',
+          NºCuenta: '20212100459',
+          carrera: 'Ingeniería en Sistemas',
+          ultima: ultimaSesion,
+        });
 
     return (
         <div className="max-w-4xl mx-auto p-8 bg-gradient-to-r from-blue-50 to-blue-100 shadow-lg rounded-lg">
             <div className="flex items-center space-x-6">
-                <img src={user.foto} alt="Foto de perfil" className="w-24 h-24 rounded-full border-4 border-white shadow-lg" />
                 <div>
                     <h1 className="text-3xl font-bold text-gray-800">{user.nombre}</h1>
                     <p className="text-gray-500">{user.correo}</p>
@@ -29,24 +49,11 @@ const Perfil = () => {
                 <div className="bg-white p-6 rounded-lg shadow-md">
                     <h2 className="text-xl font-semibold text-gray-700">Información Personal</h2>
                     <p className="mt-4"><strong>Nº Cuenta:</strong> {user.NºCuenta}</p>
-                    <p className="mt-2"><strong>Teléfono:</strong> {user.telefono}</p>
-                    <p className="mt-2"><strong>Fecha de Nacimiento:</strong> {user.fechaNacimiento}</p>
                     <p className="mt-2"><strong>Carrera:</strong> {user.carrera}</p>
+                    <p className="mt-2"><strong>Ultima vez conectado:</strong> {user.ultima}</p>
                 </div>
                 <div className="bg-white p-6 rounded-lg shadow-md">
                     <h2 className="text-xl font-semibold text-gray-700">Configuraciones de Cuenta</h2>
-                    <NavLink
-                        to={
-                            location.pathname.includes('dashboard-coordinador')
-                                ? "/dashboard-coordinador/editar-perfil"
-                                : location.pathname.includes('dashboard-estudiante')
-                                    ? "/dashboard-estudiante/editar-perfil"
-                                    : "/dashboard-voae/editar-perfil"
-                        }
-                        className="block mt-4 w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors shadow-md text-center"
-                    >
-                        Editar Perfil
-                    </NavLink>
                     <NavLink
                         to={
                             location.pathname.includes('dashboard-coordinador')
