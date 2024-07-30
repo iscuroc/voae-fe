@@ -28,6 +28,7 @@ import GestionSolicitudes from './components/paginas/GestionSolicitudes';
 import PaginaGestionActividad from './components/paginas/PaginaGestionActividad';
 import Perfil from './components/paginas/PaginaPerfil';
 import ParticipantesActividad from './components/paginas/ParticipantesActividad';
+import HorasVOAE from './components/paginas/HorasVoae';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
@@ -65,6 +66,7 @@ root.render(
             <Route path="dashboard-estudiante/editar-perfil" element={<EditarPerfil />} />
             <Route path="dashboard-estudiante/cambiar-contrasena" element={<CambiarContrasena />} />
             <Route path="dashboard-estudiante/detalles-actividad" element={<DetallesActividad />} />
+            
             {/* </Route> */}
 
             {/* Dashboard de coordinadores */}
@@ -79,6 +81,7 @@ root.render(
             <Route path="dashboard-coordinador/perfil" element={<Perfil />} />
             <Route path="dashboard-coordinador/editar-perfil" element={<EditarPerfil />} />
             <Route path="dashboard-coordinador/cambiar-contrasena" element={<CambiarContrasena />} />
+            <Route path="dashboard-coordinador/horas-voae" element={<HorasVOAE/>} />
 
             {/* Dashboard de voae */}
             <Route path="dashboard-voae/act-finalizadas/vparticipantes-actividad" element={<ParticipantesActividad />} />
@@ -95,6 +98,7 @@ root.render(
             <Route path="dashboard-voae/perfil" element={<Perfil />} />
             <Route path="dashboard-voae/editar-perfil" element={<EditarPerfil />} />
             <Route path="dashboard-voae/cambiar-contrasena" element={<CambiarContrasena />} />
+            <Route path="dashboard-voae/horas-voae" element={<HorasVOAE />} />
           </Route>
 
         </Routes>
