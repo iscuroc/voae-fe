@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../api/axiosInstance';
-import logo1 from '../assets/logo.png';
-import logo2 from '../assets/logo2.jpeg';
-import useAuth from '../api/useAuth';
+import logo1 from '../../assets/logo.png';
+import logo2 from '../../assets/logo2.jpeg';
 import { FiLoader } from 'react-icons/fi';
+import axiosInstance from '../../api/axiosInstance';
+import useAuth from '../../api/useAuth';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -24,7 +24,7 @@ const Login: React.FC = () => {
     setIsLoading(true);
     setError('');
     try {
-      const response = await axiosInstance.post('/login', {
+      const response = await axiosInstance.post('/auth/login', {
         email,
         password,
       });
@@ -99,6 +99,10 @@ const Login: React.FC = () => {
             <div className="flex flex-col items-center space-y-2 mt-2">
               <a href="/registro" className="text-sm text-blue-900 hover:underline">¿No tienes una cuenta? Regístrate aquí</a>
             </div>
+            <div className="flex flex-col items-center space-y-2 mt-2">
+              <a href="/forgot-password" className="text-sm text-blue-900 hover:underline">¿Has olvidado la contraseña? Recupérala</a>
+            </div>
+
           </div>
         </div>
       </div>

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useLocation, NavLink } from 'react-router-dom';
 import { CiLogout, CiUser } from 'react-icons/ci';
 import { FaRegCalendarAlt } from 'react-icons/fa';
-import { IoNotificationsOutline } from 'react-icons/io5';
 import { LuLayoutDashboard } from 'react-icons/lu';
 import useAuth from '../api/useAuth';
 
@@ -68,9 +67,6 @@ export default function Header_login() {
                     >
                         <FaRegCalendarAlt className='mr-1' /> Calendario
                     </NavLink>
-                    <a href="/notificaciones" className="px-4 py-2 text-sm text-white hover:underline flex items-center">
-                        <IoNotificationsOutline className='mr-1' /> Notificaciones
-                    </a>
                     <a onClick={logout} href='/' className="px-4 py-2 text-sm text-white hover:underline flex items-center">
                         <CiLogout className='mr-1' /> Cerrar Sesión
                     </a>

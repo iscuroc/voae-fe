@@ -3,8 +3,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import App from './App';
 import About from './pages/About';
 import './index.css';
-import Registro from './pages/Registro';
-import DetalleRegistro from './pages/DetalleRegistro';
 import Layout from './layouts/Layout';
 import Layout_Login from './layouts/Layout_Login';
 import DashboardCoordinador from './pages/coordinadores_dashboard/DashboardCoordinador';
@@ -19,7 +17,6 @@ import CambiarContrasena from './components/CambiarContrasena';
 import Calendario from './components/PaginaDeCalendario';
 import PaginaGestionSolicitudesVOAE from './pages/voae_dashboard/PaginaAprobarSolicitudesVOAE';
 import { AuthProvider } from './api/AuthContext';
-import Login from './pages/Login';
 import ActvidadesFinalizada from './components/paginas/ActividadesFinalizada';
 import ActvidadesEnCurso from './components/paginas/ActvidadesEnCurso';
 import CrearActividad from './components/paginas/CrearActividad';
@@ -30,7 +27,13 @@ import Perfil from './components/paginas/PaginaPerfil';
 import ParticipantesActividad from './components/paginas/ParticipantesActividad';
 import MisCertificados from './components/paginas/MisCertificados';
 import HorasVOAE from './components/paginas/HorasVoae';
-
+import CarrerasView from './components/CarrerasView';
+import ActivityForm from './components/paginas/Crearactividadprueba';
+import DetalleRegistro from './pages/auth/DetalleRegistro';
+import Login from './pages/auth/Login';
+import Registro from './pages/auth/Registro';
+import ForgotPassword from './pages/auth/forgot-password';
+import ResetPassword from './pages/auth/reset-password';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
@@ -47,6 +50,8 @@ root.render(
             <Route path="login" element={<Login />} />
             <Route path="registro" element={<Registro />} />
             <Route path="confirm-email" element={<DetalleRegistro />} />
+            <Route path="forgot-password" element={<ForgotPassword />} />
+            <Route path="reset-password" element={<ResetPassword />} />
           </Route>
           {/* Rutas que utilizan el Layout de Login */}
           <Route path="/" element={<Layout_Login />}>
@@ -68,8 +73,8 @@ root.render(
             <Route path="dashboard-estudiante/editar-perfil" element={<EditarPerfil />} />
             <Route path="dashboard-estudiante/cambiar-contrasena" element={<CambiarContrasena />} />
             <Route path="dashboard-estudiante/detalles-actividad" element={<DetallesActividad />} />
-            
-            {/* </Route> */}
+            <Route path="dashboard-estudiante/carreras" element={<CarrerasView />} />
+            <Route path="dashboard-estudiante/crar" element={<ActivityForm />} />
 
             {/* Dashboard de coordinadores */}
             <Route path="dashboard-coordinador/act-finalizadas" element={<ActvidadesFinalizada />} />
