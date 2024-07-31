@@ -1,16 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Carrera, obtenerTodasLasCarreras } from "../api/consultas";
 
 interface FiltroProps {
     aplicarFiltros: (carrera: string, ambito: string, fechaInicio: string, fechaFin: string, estado: string) => void;
 }
 
 const FiltroGS: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
+    const [carreras, setCarreras] = useState<Carrera[]>([]);
     const [carrera, setCarrera] = useState<string>("");
     const [fechaInicio, setFechaInicio] = useState<string>("");
     const [fechaFin, setFechaFin] = useState<string>("");
     const [ambito, setAmbito] = useState<string>("");
     const [estadoSolicitud, setEstadoSolicitud] = useState<string>("");
     const [showResetButton, setShowResetButton] = useState<boolean>(false);
+
+ // Cargar las carreras desde la API
+ useEffect(() => {
+    const fetchCarreras = async () => {
+        try {
+            const resultado = await obtenerTodasLasCarreras();
+            setCarreras(resultado);
+        } catch (error) {
+            console.error('Error al cargar las carreras:', error);
+        }
+    };
+
+    fetchCarreras();
+}, []);
 
     const handleCarreraChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setCarrera(event.target.value);
@@ -53,12 +69,6 @@ const FiltroGS: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
 
     return (
         <>
-            <img
-                src="https://voae.unah.edu.hn/assets/VOAE/paginas/home/_resampled/ResizedImageWzM3OSwxOTJd/Logo-oficial-VOAE.jpg"
-                alt="VOAE Logo"
-                className="w-48 h-28 md:mx-0 mx-auto md:mr-4"
-            />
-
             <div className="w-full md:w-3/5 grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="md:col-span-1">
                     <label className="block text-sm font-medium">Carrera</label>
@@ -68,25 +78,27 @@ const FiltroGS: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
                         onChange={handleCarreraChange}
                     >
                         <option value="">Seleccione Carrera...</option>
-                        <option value="Ingenieria en sistemas">Ingenieria en sistemas</option>
-                        <option value="Ingeniería Agroindustrial">Ingeniería Agroindustrial</option>
-                        <option value="Desarrollo Local">Desarrollo Local</option>
-                        <option value="Administración de Empresas">Administración de Empresas</option>
-                        <option value="Comercio Internacional">Comercio Internacional</option>
+                        {carreras.map(carrera => (
+                            <option key={carrera.id} value={carrera.name}>
+                                {carrera.name}
+                            </option>
+                        ))}
                     </select>
                 </div>
                 <div className="md:col-span-1">
                     <label className="block text-sm font-medium">Fecha</label>
-                    <div className="flex space-x-2">
+                    <div className="block md:flex md:space-x-2">
                         <input
-                            className="h-10 px-3 py-2 text-sm rounded-xl border border-input border-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="h-10 px-3 py-2 w-full text-sm rounded-xl border border-input border-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             value={fechaInicio}
                             onChange={handleFechaInicioChange}
                             placeholder="DD-MM-AAAA"
                             type="date"
                         />
+                        <div className="text-center justify-center mt-1 hidden md:flex">-</div>
+
                         <input
-                            className="h-10 px-3 py-2 text-sm rounded-xl border border-input border-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="h-10 px-3 py-2 w-full mt-4 md:mt-0 text-sm rounded-xl border border-input border-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             value={fechaFin}
                             onChange={handleFechaFinChange}
                             placeholder="DD-MM-AAAA"

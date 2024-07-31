@@ -1,39 +1,49 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import FiltroMA from "../../components/filtroMisActividades";
 import Pagination from "../../components/Pagination";
 
 export default function PaginaMisActividades() {
     useEffect(() => {
         // titulo de la pestaña del navegador
-        document.title = "Mis Actividades - UNAH CUROC";
+        document.title = "Mis Horas - UNAH CUROC";
     }, []);
+
+    const initialData2 = useMemo(() => [
+        { ambito: "Social", horas: 20 },
+        { ambito: "Científico", horas: 15 },
+        { ambito: "Cultural", horas: 10 },
+        { ambito: "Deportivo", horas: 5 },
+    ], []);
+
+    const ambitos = useMemo(() => initialData2.map(item => item.ambito), [initialData2]);
+    const horas = useMemo(() => initialData2.map(item => item.horas), [initialData2]);
 
     const initialData = [
         { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Arboles", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-11 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-10 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Discurso", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-09 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-08 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-07 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-06 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-07 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-08 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-05 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-04 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-03 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-02 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-01 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Caminata", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Tarde de pelicula", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas",encargado: 'juan', duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
-       
+        { nombre: "Arboles", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-11 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-10 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Discurso", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-09 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-08 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-07 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-06 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-07 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-08 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-05 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-04 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-03 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-02 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-01 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Caminata", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Tarde de pelicula", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
+
     ];
 
     const [filtrarData, setFiltrarData] = useState(initialData); // Estado para datos filtrados
     const [PaginaInicial, setPaginaInicial] = useState(1);
-    
+
     //funcion de paginacion
     const itemsPerPaginas = 10;
     const TotalPaginas = Math.ceil(filtrarData.length / itemsPerPaginas); // Usar FiltrarData en lugar de initialData
@@ -45,13 +55,13 @@ export default function PaginaMisActividades() {
     const paginatedData = filtrarData.slice((PaginaInicial - 1) * itemsPerPaginas, PaginaInicial * itemsPerPaginas); // Usar FiltrarData en lugar de initialData
 
     // Función para aplicar filtro
-    const aplicarFiltros = ( ambito: string, fechaInicio: string, fechaFin: string, busqueda: string) => {
+    const aplicarFiltros = (ambito: string, fechaInicio: string, fechaFin: string, busqueda: string) => {
         const fechaInicioDate = fechaInicio ? new Date(fechaInicio.split('T')[0]) : null; // Obtener solo la fecha
         const fechaFinDate = fechaFin ? new Date(fechaFin.split('T')[0]) : null; // Obtener solo la fecha
-    
+
         const filtrar = initialData.filter(item => {
             const inicioDate = new Date(item.inicio.split(' ')[0]); // Obtener solo la fecha desde la cadena de inicio
-    
+
             return (
                 (ambito === "" || item.ambito === ambito) &&
                 (!fechaInicioDate || inicioDate >= fechaInicioDate) &&
@@ -59,21 +69,54 @@ export default function PaginaMisActividades() {
                 (busqueda === "" || item.nombre.toLowerCase().includes(busqueda.toLowerCase()))
             );
         });
-    
+
         setFiltrarData(filtrar);
         setPaginaInicial(1); // Reiniciar la página actual al aplicar filtros
     };
-    
+
 
     return (
         <>
             <div className="container mx-auto p-2">
                 <div className="block md:flex items-center justify-center mb-4 mt-2">
 
-                    <FiltroMA aplicarFiltros={aplicarFiltros}/>
+                    <FiltroMA aplicarFiltros={aplicarFiltros} />
+                </div>
+
+                <h2 className="text-center my-5 text-xl font-bold underline">Horas</h2>
+                {/* tabla de horas */}
+                <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+                    <div className="overflow-x-auto">
+                        <table className="min-w-full table-auto bg-white border border-gray-200">
+                            <thead className="hidden md:table-header-group">
+                                <tr className="bg-blue-900 text-white">
+                                    <th className="p-4 font-bold text-left">Ámbito</th>
+                                    {ambitos.map((ambito, index) => (
+                                        <th key={index} className="p-4 font-bold text-left">{ambito}</th>
+                                    ))}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {ambitos.map((ambito, index) => (
+                                    <tr key={index} className="md:hidden  text-white">
+                                        <td className="p-4 bg-blue-900 font-bold text-left">{ambito}</td>
+                                        <td className="p-4 text-black border-b border-gray-200">{horas[index]}</td>
+                                    </tr>
+                                ))}
+                                <tr className="hidden md:table-row bg-white">
+                                    <td className="p-4 font-bold text-left">Horas</td>
+                                    {horas.map((hora, index) => (
+                                        <td key={index} className="p-4 border-b border-gray-200">{hora}</td>
+                                    ))}
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
 
+                {/* tabla de actividad */}
+                <h2 className="text-center my-5 text-xl font-bold underline">Actividades</h2>
                 <div className="rounded-xl">
                     <div className="overflow-x-auto">
                         <table className=" border-collapse block md:table min-w-full table-auto bg-white border border-gray-200">

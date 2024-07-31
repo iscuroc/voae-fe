@@ -14,10 +14,8 @@ const DashboardAdminVoae: React.FC = () => {
         return <FiSettings size={32} />;
       case "Gestion de Actividades":
         return <FiEdit size={32} />;
-        case "Actividades en Curso":
+        case "Actividades Disponibles":
         return <FiClock size={32} />;
-        case "Actividades Finalizadas":
-          return <FiClock size={32} />;
       case "Crear Actividad":
         return <FiPlusCircle size={32} />;
       case "Novedades":
