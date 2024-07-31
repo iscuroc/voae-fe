@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { FiBell, FiClock, FiLayers, FiFileText, FiAward, FiClipboard, FiPlusCircle } from "react-icons/fi";
+import { FiBell, FiClock, FiLayers, FiClipboard, FiPlusCircle } from "react-icons/fi";
 import DashboardButton from "../../components/DashboardButton";
 import { estudianteRoutes, EstudianteRouteKeys } from "../../api/routesConfig";
 
@@ -10,20 +10,14 @@ const DashboardEstudiante: React.FC = () => {
 
   const getIconByTitle = (title: EstudianteRouteKeys) => {
     switch (title) {
-      case "Mis Actividades":
+      case "Mis Horas VOAE":
         return <FiBell size={32} />;
-      case "Actividades en Curso":
-        return <FiClock size={32} />;
-      case "Actividades Finalizadas":
+      case "Actividades Disponibles":
         return <FiClock size={32} />;
       case "Actividades Solicitadas":
         return <FiLayers size={32} />;
       case "Crear Actividad":
         return <FiPlusCircle size={32} />;
-      case "Novedades":
-        return <FiFileText size={32} />;
-      case "Mis Horas VOAE":
-        return <FiAward size={32} />;
       case "Mis Certificados":
         return <FiClipboard size={32} />;
       default:

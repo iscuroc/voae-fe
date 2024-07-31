@@ -68,12 +68,6 @@ const Filtro: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
 
     return (
         <>
-            <img
-                src="https://voae.unah.edu.hn/assets/VOAE/paginas/home/_resampled/ResizedImageWzM3OSwxOTJd/Logo-oficial-VOAE.jpg"
-                alt="VOAE Logo"
-                className="w-48 h-28 md:mx-0 mx-auto md:mr-4"
-            />
-
             <div className="w-full md:w-3/5 grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="md:col-span-1">
                     <label className="block text-sm font-medium">Carrera</label>
@@ -92,16 +86,18 @@ const Filtro: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
                 </div>
                 <div className="md:col-span-1">
                     <label className="block text-sm font-medium">Fecha</label>
-                    <div className="flex space-x-2">
+                    <div className="block md:flex md:space-x-2">
                         <input
-                            className="h-10 px-3 py-2 text-sm rounded-xl border border-input border-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="h-10 px-3 py-2 w-full text-sm rounded-xl border border-input border-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             value={fechaInicio}
                             onChange={handleFechaInicioChange}
                             placeholder="DD-MM-AAAA"
                             type="date"
                         />
+                        <div className="text-center justify-center mt-1 hidden md:flex">-</div>
+
                         <input
-                            className="h-10 px-3 py-2 text-sm rounded-xl border border-input border-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="h-10 px-3 py-2 text-sm w-full mt-5 md:mt-0 rounded-xl border border-input border-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             value={fechaFin}
                             onChange={handleFechaFinChange}
                             placeholder="DD-MM-AAAA"
