@@ -28,7 +28,6 @@ import ParticipantesActividad from './components/paginas/ParticipantesActividad'
 import MisCertificados from './components/paginas/MisCertificados';
 import HorasVOAE from './components/paginas/HorasVoae';
 import CarrerasView from './components/CarrerasView';
-import ActivityForm from './components/paginas/Crearactividadprueba';
 import DetalleRegistro from './pages/auth/DetalleRegistro';
 import Login from './pages/auth/Login';
 import Registro from './pages/auth/Registro';
@@ -74,7 +73,6 @@ root.render(
             <Route path="dashboard-estudiante/cambiar-contrasena" element={<CambiarContrasena />} />
             <Route path="dashboard-estudiante/detalles-actividad" element={<DetallesActividad />} />
             <Route path="dashboard-estudiante/carreras" element={<CarrerasView />} />
-            <Route path="dashboard-estudiante/crar" element={<ActivityForm />} />
 
             {/* Dashboard de coordinadores */}
             <Route path="dashboard-coordinador/act-finalizadas" element={<ActvidadesFinalizada />} />
