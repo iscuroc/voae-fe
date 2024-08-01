@@ -31,6 +31,9 @@ import ParticipantesActividad from './components/paginas/ParticipantesActividad'
 import MisCertificados from './components/paginas/MisCertificados';
 
 
+
+
+
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(

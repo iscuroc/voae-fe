@@ -8,6 +8,7 @@ export const estudianteRoutes = {
     "Novedades": "#",
     "Mis Horas VOAE": "/dashboard-estudiante/mis-horas-voae",
     "Mis Certificados": "/dashboard-estudiante/mis-certificados",
+   
   } as const;
   
   export type EstudianteRouteKeys = keyof typeof estudianteRoutes;
