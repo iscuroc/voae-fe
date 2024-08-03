@@ -22,6 +22,8 @@ const DashboardAdminVoae: React.FC = () => {
         return <FiInfo size={32} />;
       case "Horas por Usuario":
         return <FiUsers size={32} />;
+      case "Gestión de Usuarios":
+        return <FiUsers size={32} />;
       default:
         return null;
     }
