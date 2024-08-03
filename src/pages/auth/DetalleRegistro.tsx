@@ -28,8 +28,14 @@ const DetallesRegistro: React.FC = () => {
     useEffect(() => {
         document.title = "Registro - UNAH COPAN";
     }, []);
-
+    
     const navigate = useNavigate();
+    const [errors, setErrors] = useState({
+        password: '',
+        passwordConfirmation: '',
+        general: ''
+    });
+    const [isLoading, setIsLoading] = useState(false);
 
     const [formData, setFormData] = useState<FormData>({
         names: '',
@@ -42,14 +48,6 @@ const DetallesRegistro: React.FC = () => {
     });
 
     const [carrera, setCarreras] = useState<Carrera[]>([]);
-    const [errors, setErrors] = useState({
-        password: '',
-        passwordConfirmation: '',
-        general: ''
-    });
-
-    const [isLoading, setIsLoading] = useState(false);
-
     useEffect(() => {
         // Cargar carreras
         const fetchcarrera = async () => {
@@ -95,9 +93,9 @@ const DetallesRegistro: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (validateForm()) {
-            setIsLoading(true); // Start loading
+            setIsLoading(true); 
             try {
-                await axiosInstance.post('/auth/confirmuser', formData);
+                await axiosInstance.post('/auth/confirm', formData); 
                 navigate('/login');
             } catch (error: unknown) {
                 if (axios.isAxiosError(error)) {
