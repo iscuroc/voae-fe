@@ -31,6 +31,7 @@ import Registro from './pages/auth/Registro';
 import ForgotPassword from './pages/auth/forgot-password';
 import ResetPassword from './pages/auth/reset-password';
 import ActividadesSolicitadas from './components/paginas/ActividadesSolicitadas';
+import GestionUsuarios from './components/paginas/GestionUsuarios';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
@@ -103,6 +104,7 @@ root.render(
               <Route path="dashboard-voae/editar-perfil" element={<EditarPerfil />} />
               <Route path="dashboard-voae/cambiar-contrasena" element={<CambiarContrasena />} />
               <Route path="dashboard-voae/horas-voae" element={<HorasVOAE />} />
+              <Route path="dashboard-voae/gestion-usuarios" element={<GestionUsuarios />} />
             {/* </Route> */}
           </Route>
 
