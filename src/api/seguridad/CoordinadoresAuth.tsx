@@ -1,14 +1,13 @@
 import { Outlet, Navigate } from 'react-router-dom';
-import useAuth from './useAuth';
+import useAuth from '../useAuth';
 
-const VoaeAuth = () => {
+const CoordinadoresAuth = () => {
   const { accessToken, userRole } = useAuth();
 
-  if (!accessToken || userRole !== 2) {
+  if (!accessToken || userRole !== 1) {
     return <Navigate to="/login" />;
   }
 
   return <Outlet />;
 };
-
-export default VoaeAuth;
+export default CoordinadoresAuth;

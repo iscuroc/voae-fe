@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Carrera, obtenerTodasLasCarreras } from "../api/consultas";
+import { Carrera, obtenerTodasLasCarreras } from "../../api/servicios/carreras";
 
 interface FiltroProps {
     aplicarFiltros: (carrera: string, ambito: string, fechaInicio: string, fechaFin: string, busqueda: string) => void;

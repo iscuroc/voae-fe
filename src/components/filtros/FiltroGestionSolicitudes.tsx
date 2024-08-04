@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Carrera, obtenerTodasLasCarreras } from "../api/consultas";
+import { Carrera, obtenerTodasLasCarreras } from "../../api/servicios/carreras";
 
 interface FiltroProps {
     aplicarFiltros: (carrera: string, ambito: string, fechaInicio: string, fechaFin: string, estado: string) => void;
@@ -63,6 +63,8 @@ const FiltroGS: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
         setEstadoSolicitud("");
         aplicarFiltros("", "", "", "", "");
         setShowResetButton(false);
+        window.location.reload();
+
     };
 
     const areFiltersApplied = carrera || fechaInicio || fechaFin || ambito || estadoSolicitud;
@@ -117,7 +119,8 @@ const FiltroGS: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
                         <option value="Academico">Académico</option>
                         <option value="Cultural">Cultural</option>
                         <option value="Social">Social</option>
-                        <option value="Deportivo">Deportivo</option>
+                        <option value="Deportivo">Deportes</option>
+                        <option value="Becas">Becas</option>
                     </select>
                 </div>
                 <div className="md:col-span-1">

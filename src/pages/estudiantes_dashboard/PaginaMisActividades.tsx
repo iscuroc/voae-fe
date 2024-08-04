@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import FiltroMA from "../../components/filtroMisActividades";
 import Pagination from "../../components/Pagination";
+import FiltroMA from "../../components/filtros/filtroMisActividades";
 
 export default function PaginaMisActividades() {
     useEffect(() => {

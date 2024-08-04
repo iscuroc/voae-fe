@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import FiltroGS from "../FiltroGestionSolicitudes";
 import Pagination from "../Pagination";
 import { FaEdit } from "react-icons/fa";
+import FiltroGS from "../filtros/FiltroGestionSolicitudes";
 
 const ActividadesSolicitadas: React.FC = () => {
     useEffect(() => {

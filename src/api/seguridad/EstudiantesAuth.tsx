@@ -1,6 +1,6 @@
 // components/EstudianteRoute.tsx
 import { Outlet, Navigate } from 'react-router-dom';
-import useAuth from '../api/useAuth';
+import useAuth from '../useAuth';
 
 const EstudianteRoute = () => {
   const { accessToken, userRole } = useAuth();

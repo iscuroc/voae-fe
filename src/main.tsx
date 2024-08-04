@@ -11,9 +11,6 @@ import DashboardAdminVoae from './pages/voae_dashboard/DashboardAdminVoae';
 import PaginaMisActividades from './pages/estudiantes_dashboard/PaginaMisActividades';
 import UnirseActividad from './pages/estudiantes_dashboard/UnirseActividades';
 import NovedadesAdmin from './pages/voae_dashboard/NovedadesAdmin';
-import EditarPerfil from './components/EditarPerfil';
-import CambiarContrasena from './components/CambiarContrasena';
-import Calendario from './components/PaginaDeCalendario';
 import PaginaGestionSolicitudesVOAE from './pages/voae_dashboard/PaginaAprobarSolicitudesVOAE';
 import { AuthProvider } from './api/AuthContext';
 import ActvidadesEnCurso from './components/paginas/ActvidadesEnCurso';
@@ -24,7 +21,6 @@ import PaginaGestionActividad from './components/paginas/PaginaGestionActividad'
 import Perfil from './components/paginas/PaginaPerfil';
 import MisCertificados from './components/paginas/MisCertificados';
 import HorasVOAE from './components/paginas/HorasVoae';
-import CarrerasView from './components/CarrerasView';
 import DetalleRegistro from './pages/auth/DetalleRegistro';
 import Login from './pages/auth/Login';
 import Registro from './pages/auth/Registro';
@@ -32,7 +28,9 @@ import ForgotPassword from './pages/auth/forgot-password';
 import ResetPassword from './pages/auth/reset-password';
 import ActividadesSolicitadas from './components/paginas/ActividadesSolicitadas';
 import GestionUsuarios from './components/paginas/GestionUsuarios';
-
+import CambiarContrasena from './components/otraPaginas/CambiarContrasena';
+import EditarPerfil from './components/otraPaginas/EditarPerfil';
+import Calendario from './components/otraPaginas/PaginaDeCalendario';
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(
@@ -70,7 +68,6 @@ root.render(
               <Route path="dashboard-estudiante/editar-perfil" element={<EditarPerfil />} />
               <Route path="dashboard-estudiante/cambiar-contrasena" element={<CambiarContrasena />} />
               <Route path="dashboard-estudiante/detalles-actividad" element={<DetallesActividad />} />
-              <Route path="dashboard-estudiante/carreras" element={<CarrerasView />} />
             {/* </Route> */}
 
             {/* Dashboard de coordinadores */}
@@ -99,7 +96,7 @@ root.render(
               <Route path="dashboard-voae/crear-actividad" element={<CrearActividad />} />
               <Route path="dashboard-voae/calendario" element={<Calendario />} />
               <Route path="dashboard-voae/gestionar-solicitud" element={<GestionSolicitudes />} />
-              <Route path="dashboard-voae/solicitudes" element={<PaginaGestionSolicitudesVOAE />} />
+              <Route path="dashboard-voae/solicitudes/:slug" element={<PaginaGestionSolicitudesVOAE />} />
               <Route path="dashboard-voae/perfil" element={<Perfil />} />
               <Route path="dashboard-voae/editar-perfil" element={<EditarPerfil />} />
               <Route path="dashboard-voae/cambiar-contrasena" element={<CambiarContrasena />} />
