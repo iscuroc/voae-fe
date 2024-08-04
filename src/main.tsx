@@ -47,9 +47,9 @@ root.render(
             <Route path="about" element={<About />} />
             <Route path="login" element={<Login />} />
             <Route path="registro" element={<Registro />} />
-            <Route path="confirm-email" element={<DetalleRegistro />} />
+            <Route path="confirmar-cuenta" element={<DetalleRegistro />} />
             <Route path="forgot-password" element={<ForgotPassword />} />
-            <Route path="reset-password" element={<ResetPassword />} />
+            <Route path="restablecer-contrasena" element={<ResetPassword />} />
           </Route>
           {/* Rutas que utilizan el Layout de Login */}
           <Route path="/" element={<Layout_Login />}>
@@ -99,7 +99,7 @@ root.render(
               <Route path="dashboard-voae/crear-actividad" element={<CrearActividad />} />
               <Route path="dashboard-voae/calendario" element={<Calendario />} />
               <Route path="dashboard-voae/gestionar-solicitud" element={<GestionSolicitudes />} />
-              <Route path="dashboard-voae/gestion-solicitud" element={<PaginaGestionSolicitudesVOAE />} />
+              <Route path="dashboard-voae/solicitudes" element={<PaginaGestionSolicitudesVOAE />} />
               <Route path="dashboard-voae/perfil" element={<Perfil />} />
               <Route path="dashboard-voae/editar-perfil" element={<EditarPerfil />} />
               <Route path="dashboard-voae/cambiar-contrasena" element={<CambiarContrasena />} />
