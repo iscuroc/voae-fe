@@ -1,280 +1,351 @@
 import React, { useState } from 'react';
+import { crearActividad, Actividad } from '../../servicios/actividadservice';
 
 const CrearActividad = () => {
-  const [nombre, setNombre] = useState('');
-  const [descripcion, setDescripcion] = useState('');
-  const [carrera, setCarrera] = useState('');
-  const [carrerasDis, setCarrerasDis] = useState('');
-  const [inicio, setInicio] = useState('');
-  const [fechaFinalizacion, setFechaFinalizacion] = useState('');
-  const [objetivos, setObjetivos] = useState('');
-  const [ambito, setAmbito] = useState('');
-  const [coordinador, setCoordinador] = useState('');
-  const [nombreEstudiante, setNombreEstudiante] = useState('');
-  const [horasSociales, setHorasSociales] = useState('');
-  const [horasArt, setHorasArt] = useState('');
-  const [cupos, setCupos] = useState('');
-  const [observaciones, setObservaciones] = useState('');
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    mainCareerId: '',
+    availableCareers: [] as number[][], 
+    startDate: '',
+    endDate: '',
+    goals: '',
+    scopes: [{ scope: '', hours: '' }, { scope: '', hours: '' }],
+    location: '',
+    mainActivities: [''],
+    careerTeacherId: '',
+    careerStudentId: '',
+    totalSpots: '',
+  });
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { id, value } = e.target;
+    setFormData(prevState => ({ ...prevState, [id]: value }));
+  };
+
+  const handleCareerChange = (e: React.ChangeEvent<HTMLSelectElement>, index: number) => {
+    const selectedOptions = Array.from(e.target.selectedOptions, option => parseInt(option.value, 10));
+    const newAvailableCareers = [...formData.availableCareers];
+    newAvailableCareers[index] = selectedOptions; 
+    setFormData(prevState => ({
+      ...prevState,
+      availableCareers: newAvailableCareers,
+    }));
+  };
+
+  const handleScopeChange = (index: number, e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+    const { id, value } = e.target;
+    const newScopes = [...formData.scopes];
+    newScopes[index] = { ...newScopes[index], [id]: value };
+    setFormData(prevState => ({ ...prevState, scopes: newScopes }));
+  };
+
+  const handleAddActivity = () => {
+    setFormData(prevState => ({
+      ...prevState,
+      mainActivities: [...prevState.mainActivities, '']
+    }));
+  };
+
+  const handleActivityChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    const newActivities = [...formData.mainActivities];
+    newActivities[index] = value;
+    setFormData(prevState => ({ ...prevState, mainActivities: newActivities }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Solicitud enviada:', { 
-      nombre, descripcion, carrera, inicio, fechaFinalizacion, 
-      objetivos, ambito, coordinador, nombreEstudiante, 
-      horasSociales, horasArt, cupos, observaciones 
-    });
-    // Limpiar los campos después del envío
-    setNombre('');
-    setDescripcion('');
-    setCarrera('');
-    setCarrerasDis('');
-    setInicio('');
-    setFechaFinalizacion('');
-    setObjetivos('');
-    setAmbito('');
-    setCoordinador('');
-    setNombreEstudiante('');
-    setHorasSociales('');
-    setHorasArt('');
-    setCupos('');
-    setObservaciones('');
+
+    const actividad: Actividad = {
+      name: formData.name,
+      description: formData.description,
+      mainCareerId: parseInt(formData.mainCareerId, 10) || 0,
+      availableCareers: formData.availableCareers.flat(), 
+      startDate: formData.startDate,
+      endDate: formData.endDate,
+      goals: formData.goals,
+      scopes: formData.scopes.map(scope => ({
+        scope: parseInt(scope.scope, 10) || 0,
+        hours: parseInt(scope.hours, 10) || 0
+      })),
+      careerTeacherId: parseInt(formData.careerTeacherId, 10) || 0,
+      careerStudentId: parseInt(formData.careerStudentId, 10) || 0,
+      totalSpots: parseInt(formData.totalSpots, 10) || 0,
+      location: formData.location,
+      mainActivities: formData.mainActivities.filter(activity => activity.trim() !== ''),
+    };
+
+    try {
+      const result = await crearActividad(actividad);
+      console.log('Activity created:', result);
+
+      setFormData({
+        name: '',
+        description: '',
+        mainCareerId: '',
+        availableCareers: [],
+        startDate: '',
+        endDate: '',
+        goals: '',
+        scopes: [{ scope: '', hours: '' }],
+        location: '',
+        mainActivities: [''],
+        careerTeacherId: '',
+        careerStudentId: '',
+        totalSpots: '',
+      });
+    } catch (error) {
+      console.error('Error creating activity:', error);
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-4xl">
+      <div className="w-full max-w-4xl bg-white shadow-md rounded-lg p-6">
+        <h1 className="text-center text-2xl font-bold mb-6">Formulario Crear Actividad</h1>
 
-        <h1 className="text-center text-2xl font-bold mb-4">Formulario de Solicitud para Estudiantes VOAE</h1>
-
-        <div className="bg-yellow-500 shadow-lg rounded-lg flex overflow-hidden mb-4">
-          <div className="w-1/3 bg-blue-900 p-6 rounded-l-lg flex flex-col items-center">
-            <label className="block text-white text-sm font-bold mb-[2.5rem]" htmlFor="nombre">
-              Nombre de la actividad:
-            </label>
-            <label className="block text-white text-sm font-bold mb-[7rem]" htmlFor="descripcion">
-              Descripción:
-            </label>
-            <label className="block text-white text-sm font-bold mb-[3.3rem]" htmlFor="carrera">
-              Carrera:
-            </label>
-            <label className="block text-white text-sm font-bold mb-[3.3rem]" htmlFor="carrera">
-              Carresca disponles para incribirse:
-            </label>
-            <label className="block text-white text-sm font-bold mb-[2rem]" htmlFor="inicio">
-              Inicio:
-            </label>
-            <label className="block text-white text-sm font-bold mb-[2rem]" htmlFor="fechaFinalizacion">
-              Fecha de Finalización:
-            </label>
-            <label className="block text-white text-sm font-bold mb-[5rem]" htmlFor="objetivos">
-              Objetivos:
-            </label>
-            <label className="block text-white text-sm font-bold mb-[2rem]" htmlFor="ambito">
-              Ámbito:
-            </label>
-            <label className="block text-white text-sm font-bold mb-[2.5rem]" htmlFor="coordinador">
-              Coordinador de carrera:
-            </label>
-            <label className="block text-white text-sm font-bold mb-[2rem]" htmlFor="nombreEstudiante">
-              Coordinador de actividad:
-            </label>
-            <label className="block text-white text-sm font-bold mb-[2rem]" htmlFor="horasSociales">
-              Horas Sociales becados:
-            </label>
-            <label className="block text-white text-sm font-bold mb-[2rem]" htmlFor="horasArt">
-              Horas Art.140:
-            </label>
-            <label className="block text-white text-sm font-bold mb-[2rem]" htmlFor="cupos">
-              Cupos:
-            </label>
-            <label className="block text-white text-sm font-bold mt-3" htmlFor="observaciones">
-              Observaciones:
-            </label>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Name */}
+          <div>
+            <label htmlFor="name" className="block text-sm font-semibold mb-1">Nombre Actividad:</label>
+            <input
+              type="text"
+              id="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="shadow border rounded w-full py-2 px-3 text-gray-700"
+              required
+            />
           </div>
-          <div className="w-2/3 p-6">
-            <form onSubmit={handleSubmit} className="space-y-4" id="solicitudForm">
-              <div className="mb-5">
-                <input
-                  type="text"
-                  placeholder='Ingrese un nombre'
-                  id="nombre"
-                  value={nombre}
-                  onChange={(e) => setNombre(e.target.value)}
-                  className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  required
-                />
-              </div>
-              <div className="mb-5">
-                <textarea
-                  placeholder='Ingrese una descripción'
-                  id="descripcion"
-                  value={descripcion}
-                  onChange={(e) => setDescripcion(e.target.value)}
-                  className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  rows={5}
-                  required
-                />
-              </div>
-              <div className="mb-5">
-                <select
-                  id="carrera"
-                  value={carrera}
-                  onChange={(e) => setCarrera(e.target.value)}
-                  className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  required
-                >
-                  <option value="">Selecciona una carrera</option>
-                  <option value="Carrera 1">Carrera 1</option>
-                  <option value="Carrera 2">Carrera 2</option>
-                  <option value="Carrera 3">Carrera 3</option>
-                  <option value="Carrera 4">Carrera 4</option>
-                  <option value="Carrera 5">Carrera 5</option>
-                </select>
-              </div>
-              <div className="mb-5">
-                <select
-                  id="carrera"
-                  value={carrerasDis}
-                  onChange={(e) => setCarrerasDis(e.target.value)}
-                  className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  required
-                >
-                  <option value="">Selecciona una carrera</option>
-                  <option value="Carrera 1">Carrera 1</option>
-                  <option value="Carrera 2">Carrera 2</option>
-                  <option value="Carrera 3">Carrera 3</option>
-                  <option value="Carrera 4">Carrera 4</option>
-                  <option value="Carrera 5">Carrera 5</option>
-                </select>
-              </div>
-              <div className="mb-5">
-                <input
-                  type="datetime-local"
-                  id="inicio"
-                  value={inicio}
-                  onChange={(e) => setInicio(e.target.value)}
-                  className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  required
-                />
-              </div>
-              <div className="mb-5">
-                <input
-                  type="datetime-local"
-                  id="fechaFinalizacion"
-                  value={fechaFinalizacion}
-                  onChange={(e) => setFechaFinalizacion(e.target.value)}
-                  className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  required
-                />
-              </div>
-              <div className="mb-5">
-                <textarea
-                  placeholder='Ingrese los objetivos'
-                  id="objetivos"
-                  value={objetivos}
-                  onChange={(e) => setObjetivos(e.target.value)}
-                  className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  rows={3}
-                  required
-                />
-              </div>
-              <div className="mb-5">
+
+          {/* Description */}
+          <div>
+            <label htmlFor="description" className="block text-sm font-semibold mb-1">Descripción:</label>
+            <textarea
+              id="description"
+              value={formData.description}
+              onChange={handleChange}
+              className="shadow border rounded w-full py-2 px-3 text-gray-700"
+              rows={4}
+              required
+            />
+          </div>
+
+          {/* Main Career */}
+          <div>
+            <label htmlFor="mainCareerId" className="block text-sm font-semibold mb-1">Carrera Principal:</label>
+            <select
+              id="mainCareerId"
+              value={formData.mainCareerId}
+              onChange={handleChange}
+              className="shadow border rounded w-full py-2 px-3 text-gray-700"
+              required
+            >
+              <option value="">Selecciona una opción</option>
+              <option value="1">Carrera 1</option>
+              <option value="2">Carrera 2</option>
+              <option value="3">Carrera 3</option>
+              <option value="4">Carrera 4</option>
+            </select>
+          </div>
+
+          {/* Available Careers */}
+          {[...Array(4)].map((_, index) => (
+            <div key={index}>
+              <label htmlFor={`availableCareers-${index}`} className="block text-sm font-semibold mb-1">Carreras Participantes {index + 1}:</label>
               <select
-                  id="carrera"
-                  value={ambito}
-                  onChange={(e) => setHorasArt(e.target.value)}
-                  className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id={`availableCareers-${index}`}
+                multiple
+                value={formData.availableCareers[index]?.map(String) || []} // Convierte los números a cadenas
+                onChange={(e) => handleCareerChange(e, index)}
+                className="shadow border rounded w-full py-2 px-3 text-gray-700"
+                required
+              >
+
+               <option value="">Selecciona una opción</option>
+              <option value="1">Carrera 1</option>
+              <option value="2">Carrera 2</option>
+              <option value="3">Carrera 3</option>
+              <option value="4">Carrera 4</option>
+              </select>
+            </div>
+          ))}
+
+          {/* Start Date */}
+          <div>
+            <label htmlFor="startDate" className="block text-sm font-semibold mb-1">Fecha Inicio</label>
+            <input
+              type="datetime-local"
+              id="startDate"
+              value={formData.startDate}
+              onChange={handleChange}
+              className="shadow border rounded w-full py-2 px-3 text-gray-700"
+              required
+            />
+          </div>
+
+          {/* End Date */}
+          <div>
+            <label htmlFor="endDate" className="block text-sm font-semibold mb-1">Fecha Final</label>
+            <input
+              type="datetime-local"
+              id="endDate"
+              value={formData.endDate}
+              onChange={handleChange}
+              className="shadow border rounded w-full py-2 px-3 text-gray-700"
+              required
+            />
+          </div>
+
+          {/* Goals */}
+          <div>
+            <label htmlFor="goals" className="block text-sm font-semibold mb-1">Metas:</label>
+            <textarea
+              id="goals"
+              value={formData.goals}
+              onChange={handleChange}
+              className="shadow border rounded w-full py-2 px-3 text-gray-700"
+              rows={3}
+              required
+            />
+          </div>
+
+          {/* Scopes */}
+          <div>
+            <label className="block text-sm font-semibold mb-1">Ambito:</label>
+            {formData.scopes.map((scope, index) => (
+              <div key={index} className="flex space-x-4 mb-4">
+                <select
+                  id="scope"
+                  value={scope.scope}
+                  onChange={e => handleScopeChange(index, e)}
+                  className="shadow border rounded w-1/2 py-2 px-3 text-gray-700"
                   required
                 >
-                  <option value="">Selecciona un ambito</option>
-                  <option value="social">Social</option>
-                  <option value="deportiva">Deportivas</option>
-                  <option value="cientifica">Cientificas</option>
-                  <option value="cultural">Cultural</option>
+                   <option value="">Selecciona una opción</option>
+                  <option value="0">Social</option>
+                  <option value="1">Cultural</option>
+                  <option value="2">Sports</option>
+                  <option value="3">Scientific</option>
                 </select>
-              </div>
-              <div className="mb-5">
-                <input
-                  type="text"
-                  placeholder='Ingrese el coordinador'
-                  id="coordinador"
-                  value={coordinador}
-                  onChange={(e) => setCoordinador(e.target.value)}
-                  className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  required
-                />
-              </div>
-              <div className="mb-5">
-                <input
-                  type="text"
-                  placeholder='Ingrese el nombre del estudiante'
-                  id="nombreEstudiante"
-                  value={nombreEstudiante}
-                  onChange={(e) => setNombreEstudiante(e.target.value)}
-                  className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  required
-                />
-              </div>
-              <div className="mb-5">
                 <input
                   type="number"
-                  placeholder='Ingrese las horas sociales becados'
-                  id="horasSociales"
-                  value={horasSociales}
-                  onChange={(e) => setHorasSociales(e.target.value)}
-                  className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="hours"
+                  value={scope.hours}
+                  onChange={e => handleScopeChange(index, e)}
+                  className="shadow border rounded w-1/2 py-2 px-3 text-gray-700"
+                  min={0}
                   required
                 />
               </div>
-              <div className="mb-5">
-              <input
-                  type="number"
-
-                  placeholder='Ingrese el número de horas'
-
-                  id="horas"
-                  value={horasArt}
-                  onChange={(e) => setCupos(e.target.value)}
-                  className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  required
-                />
-              </div>
-              <div className="mb-5">
-                <input
-                  type="number"
-
-                  placeholder='Ingrese el número de cupos'
-
-                  id="cupos"
-                  value={cupos}
-                  onChange={(e) => setCupos(e.target.value)}
-                  className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  required
-                />
-              </div>
-              <div className="mb-5">
-                <textarea
-                  placeholder='Ingrese observaciones'
-                  id="observaciones"
-                  value={observaciones}
-                  onChange={(e) => setObservaciones(e.target.value)}
-                  className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  rows={3}
-                />
-              </div>
-              <button
-                type="submit"
-                className="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
-              >
-                Enviar Solicitud
-              </button>
-            </form>
+            ))}
           </div>
-        </div>
+        
+
+          {/* Location */}
+          <div>
+            <label htmlFor="location" className="block text-sm font-semibold mb-1">Ubicación:</label>
+            <input
+              type="text"
+              id="location"
+              value={formData.location}
+              onChange={handleChange}
+              className="shadow border rounded w-full py-2 px-3 text-gray-700"
+              required
+            />
+          </div>
+
+          {/* Main Activities */}
+          <div>
+            <label className="block text-sm font-semibold mb-1">Actividades Principales:</label>
+            {formData.mainActivities.map((activity, index) => (
+              <div key={index} className="flex space-x-4 mb-4">
+                <input
+                  type="text"
+                  value={activity}
+                  onChange={e => handleActivityChange(index, e)}
+                  className="shadow border rounded w-full py-2 px-3 text-gray-700"
+                  placeholder={`Actividad ${index + 1}`}
+                  required
+                />
+                {formData.mainActivities.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => setFormData(prevState => ({
+                      ...prevState,
+                      mainActivities: prevState.mainActivities.filter((_, i) => i !== index),
+                    }))}
+                    className="bg-red-500 text-white px-3 py-1 rounded"
+                  >
+                    Remover
+                  </button>
+                )}
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={handleAddActivity}
+              className="bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              Agregar Actividad
+            </button>
+          </div>
+
+          {/* Teacher Career ID */}
+            <label htmlFor="careerTeacherId" className="block text-sm font-semibold mb-1">Docente de Carrera:</label>
+          <div>
+            <input
+              type="number"
+              id="careerTeacherId"
+              value={formData.careerTeacherId}
+              onChange={handleChange}
+              className="shadow border rounded w-full py-2 px-3 text-gray-700"
+              min={0}
+              required
+            />
+          </div>
+
+          {/* Student Career ID */}
+          <div>
+            <label htmlFor="careerStudentId" className="block text-sm font-semibold mb-1">Estudiante Carrera:</label>
+            <input
+              type="number"
+              id="careerStudentId"
+              value={formData.careerStudentId}
+              onChange={handleChange}
+              className="shadow border rounded w-full py-2 px-3 text-gray-700"
+              min={0}
+              required
+            />
+          </div>
+
+          {/* Total Spots */}
+          <div>
+            <label htmlFor="totalSpots" className="block text-sm font-semibold mb-1">Total Horas:</label>
+            <input
+              type="number"
+              id="totalSpots"
+              value={formData.totalSpots}
+              onChange={handleChange}
+              className="shadow border rounded w-full py-2 px-3 text-gray-700"
+              min={0}
+              required
+            />
+          </div>
+
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              className="bg-green-500 text-white px-6 py-2 rounded"
+            >
+             Enviar
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
 };
 
 export default CrearActividad;
-
