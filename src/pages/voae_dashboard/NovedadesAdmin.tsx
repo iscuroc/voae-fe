@@ -1,5 +1,7 @@
+// src/screens/NovedadesAdmin.tsx
 import React, { useState } from 'react';
 import HeaderLogin from '../../components/Header_login';
+import Banners from '../../components/Banners';
 
 const NovedadesAdmin: React.FC = () => {
   const [banners, setBanners] = useState([
@@ -16,7 +18,6 @@ const NovedadesAdmin: React.FC = () => {
         title: `Banner ${banners.length + 1}`, // Default title
       };
 
-      // Prompt user for a title (you can use prompt, modal, etc.)
       const newTitle = prompt('Enter title for the banner:', `Banner ${banners.length + 1}`);
       if (newTitle) {
         newBanner.title = newTitle;
@@ -30,55 +31,14 @@ const NovedadesAdmin: React.FC = () => {
     setBanners(banners.filter(banner => banner.id !== id));
   };
 
-  const renderBanners = () => {
-    const bannerRows = [];
-    for (let i = 0; i < banners.length; i += 2) {
-      bannerRows.push(
-        <div className="flex flex-col md:flex-row mb-4" key={i}>
-          <div className="flex-1 bg-white shadow-md rounded-lg p-4 mb-4 md:mb-0 md:mr-4">
-            <h2 className="text-xl font-bold mb-2">{banners[i].title}</h2>
-            <img 
-              src={banners[i].src} 
-              alt={banners[i].title} 
-              className="w-full h-64 object-contain rounded-lg mb-2"
-            />
-            <button 
-              onClick={() => handleDeleteBanner(banners[i].id)} 
-              className="bg-red-500 text-white px-4 py-2 rounded mt-2"
-            >
-              Eliminar
-            </button>
-          </div>
-          {banners[i + 1] && (
-            <div className="flex-1 bg-white shadow-md rounded-lg p-4">
-              <h2 className="text-xl font-bold mb-2">{banners[i + 1].title}</h2>
-              <img 
-                src={banners[i + 1].src} 
-                alt={banners[i + 1].title} 
-                className="w-full h-64 object-contain rounded-lg mb-2"
-              />
-              <button 
-                onClick={() => handleDeleteBanner(banners[i + 1].id)} 
-                className="bg-red-500 text-white px-4 py-2 rounded mt-2"
-              >
-                Eliminar
-              </button>
-            </div>
-          )}
-        </div>
-      );
-    }
-    return bannerRows;
-  };
-
   return (
     <div className="novedades-estudiantes">
       <HeaderLogin />
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6">Novedades Estudiantes</h1>
+        <h1 className="text-3xl font-bold mb-6">Publicar Novedad o Actividad </h1>
         
         <div className="bg-yellow-500 shadow-lg rounded-lg p-6 min-h-[80vh]">
-          {renderBanners()}
+          <Banners banners={banners} handleDeleteBanner={handleDeleteBanner} />
         </div>
         
         <div className="flex justify-center mt-6">
@@ -93,3 +53,4 @@ const NovedadesAdmin: React.FC = () => {
 };
 
 export default NovedadesAdmin;
+
