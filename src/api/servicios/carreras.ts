@@ -1,4 +1,5 @@
-import axiosInstance from "./axiosInstance";
+import axiosInstance from "../axiosInstance";
+
 
 export interface Carrera {
     id: number;

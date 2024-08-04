@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Pagination from "../Pagination";
-import FiltroHVoae from "..//FiltroHVoae"; 
-
+import FiltroHVoae from "../filtros/FiltroHVoae";
 const HorasVOAE: React.FC = () => {
     useEffect(() => {
         document.title = "Horas VOAE - UNAH COPAN";

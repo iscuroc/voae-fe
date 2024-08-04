@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import FiltroHVoae from "../FiltroHVoae";
 import Pagination from "../Pagination";
 import { NavLink } from "react-router-dom";
+import FiltroHVoae from "../filtros/FiltroHVoae";
 
 const GestionUsuarios: React.FC = () => {
     useEffect(() => {

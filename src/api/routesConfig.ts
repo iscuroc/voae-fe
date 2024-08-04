@@ -22,7 +22,7 @@ export type CoordinadorRouteKeys = keyof typeof coordinadorRoutes;
 // rutas de dashboard VOAE
 export const voaeRoutes = {
   "Gestion de Solicitudes": "/dashboard-voae/gestionar-solicitud",
-  "Gestion de Actividades": "/dashboard-voae/gestion-actividad",
+  "Actividades": "/dashboard-voae/gestion-actividad",
   "Actividades Disponibles": "/dashboard-voae/actividad-en-curso",
   "Crear Actividad": "/dashboard-voae/crear-actividad",
   "Novedades": "/dashboard-voae/novedades-admin",

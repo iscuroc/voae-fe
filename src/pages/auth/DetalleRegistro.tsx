@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FiLoader } from 'react-icons/fi';
 import axiosInstance from '../../api/axiosInstance';
-import { Carrera, obtenerTodasLasCarreras } from '../../api/consultas';
+import { Carrera, obtenerTodasLasCarreras } from '../../api/servicios/carreras';
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
 

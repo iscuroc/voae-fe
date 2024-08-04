@@ -12,7 +12,7 @@ const DashboardAdminVoae: React.FC = () => {
     switch (title) {
       case "Gestion de Solicitudes":
         return <FiSettings size={32} />;
-      case "Gestion de Actividades":
+      case "Actividades":
         return <FiEdit size={32} />;
         case "Actividades Disponibles":
         return <FiClock size={32} />;

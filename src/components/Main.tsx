@@ -74,7 +74,7 @@ const Main: React.FC = () => {
       <main className="flex-1">
         <div className="text-base md:text-4xl font-bold text-center">
           <h1 className="mt-5 mb-5 text-4xl font-extrabold tracking-tight text-gray-900">NOVEDADES Y ACTIVIDADES</h1>
-          <div className="bg-yellow-500 shadow-lg rounded-lg p-6 min-h-[80vh]">
+          <div className=" shadow-lg rounded-lg p-6 min-h-[80vh]">
             <Banners banners={banners} />
           </div>
           <div className="flex justify-center mt-6">
