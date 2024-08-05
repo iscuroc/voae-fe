@@ -57,7 +57,7 @@ root.render(
 
             {/* Dashboard de estudiantes */}
 
-<!--             <Route path="/" element={<EstudianteRoute />}> -->
+              {/* <Route path="/" element={<EstudianteRoute />}> */}
               <Route path="dashboard-estudiante/main" element={<DashboardEstudiante />} />
               <Route path="dashboard-estudiante/actividades-solicitadas" element={<ActividadesSolicitadas />} />
               <Route path="dashboard-estudiante/actividades-en-curso" element={<ActvidadesEnCurso />} />
@@ -71,11 +71,11 @@ root.render(
               <Route path="dashboard-estudiante/editar-perfil" element={<EditarPerfil />} />
               <Route path="dashboard-estudiante/cambiar-contrasena" element={<CambiarContrasena />} />
               <Route path="dashboard-estudiante/detalles-actividad" element={<DetallesActividad />} />
-<!--             </Route> -->
+ {/* </Route>  */}
 
             {/* Dashboard de coordinadores */}
 
-<!--             <Route path="/" element={<CoordinadoresAuth />}> -->
+ {/* <Route path="/" element={<CoordinadoresAuth />}>  */}
               <Route path="dashboard-coordinador/main" element={<DashboardCoordinador />} />
               <Route path="dashboard-coordinador/detalles-actividad" element={<DetallesActividad />} />
               <Route path="dashboard-coordinador/actividad-en-curso" element={<ActvidadesEnCurso />} />
@@ -86,11 +86,11 @@ root.render(
               <Route path="dashboard-coordinador/editar-perfil" element={<EditarPerfil />} />
               <Route path="dashboard-coordinador/cambiar-contrasena" element={<CambiarContrasena />} />
               <Route path="dashboard-coordinador/horas-voae" element={<HorasVOAE />} />
-<!--             </Route> -->
+  {/* </Route>  */}
 
             {/* Dashboard de voae */}
 
-<!--             <Route path="/" element={<VoaeAuth />}> -->
+    {/* <Route path="/" element={<VoaeAuth />}>  */}
               <Route path="dashboard-voae/main" element={<DashboardAdminVoae />} />
               <Route path="dashboard-voae/actividad-en-curso" element={<ActvidadesEnCurso />} />
               <Route path="dashboard-voae/gestion-actividad" element={<PaginaGestionActividad />} />
@@ -105,7 +105,7 @@ root.render(
               <Route path="dashboard-voae/cambiar-contrasena" element={<CambiarContrasena />} />
               <Route path="dashboard-voae/horas-voae" element={<HorasVOAE />} />
               <Route path="dashboard-voae/gestion-usuarios" element={<GestionUsuarios />} />
-<!--             </Route> -->
+ {/* </Route>  */}
           </Route>
 
         </Routes>

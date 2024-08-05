@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import FiltroMA from "../../components/filtroMisActividades";
 import Pagination from "../../components/Pagination";
 import { NavLink } from "react-router-dom";
+import FiltroMA from "../filtros/filtroMisActividades";
 
 export default function PaginaMisCertificados() {
     useEffect(() => {
