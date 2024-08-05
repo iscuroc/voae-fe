@@ -87,7 +87,7 @@ const GestionSolicitudes: React.FC = () => {
                 <div className="overflow-x-auto">
                     <table className="border-collapse block md:table min-w-full table-auto bg-white border border-gray-200">
                         <thead className="block md:table-header-group">
-                            <tr className="border text-base border-gray-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto md:relative bg-yellow-500 text-black">
+                            <tr className="border text-xs border-gray-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto md:relative bg-yellow-500 text-black">
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Actividad</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Solicitante</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Carrera</th>

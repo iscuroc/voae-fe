@@ -4,37 +4,38 @@ import 'react-calendar/dist/Calendar.css';
 import './DiseñCalendario.css';
 import { NavLink } from 'react-router-dom';
 import { format, parseISO, isSameDay } from 'date-fns';
-
-interface Actividad {
-  fecha: Date; // Fecha completa con hora
-  titulo: string;
-  id: number;
-}
-
-// Usar la fecha en formato ISO directamente sin ajustar el huso horario
-const actividades: Actividad[] = [
-  { fecha: parseISO('2024-07-12T11:14:23'), titulo: 'Reunión de proyecto', id: 1 },
-  { fecha: parseISO('2024-07-12T19:14:23'), titulo: 'Taller de capacitación',  id: 2 },
-  { fecha: parseISO('2024-07-15T17:14:23'), titulo: 'Entrega de informe',  id: 3 },
-  { fecha: parseISO('2024-07-20T16:14:23'), titulo: 'Presentación', id: 4 },
-];
+import { Activity, ObtenerActividadesPorEstado } from '../../api/servicios/actividades';
 
 const formatDate = (date: Date) => format(date, 'yyyy-MM-dd'); // Formatear solo la fecha
 
 const Calendario: React.FC = () => {
-  const [date, setDate] = useState<Date | null>(null);
-  const [selectedActivities, setSelectedActivities] = useState<Actividad[]>([]);
-  const [showPanel, setShowPanel] = useState<boolean>(false); // Estado para controlar la visibilidad del panel
-
   useEffect(() => {
     document.title = "Calendario - UNAH COPAN";
+  }, []);
+
+  const [date, setDate] = useState<Date | null>(null);
+  const [showPanel, setShowPanel] = useState<boolean>(false); 
+  const [actividades, setActividades] = useState<Activity[]>([]);
+  const [selectedActivities, setSelectedActivities] = useState<Activity[]>([]); // Agregado para almacenar las actividades del día seleccionado
+  const [, setError] = useState<string | null>(null); 
+
+  useEffect(() => {
+    const obtenerDatos = async () => {
+      try {
+        const data = await ObtenerActividadesPorEstado(0); 
+        setActividades(data);
+      } catch (error) {
+        setError('Failed to fetch activities');
+      } 
+    };
+    obtenerDatos();
   }, []);
 
   const handleDateChange: CalendarProps['onChange'] = (value) => {
     const selectedDate = value as Date;
     setDate(selectedDate);
     const dayActivities = actividades.filter(actividad =>
-      isSameDay(actividad.fecha, selectedDate)
+      isSameDay(parseISO(actividad.startDate), selectedDate) // Ajustar según el formato de fecha recibido
     );
     setSelectedActivities(dayActivities);
     setShowPanel(dayActivities.length > 0); // Mostrar el panel si hay actividades
@@ -42,7 +43,7 @@ const Calendario: React.FC = () => {
 
   const tileContent: CalendarProps['tileContent'] = ({ date }) => {
     const dayActivities = actividades.some(actividad =>
-      isSameDay(actividad.fecha, date)
+      isSameDay(parseISO(actividad.startDate), date) // Ajustar según el formato de fecha recibido
     );
 
     return dayActivities ? <span className="dot"></span> : null;
@@ -75,8 +76,8 @@ const Calendario: React.FC = () => {
               <li key={activity.id} className="mb-2">
                 <div className="block md:flex justify-between items-center border-4 border-yellow-500 p-2">
                   <div>
-                    <p className="font-medium">{activity.titulo}</p>
-                    <p className="text-sm text-gray-600">{format(activity.fecha, 'hh:mm a')}</p>
+                    <p className="font-medium">{activity.name}</p> {/* Usar name en lugar de titulo */}
+                    <p className="text-sm text-gray-600">{format(parseISO(activity.startDate), 'hh:mm a')}</p> {/* Usar startDate */}
                   </div>
                   <NavLink
                     to={

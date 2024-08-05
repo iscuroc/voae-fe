@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo1 from '../../assets/logo.png';
 import logo2 from '../../assets/logo2.jpeg';
 import { FiLoader } from 'react-icons/fi';
 import axiosInstance from '../../api/axiosInstance';
 import useAuth from '../../api/useAuth';
+import { AuthContext } from '../../api/AuthContext';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -14,10 +15,24 @@ const Login: React.FC = () => {
 
   const navigate = useNavigate();
   const { login } = useAuth();
+  const authContext = useContext(AuthContext);
 
   useEffect(() => {
     document.title = "Login - UNAH COPAN";
-  }, []);
+
+    // Redirigir al dashboard respectivo si ya está logueado
+    if (authContext?.accessToken) {
+      if (authContext.userRole === 0) {
+        navigate('/dashboard-estudiante/main');
+      } else if (authContext.userRole === 1) {
+        navigate('/dashboard-coordinador/main');
+      } else if (authContext.userRole === 2) {
+        navigate('/dashboard-voae/main');
+      } else {
+        navigate('/');
+      }
+    }
+  }, [authContext, navigate]);
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();

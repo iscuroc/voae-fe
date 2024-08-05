@@ -25,7 +25,6 @@ export const voaeRoutes = {
   "Actividades": "/dashboard-voae/gestion-actividad",
   "Actividades Disponibles": "/dashboard-voae/actividad-en-curso",
   "Crear Actividad": "/dashboard-voae/crear-actividad",
-  "Novedades": "/dashboard-voae/novedades-admin",
   "Horas por Usuario": "/dashboard-voae/horas-voae",
   "Gestión de Usuarios" : "/dashboard-voae/gestion-usuarios"
    // Agrega más rutas según sea necesario
