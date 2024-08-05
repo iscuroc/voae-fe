@@ -321,7 +321,7 @@ const CrearActividad = () => {
 
           {/* Foreign Careers IDs */}
           <div className="flex flex-col">
-            <label htmlFor="careersSelect" className="text-sm font-bold text-gray-700 mb-1">Seleccionar Carrera:</label>
+            <label htmlFor="careersSelect" className="text-sm font-bold text-gray-700 mb-1">Seleccionar Carreras admitidas:</label>
             <select
               id="careersSelect"
               value={selectedCareer}
