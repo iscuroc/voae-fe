@@ -9,6 +9,8 @@ export default function PaginaMisCertificados() {
         document.title = "Mis Certificados - UNAH CUROC";
     }, []);
 
+          
+    //tabla de datos
     const initialData = [
       
       { nombre: "Charla", encargado: "Juan Perez",  ambito: "Cultural", fecha: "2024-07-12 01:14:23" },
@@ -65,7 +67,7 @@ export default function PaginaMisCertificados() {
         setPaginaInicial(1); // Reiniciar la página actual al aplicar filtros
     };
     
-
+//filtros
     return (
         <>
             <div className="container mx-auto p-2">
@@ -127,11 +129,6 @@ export default function PaginaMisCertificados() {
                                     </NavLink>
                                     </td>
 
-
-
-
-
-                                       
                                     </tr>
                                 ))}
 
