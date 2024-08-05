@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import logo1 from '../assets/logo.png';
-import logo2 from '../assets/logo2.jpeg';
-import axiosInstance from '../api/axiosInstance';
+import logo1 from '../../assets/logo.png';
+import logo2 from '../../assets/logo2.jpeg';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FiLoader } from 'react-icons/fi';
-import { Carrera, obtenerTodasLasCarreras } from '../api/consultas';
+import axiosInstance from '../../api/axiosInstance';
+import { Carrera, obtenerTodasLasCarreras } from '../../api/servicios/carreras';
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
 
@@ -28,8 +28,14 @@ const DetallesRegistro: React.FC = () => {
     useEffect(() => {
         document.title = "Registro - UNAH COPAN";
     }, []);
-
+    
     const navigate = useNavigate();
+    const [errors, setErrors] = useState({
+        password: '',
+        passwordConfirmation: '',
+        general: ''
+    });
+    const [isLoading, setIsLoading] = useState(false);
 
     const [formData, setFormData] = useState<FormData>({
         names: '',
@@ -42,14 +48,6 @@ const DetallesRegistro: React.FC = () => {
     });
 
     const [carrera, setCarreras] = useState<Carrera[]>([]);
-    const [errors, setErrors] = useState({
-        password: '',
-        passwordConfirmation: '',
-        general: ''
-    });
-
-    const [isLoading, setIsLoading] = useState(false);
-
     useEffect(() => {
         // Cargar carreras
         const fetchcarrera = async () => {
@@ -95,9 +93,9 @@ const DetallesRegistro: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (validateForm()) {
-            setIsLoading(true); // Start loading
+            setIsLoading(true); 
             try {
-                await axiosInstance.post('/confirmuser', formData);
+                await axiosInstance.post('/auth/confirm', formData); 
                 navigate('/login');
             } catch (error: unknown) {
                 if (axios.isAxiosError(error)) {

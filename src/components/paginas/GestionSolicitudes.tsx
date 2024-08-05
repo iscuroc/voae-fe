@@ -1,130 +1,159 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
-import FiltroGS from "../FiltroGestionSolicitudes";
+import { NavLink, useLocation } from "react-router-dom";
 import Pagination from "../Pagination";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
+import { Activity, ObtenerActividadesPorEstado} from "../../api/servicios/actividades";
+import Skeleton from "../Skeleton";
+import FiltroGS from "../filtros/FiltroGestionSolicitudes";
+import { EtiquetasÁmbitosActividad, EtiquetasEstadoActividad, formatDate } from "../../api/servicios/enums";
 
 const GestionSolicitudes: React.FC = () => {
     useEffect(() => {
-        document.title = "Activdades Solicitadas - UNAH COPAN";
+        document.title = "Actividades Solicitadas - UNAH COPAN";
     }, []);
 
-    
-    const initialData = [
-        // Tu array de datos aquí
-        { estudiante: "Jose Alfredo Herrera Posadas", coordinador: "Odair Sauceda", carrera: "Ingenieria en sistemas", ambito: "Academico", inicio: "2024-07-12 01:14:23", final: "20/06/2025 7:00pm", estado: "Pendiente" },
-        {estudiante: "Juan Carlos Rodriguez Lopez", coordinador: "Odair Sauceda", carrera: "Ingenieria en sistemas", ambito: "Social", inicio: "2024-07-10 01:14:23", final: "20/06/2025 7:00pm", estado: "Aprobado" },
-        {estudiante: "Naria Alejandra Garcia Perez", coordinador: "Odair Sauceda", carrera: "Ingenieria en sistemas", ambito: "Academico", inicio: "2024-07-05 01:14:23", final: "20/06/2025 7:00pm", estado: "Rechazado" },
-       
-    ];
-    const [filtrarData, setFiltrarData] = useState(initialData); // Estado para datos filtrados
-    const [PaginaInicial, setPaginaInicial] = useState(1);
-    
-    //funcion de paginacion
+    const [filtrarData, setFiltrarData] = useState<Activity[]>([]); // Estado para datos filtrados
+    const [loading, setLoading] = useState<boolean>(true); // Estado para manejar la carga miestra trae los datos del backend
+    const [error, setError] = useState<string | null>(null); // Estado para manejar errores
+    const [paginaInicial, setPaginaInicial] = useState(1); // Página inicial para paginación
+    const location = useLocation(); //(trae la url y ayuda redigir a ptr pagina dependiendo el path)
+
+    // obtener los datos
+    useEffect(() => {
+        const obtenerDatos = async () => {
+            setLoading(true); // Inicia la carga
+            try {
+                const data = await ObtenerActividadesPorEstado(0); // el numero es el estado que queres filtrar en el pagina de enums.ts estan los numeros de los estados
+                console.log("Datos obtenidos de la API:", data); // Verifica todos los datos obtenidos
+                setFiltrarData(data);
+            } catch (error) {
+                setError('Failed to fetch activities');
+            } finally {
+                setLoading(false); // Finaliza la carga
+            }
+        };
+        obtenerDatos();
+    }, []);
+
+    // Función para aplicar filtro
+    const aplicarFiltros = (carrera: string, ambito: string, fechaInicio: string, fechaFin: string, estado: string) => {
+
+        const fechaInicioDate = fechaInicio ? new Date(fechaInicio.split('T')[0]) : null;
+        const fechaFinDate = fechaFin ? new Date(fechaFin.split('T')[0]) : null;
+
+        const filtrar = filtrarData.filter(item => {
+            const inicioDate = new Date(item.startDate.split('T')[0]);
+            return (
+                (carrera === "" || item.foreingCareers.some(fc => fc.name === carrera)) &&
+                (ambito === "" || item.scopes.some(s => EtiquetasÁmbitosActividad[s.scope] === ambito)) &&
+                (!fechaInicioDate || inicioDate >= fechaInicioDate) &&
+                (!fechaFinDate || inicioDate <= fechaFinDate) &&
+                (estado === "" || EtiquetasEstadoActividad[item.activityStatus] === estado)
+            );
+        });
+
+        setFiltrarData(filtrar);
+        setPaginaInicial(1); // Reiniciar la página actual al aplicar filtros
+    };
+
+    // Paginación
     const itemsPerPage = 10;
-    const TotalPaginas = Math.ceil(filtrarData.length / itemsPerPage); // Usar FiltrarData en lugar de initialData
+    const totalPaginas = Math.ceil(filtrarData.length / itemsPerPage); // Usar FiltrarData en lugar de initialData
 
     const handlePageChange = (page: number) => {
         setPaginaInicial(page);
     };
 
-    const paginatedData = filtrarData.slice((PaginaInicial - 1) * itemsPerPage, PaginaInicial * itemsPerPage); // Usar FiltrarData en lugar de initialData
+    const paginatedData = filtrarData.slice((paginaInicial - 1) * itemsPerPage, paginaInicial * itemsPerPage); // Usar FiltrarData en lugar de initialData
 
-     // Función para aplicar filtro
-     const aplicarFiltros = (carrera: string, ambito: string, fechaInicio: string, fechaFin: string, estado: string) => {
-        const fechaInicioDate = fechaInicio ? new Date(fechaInicio.split('T')[0]) : null; // Obtener solo la fecha
-        const fechaFinDate = fechaFin ? new Date(fechaFin.split('T')[0]) : null; // Obtener solo la fecha
-    
-        const filtrar = initialData.filter(item => {
-            const inicioDate = new Date(item.inicio.split(' ')[0]); // Obtener solo la fecha desde la cadena de inicio
-    
-            return (
-                (carrera === "" || item.carrera === carrera) &&
-                (ambito === "" || item.ambito === ambito) &&
-                (!fechaInicioDate || inicioDate >= fechaInicioDate) &&
-                (!fechaFinDate || inicioDate <= fechaFinDate) &&
-                (estado === "" || item.estado === estado) 
-            );
-        });
-    
-        setFiltrarData(filtrar);
-        setPaginaInicial(1); // Reiniciar la página actual al aplicar filtros
-    };
-    
+
+
+    if (loading) {
+        return <Skeleton/>; // Muestra un mensaje de carga
+    }
+
+    if (error) {
+        return <div>Error: {error}</div>; // Muestra un error si ocurre
+    }
+
+    // Mostrar los datos
     return (
         <div className="container mx-auto p-4">
             <div className="block md:flex items-center justify-center mb-4 mt-2">
-            <FiltroGS aplicarFiltros={aplicarFiltros} />
+                <FiltroGS aplicarFiltros={aplicarFiltros} />
             </div>
 
             <div className="rounded-xl">
                 <div className="overflow-x-auto">
                     <table className="border-collapse block md:table min-w-full table-auto bg-white border border-gray-200">
                         <thead className="block md:table-header-group">
-                            <tr className="border text-sm border-gray-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto md:relative bg-yellow-500 text-black">
-                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Estudiante</th>
-                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Coordinador</th>
+                            <tr className="border text-xs border-gray-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto md:relative bg-yellow-500 text-black">
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Actividad</th>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Solicitante</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Carrera</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Ámbito</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Fecha Inicio</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Fecha Final</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Estado</th>
-                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Revision</th>
-                                </tr>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Revisión</th>
+                            </tr>
                         </thead>
                         <tbody className="block md:table-row-group text-sm md:text-xs">
                             {paginatedData.map((item, index) => (
                                 <tr key={index} className="bg-yellow-500 md:bg-white text-left md:text-center hover:bg-gray-200 transition-colors duration-200 border border-gray-500 md:border-none block md:table-row">
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Estudiante:</span>{item.estudiante}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Actividad:</span>{item.name}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Coordinador:</span>{item.coordinador}
-                                    </td>
-                                   <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Carrera:</span>{item.carrera}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Solicitante:</span>{item.requestedBy.names} {item.requestedBy.lastNames}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Ámbito:</span>{item.ambito}
-                                    </td>
-                                   <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Fecha Inicio:</span>{item.inicio}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Carrera:</span>{item.foreingCareers.map(fc => fc.name).join(", ")}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Fecha Final:</span>{item.final}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Ámbito:</span>{item.scopes.map(s => EtiquetasÁmbitosActividad[s.scope] || s.scope).join(", ")}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Estado:</span>{item.estado}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Fecha Inicio:</span>{formatDate(item.startDate)}
+                                    </td>
+                                    <td className="p-1 md:border md:border-gray-500 block md:table-cell">
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Fecha Final:</span>{formatDate(item.endDate)}
+                                    </td>
+                                    <td className="p-1 md:border md:border-gray-500 block md:table-cell">
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Estado:</span>{EtiquetasEstadoActividad[item.activityStatus] || item.activityStatus}
                                     </td>
                                     <td className="p-1 md:border text-center md:border-gray-500 block md:table-cell relative">
-                                    <NavLink
-                                        to={
-                                            location.pathname.includes('dashboard-coordinador')
-                                                ? "#"
-                                                : location.pathname.includes('dashboard-estudiante')
-                                                    ? "/dashboard-estudiante/detalles-actividad"
-                                                    : "/dashboard-voae/gestion-solicitud"
-                                        }
-                                        className="flex justify-center items-center font-bold group"
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={32} height={32} color={"#000000"} fill={"none"} className="group-hover:text-blue-500 hidden md:block">
-                                                <path d="M21.544 11.045C21.848 11.4713 22 11.6845 22 12C22 12.3155 21.848 12.5287 21.544 12.955C20.1779 14.8706 16.6892 19 12 19C7.31078 19 3.8221 14.8706 2.45604 12.955C2.15201 12.5287 2 12.3155 2 12C2 11.6845 2.15201 11.4713 2.45604 11.045C3.8221 9.12944 7.31078 5 12 5C16.6892 5 20.1779 9.12944 21.544 11.045Z" stroke="currentColor" strokeWidth="1.5" />
-                                                <path d="M15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15C13.6569 15 15 13.6569 15 12Z" stroke="currentColor" strokeWidth="1.5" />
-                                            </svg>
-                                            <span className="hover:text-blue-500 group-hover:text-blue-500 md:hidden">Ver detalles</span>
-                                    </NavLink>
-                                       
+
+                                        <NavLink
+                                            to={
+                                                location.pathname.includes('dashboard-coordinador')
+                                                    ? "#"
+                                                    : location.pathname.includes('dashboard-estudiante')
+                                                        ? "#"
+                                                        : `/dashboard-voae/solicitudes/${item.slug}`
+                                            }
+                                            className="flex justify-center items-center font-bold group"
+                                        >
+                                            <MdOutlineRemoveRedEye className="group-hover:text-blue-500 hidden md:block h-7 w-7" />
+
+                                            <span className="hover:text-blue-500 group-hover:text-blue-500 md:hidden">Revisar</span>
+                                        </NavLink>
+
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
+                <div className="flex justify-center mt-4">
+                    <Pagination PaginaInicial={paginaInicial} TotalPaginas={totalPaginas} onPageChange={handlePageChange} />
+                </div>
             </div>
-
-            <Pagination PaginaInicial={PaginaInicial} TotalPaginas={TotalPaginas} onPageChange={handlePageChange} />
         </div>
     );
 };
 
 export default GestionSolicitudes;
+
+
 

@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../api/axiosInstance';
-import logo1 from '../assets/logo.png';
-import logo2 from '../assets/logo2.jpeg';
-import useAuth from '../api/useAuth';
+import logo1 from '../../assets/logo.png';
+import logo2 from '../../assets/logo2.jpeg';
 import { FiLoader } from 'react-icons/fi';
+import axiosInstance from '../../api/axiosInstance';
+import useAuth from '../../api/useAuth';
+import { AuthContext } from '../../api/AuthContext';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -14,17 +15,31 @@ const Login: React.FC = () => {
 
   const navigate = useNavigate();
   const { login } = useAuth();
+  const authContext = useContext(AuthContext);
 
   useEffect(() => {
     document.title = "Login - UNAH COPAN";
-  }, []);
+
+    // Redirigir al dashboard respectivo si ya está logueado
+    if (authContext?.accessToken) {
+      if (authContext.userRole === 0) {
+        navigate('/dashboard-estudiante/main');
+      } else if (authContext.userRole === 1) {
+        navigate('/dashboard-coordinador/main');
+      } else if (authContext.userRole === 2) {
+        navigate('/dashboard-voae/main');
+      } else {
+        navigate('/');
+      }
+    }
+  }, [authContext, navigate]);
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
     setIsLoading(true);
     setError('');
     try {
-      const response = await axiosInstance.post('/login', {
+      const response = await axiosInstance.post('/auth/login', {
         email,
         password,
       });
@@ -56,7 +71,7 @@ const Login: React.FC = () => {
           <div className="hidden md:flex items-center justify-center">
             <img src={logo2} alt="Logo 2" className="w-48 h-32 md:w-80 md:h-52" />
           </div>
-          <div className="bg-yellow-500 w-full  sm:w-8/12 md:w-6/12 lg:w-5/12 xl:w-4/12 shadow-2xl rounded-lg p-4 sm:p-4">
+          <div className="bg-yellow-500 w-full sm:w-8/12 md:w-6/12 lg:w-5/12 xl:w-4/12 shadow-2xl rounded-lg p-4 sm:p-4">
             <form className="p-1" onSubmit={handleLogin}>
               <div className="flex items-center text-lg mb-6 md:mb-8 relative">
                 <svg className="absolute ml-3" width="24" viewBox="0 0 24 24">
@@ -99,6 +114,9 @@ const Login: React.FC = () => {
             <div className="flex flex-col items-center space-y-2 mt-2">
               <a href="/registro" className="text-sm text-blue-900 hover:underline">¿No tienes una cuenta? Regístrate aquí</a>
             </div>
+            <div className="flex flex-col items-center space-y-2 mt-2">
+              <a href="/forgot-password" className="text-sm text-blue-900 hover:underline">¿Has olvidado la contraseña? Recupérala</a>
+            </div>
           </div>
         </div>
       </div>
@@ -107,3 +125,5 @@ const Login: React.FC = () => {
 };
 
 export default Login;
+
+

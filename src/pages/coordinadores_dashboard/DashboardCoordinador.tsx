@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { FiPlusCircle, FiClock, FiInfo, FiUsers, FiEdit } from "react-icons/fi";
+import { FiPlusCircle, FiClock, FiUsers, FiEdit } from "react-icons/fi";
 import DashboardButton from "../../components/DashboardButton";
 import { coordinadorRoutes, CoordinadorRouteKeys } from "../../api/routesConfig";
 
@@ -12,14 +12,10 @@ const DashboardCoordinador: React.FC = () => {
     switch (title) {
       case "Crear Actividad":
         return <FiPlusCircle size={32} />;
-      case "Actividades en Curso":
-        return <FiClock size={32} />;
-      case "Actividades Finalizadas":
+      case "Actividades Disponibles":
         return <FiClock size={32} />;
       case "Gestion de Actividades":
         return <FiEdit size={32} />;
-      case "Novedades":
-        return <FiInfo size={32} />;
       case "Horas por Estudiante":
         return <FiUsers size={32} />;
       default:

@@ -78,10 +78,7 @@ const UnirseActividad: React.FC = () => {
                       <td className="border px-4 py-2">01/08/2024 6:00 pm</td>
                     </tr>
                    
-                    <tr>
-                      <td className="border px-4 py-2 bg-yellow-500">Estado</td>
-                      <td className="border px-4 py-2">Activo</td>
-                    </tr>
+                    
                     <tr>
                       <td className="border px-4 py-2 bg-yellow-500">Observaciones</td>
                       <td className="border px-4 py-2">Ninguna</td>
@@ -89,7 +86,7 @@ const UnirseActividad: React.FC = () => {
                   </tbody>
                 </table>
               </div>
-              <div className="flex flex-col justify-between ml-4 mt-4 lg:mt-0">
+              <div className="flex flex-col justify-between ml-4 ">
                 <div className="mb-4">
                   <h2 className='text-white'>Seleccione las horas que desea</h2>
                   <div className="flex items-center mb-2">
@@ -114,24 +111,18 @@ const UnirseActividad: React.FC = () => {
                   </div>
                 </div>
                 <button
-                  onClick={handleGoBack}
-                  className="bg-red-500 text-white py-2 px-4 rounded shadow hover:bg-red-600 focus:outline-none mb-4"
-                >
-                  Volver
-                </button>
-                <button
                   onClick={handleJoinActivity}
                   className="bg-green-500 text-white py-2 px-4 rounded shadow hover:bg-green-600 focus:outline-none"
                 >
                   Unirse a la Actividad
                 </button>
-                <div className="mt-4">
-                  <textarea
-                    className="w-full border rounded-lg p-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    rows={4}
-                    placeholder="Ingrese sus observaciones aquí"
-                  ></textarea>
-                </div>
+                <button
+                  onClick={handleGoBack}
+                  className="bg-red-500 text-white py-2 px-4 rounded shadow hover:bg-red-600 focus:outline-none "
+                >
+                  Volver
+                </button>
+                
               </div>
             </div>
           </div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import Filtro from "../Filtros";
 import Pagination from "../Pagination";
+import Filtro from "../filtros/Filtros";
 
 const PaginaGestionActividad: React.FC = () => {
     useEffect(() => {

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { FiSettings, FiEdit, FiPlusCircle, FiInfo, FiUsers, FiClock } from "react-icons/fi";
+import { FiSettings, FiEdit, FiPlusCircle, FiUsers, FiClock } from "react-icons/fi";
 import DashboardButton from "../../components/DashboardButton";
 import { voaeRoutes, VoaeRouteKeys } from "../../api/routesConfig";
 
@@ -12,17 +12,15 @@ const DashboardAdminVoae: React.FC = () => {
     switch (title) {
       case "Gestion de Solicitudes":
         return <FiSettings size={32} />;
-      case "Gestion de Actividades":
+      case "Actividades":
         return <FiEdit size={32} />;
-        case "Actividades en Curso":
+        case "Actividades Disponibles":
         return <FiClock size={32} />;
-        case "Actividades Finalizadas":
-          return <FiClock size={32} />;
       case "Crear Actividad":
         return <FiPlusCircle size={32} />;
-      case "Novedades":
-        return <FiInfo size={32} />;
       case "Horas por Usuario":
+        return <FiUsers size={32} />;
+      case "Gestión de Usuarios":
         return <FiUsers size={32} />;
       default:
         return null;
