@@ -117,7 +117,7 @@ const Sidebar: React.FC = () => {
           <li>
             <a
               onClick={logout}
-              href="/"
+              href="/login"
               className={`flex items-center py-3 px-6 hover:bg-red-700`}
             >
               <CiLogout className="h-6 w-6 mr-2" />

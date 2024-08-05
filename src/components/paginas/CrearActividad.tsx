@@ -165,7 +165,7 @@ const CrearActividad = () => {
       ]
     });
   };
-  
+
 
   const handleRemoveOrganizer = (index: number) => {
     // Eliminar organizadores adicionales, pero no el primer organizador
@@ -180,7 +180,7 @@ const CrearActividad = () => {
   const handleOrganizerChange = (index: number, event: React.ChangeEvent<HTMLSelectElement>) => {
     const { id, value } = event.target;
     const updatedValue = value === "" ? null : Number(value);
-  
+
     const updatedOrganizers = formData.organizers.map((org, i) => {
       if (i === index) {
         if (id === 'type') {
@@ -193,10 +193,10 @@ const CrearActividad = () => {
       }
       return org;
     });
-  
+
     setFormData({ ...formData, organizers: updatedOrganizers });
   };
-  
+
 
   const handleCareerChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCareer(parseInt(e.target.value, 10));
@@ -562,7 +562,7 @@ const CrearActividad = () => {
           </div>
 
           <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-xl font-bold mb-4 text-gray-800">Asignación de Coordinador</h2>
+            <h2 className="text-xl font-bold mb-4 text-gray-800">Asignación de Encargado</h2>
 
             {/* Carrera para Coordinador */}
             <div className="space-y-4">
@@ -618,6 +618,7 @@ const CrearActividad = () => {
               </div>
             </div>
           </div>
+
           {/* Total Spots */}
           <div>
             <label htmlFor="totalSpots" className="block text-sm font-bold mb-1">Cupos Totales:</label>
@@ -631,72 +632,72 @@ const CrearActividad = () => {
             />
           </div>
 
-         {/* Organizers */}
-<div className="flex flex-col">
-  <label className="block text-sm font-bold mb-1">Entidad Responsable:</label>
+          {/* Organizers */}
+          <div className="flex flex-col">
+            <label className="block text-sm font-bold mb-1">Entidad Responsable:</label>
 
-  {formData.organizers.map((organizer, index) => (
-    <div key={index} className="flex space-x-4 mb-2 items-center">
-      <select
-        id="type"
-        value={organizer.type}
-        onChange={(e) => handleOrganizerChange(index, e)}
-        className="border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      >
-        <option value={0}>Carrera del CUROC</option>
-        <option value={1}>Organización</option>
-      </select>
-      {/* Render condicionalmente el select para carrera u organización basado en type */}
-      {organizer.type === 0 ? (
-        <select
-          id="careersSelect"
-          value={organizer.careerId ?? ''}
-          onChange={(e) => handleOrganizerChange(index, e)}
-          className="border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="" disabled>Seleccione una carrera</option>
-          {carreras.map(carrera => (
-            <option key={carrera.id} value={carrera.id}>
-              {carrera.name}
-            </option>
-          ))}
-        </select>
-      ) : (
-        <select
-          id="organizationId"
-          value={organizer.organizationId ?? ''}
-          onChange={(e) => handleOrganizerChange(index, e)}
-          className="border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="" disabled>Seleccione una organización</option>
-          {organizacion.map(org => (
-            <option key={org.id} value={org.id}>
-              {org.name}
-            </option>
-          ))}
-        </select>
-      )}
+            {formData.organizers.map((organizer, index) => (
+              <div key={index} className="flex space-x-4 mb-2 items-center">
+                <select
+                  id="type"
+                  value={organizer.type}
+                  onChange={(e) => handleOrganizerChange(index, e)}
+                  className="border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value={0}>Carrera del CUROC</option>
+                  <option value={1}>Organización</option>
+                </select>
+                {/* Render condicionalmente el select para carrera u organización basado en type */}
+                {organizer.type === 0 ? (
+                  <select
+                    id="careersSelect"
+                    value={organizer.careerId ?? ''}
+                    onChange={(e) => handleOrganizerChange(index, e)}
+                    className="border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="" disabled>Seleccione una carrera</option>
+                    {carreras.map(carrera => (
+                      <option key={carrera.id} value={carrera.id}>
+                        {carrera.name}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <select
+                    id="organizationId"
+                    value={organizer.organizationId ?? ''}
+                    onChange={(e) => handleOrganizerChange(index, e)}
+                    className="border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="" disabled>Seleccione una organización</option>
+                    {organizacion.map(org => (
+                      <option key={org.id} value={org.id}>
+                        {org.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
 
-      {index !== 0 && (
-        <button
-          type="button"
-          onClick={() => handleRemoveOrganizer(index)}
-          className="bg-red-600 text-white py-1 px-2 rounded-lg hover:bg-red-700 transition duration-200"
-        >
-          Eliminar
-        </button>
-      )}
-    </div>
-  ))}
+                {index !== 0 && (
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveOrganizer(index)}
+                    className="bg-red-600 text-white py-1 px-2 rounded-lg hover:bg-red-700 transition duration-200"
+                  >
+                    Eliminar
+                  </button>
+                )}
+              </div>
+            ))}
 
-  <button
-    type="button"
-    onClick={handleAddOrganizer}
-    className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200"
-  >
-    Agregar Entidad Extra
-  </button>
-</div>
+            <button
+              type="button"
+              onClick={handleAddOrganizer}
+              className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200"
+            >
+              Agregar Entidad Extra
+            </button>
+          </div>
 
           {/* Submit Button */}
           <div className="flex justify-center">
