@@ -1,24 +1,32 @@
-import axiosInstance from '../../src/api/axiosInstance';
+import axiosInstance from "../axiosInstance";
 
 export interface Scope {
     scope: number;
     hours: number;
 }
 
+interface Organizer {
+    type: number;
+    careerId: number | null;
+    organizationId: number | null;
+  }
+
 export interface Actividad {
     name: string;
     description: string;
-    mainCareerId: number;
-    availableCareers: number[];
+    foreignCareersIds: number[];
     startDate: string;
     endDate: string;
-    goals: string;
+    goals: string[];
     scopes: Scope[];
-    careerTeacherId: number;
-    careerStudentId: number;
+    supervisorId: number;
+    coordinatorId: number;
     totalSpots: number;
     location: string;
     mainActivities: string[];
+    organizers: Organizer[];
+    supervisorText?: string;  // Agregar esta línea
+    coordinatorText?: string; // Agregar esta línea
 }
 
 export const crearActividad = async (actividad: Actividad) => {

@@ -1,43 +1,133 @@
-import React, { useState } from 'react';
-import { crearActividad, Actividad } from '../../servicios/actividadservice';
+import React, { useEffect, useState } from 'react';
+import { Actividad, crearActividad } from '../../api/servicios/actividadPost';
+import { Carrera, obtenerEstudiantesPorCarreras, obtenerProfesorPorCarreras, obtenerTodasLasCarreras, User } from '../../api/servicios/carreras';
+import { EtiquetasÁmbitosActividad } from '../../api/servicios/enums';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { organizations, obtenerLasOrganizaciones } from '../../api/servicios/organizaciones';
+import { FiLoader } from 'react-icons/fi';
 
 const CrearActividad = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<Actividad>({
     name: '',
     description: '',
-    mainCareerId: '',
-    availableCareers: [] as number[][], 
+    foreignCareersIds: [], // Asegúrate de que coincida con el tipo number[]
     startDate: '',
     endDate: '',
-    goals: '',
-    scopes: [{ scope: '', hours: '' }, { scope: '', hours: '' }],
+    goals: [''],
+    scopes: [{ scope: 0, hours: 0 }],
+    supervisorId: 0,
+    coordinatorId: 0,
+    totalSpots: 0,
     location: '',
     mainActivities: [''],
-    careerTeacherId: '',
-    careerStudentId: '',
-    totalSpots: '',
+    organizers: [{ careerId: null, organizationId: 0, type: 1 }],
+    supervisorText: '',   // Añadir estado para el texto del supervisor
+    coordinatorText: '',  // Añadir estado para el texto del coordinador
   });
+  const [selectedCareer, setSelectedCareer] = useState<number | 'none'>('none');
+  const [selectedSupervisorCarreraId, setSelectedSupervisorCarreraId] = useState<number | undefined>(undefined);
+  const [selectedCoordinatorCarreraId, setSelectedCoordinatorCarreraId] = useState<number | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [carreras, setCarreras] = useState<Carrera[]>([]);
+  const [organizacion, setOrganizacion] = useState<organizations[]>([]);
+  const [teachers, setTeachers] = useState<User[]>([]);
+  const [students, setStudents] = useState<User[]>([]);
+  useEffect(() => {
+    const obtenerCarreras = async () => {
+      try {
+        const response = await obtenerTodasLasCarreras();
+        setCarreras(response);
+      } catch (error) {
+        console.error('Error fetching careers:', error);
+      }
+    };
+
+    obtenerCarreras();
+  }, []);
+
+  useEffect(() => {
+    const obtenerOrganizaciones = async () => {
+      try {
+        const response = await obtenerLasOrganizaciones();
+        setOrganizacion(response);
+      } catch (error) {
+        console.error('Error fetching careers:', error);
+      }
+    };
+
+    obtenerOrganizaciones();
+  }, []);
+
+  // Proporcionar un valor predeterminado en caso de undefined
+  const supervisorText = formData.supervisorText ?? '';
+  const coordinatorText = formData.coordinatorText ?? '';
+
+  useEffect(() => {
+    const fetchTeachers = async () => {
+      if (selectedSupervisorCarreraId !== undefined) {
+        try {
+          const response = await obtenerProfesorPorCarreras(selectedSupervisorCarreraId, supervisorText);
+          setTeachers(response);
+        } catch (error) {
+          console.error('Error fetching teachers:', error);
+        }
+      }
+    };
+
+    fetchTeachers();
+  }, [selectedSupervisorCarreraId, supervisorText]);
+
+  useEffect(() => {
+    const fetchStudents = async () => {
+      if (selectedCoordinatorCarreraId !== undefined) {
+        try {
+          const response = await obtenerEstudiantesPorCarreras(selectedCoordinatorCarreraId, coordinatorText);
+          setStudents(response);
+        } catch (error) {
+          console.error('Error fetching students:', error);
+        }
+      }
+    };
+
+    fetchStudents();
+  }, [selectedCoordinatorCarreraId, coordinatorText]);
+
+
+  const handleSupervisorCarreraChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSupervisorCarreraId(Number(e.target.value));
+  };
+
+  const handleCoordinatorCarreraChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCoordinatorCarreraId(Number(e.target.value));
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target;
     setFormData(prevState => ({ ...prevState, [id]: value }));
   };
 
-  const handleCareerChange = (e: React.ChangeEvent<HTMLSelectElement>, index: number) => {
-    const selectedOptions = Array.from(e.target.selectedOptions, option => parseInt(option.value, 10));
-    const newAvailableCareers = [...formData.availableCareers];
-    newAvailableCareers[index] = selectedOptions; 
-    setFormData(prevState => ({
-      ...prevState,
-      availableCareers: newAvailableCareers,
-    }));
+  const handleScopeChange = (index: number, e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target;
+    const newScopes = [...formData.scopes];
+    newScopes[index] = { ...newScopes[index], scope: parseInt(value, 10) };
+    setFormData(prevState => ({ ...prevState, scopes: newScopes }));
   };
 
-  const handleScopeChange = (index: number, e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
-    const { id, value } = e.target;
+
+  const handleHoursChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
     const newScopes = [...formData.scopes];
-    newScopes[index] = { ...newScopes[index], [id]: value };
-    setFormData(prevState => ({ ...prevState, scopes: newScopes }));
+    newScopes[index].hours = parseInt(event.target.value, 10); // Convertir a número
+    setFormData({ ...formData, scopes: newScopes });
+  };
+
+  const handleAddScope = () => {
+    setFormData(prevState => ({
+      ...prevState,
+      scopes: [...prevState.scopes, { scope: 0, hours: 0 }]
+    }));
   };
 
   const handleAddActivity = () => {
@@ -47,6 +137,18 @@ const CrearActividad = () => {
     }));
   };
 
+  const handleAddGoals = () => {
+    setFormData(prevState => ({
+      ...prevState,
+      goals: [...prevState.goals, '']
+    }));
+  };
+  const handleGoalChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    const newGoals = [...formData.goals];
+    newGoals[index] = value;
+    setFormData(prevState => ({ ...prevState, goals: newGoals }));
+  };
   const handleActivityChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     const newActivities = [...formData.mainActivities];
@@ -54,292 +156,553 @@ const CrearActividad = () => {
     setFormData(prevState => ({ ...prevState, mainActivities: newActivities }));
   };
 
+  const handleAddOrganizer = () => {
+    setFormData({
+      ...formData,
+      organizers: [
+        ...formData.organizers,
+        { careerId: 0, organizationId: 0, type: 0 } // Inicializa con valores por defecto numéricos
+      ]
+    });
+  };
+  
+
+  const handleRemoveOrganizer = (index: number) => {
+    // Eliminar organizadores adicionales, pero no el primer organizador
+    if (index !== 0) {
+      setFormData(prevState => ({
+        ...prevState,
+        organizers: prevState.organizers.filter((_, i) => i !== index)
+      }));
+    }
+  };
+
+  const handleOrganizerChange = (index: number, event: React.ChangeEvent<HTMLSelectElement>) => {
+    const { id, value } = event.target;
+    const updatedValue = value === "" ? null : Number(value);
+  
+    const updatedOrganizers = formData.organizers.map((org, i) => {
+      if (i === index) {
+        if (id === 'type') {
+          return { ...org, type: Number(value), careerId: null, organizationId: null };
+        } else if (id === 'careersSelect') {
+          return { ...org, careerId: updatedValue, organizationId: null };
+        } else if (id === 'organizationId') {
+          return { ...org, organizationId: updatedValue, careerId: null };
+        }
+      }
+      return org;
+    });
+  
+    setFormData({ ...formData, organizers: updatedOrganizers });
+  };
+  
+
+  const handleCareerChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCareer(parseInt(e.target.value, 10));
+  };
+
+  const handleAddCareer = () => {
+    if (selectedCareer !== 'none' && !formData.foreignCareersIds.includes(selectedCareer)) {
+      setFormData(prevState => ({
+        ...prevState,
+        foreignCareersIds: [...prevState.foreignCareersIds, selectedCareer]
+      }));
+    }
+    setSelectedCareer('none'); // Reset selection
+  };
+
+  const handleRemoveCareer = (id: number) => {
+    setFormData(prevState => ({
+      ...prevState,
+      foreignCareersIds: prevState.foreignCareersIds.filter(careerId => careerId !== id)
+    }));
+  };
+
+  const handleRemoveScope = (index: number) => {
+    // Eliminar el ámbito en el índice especificado, excepto si es el primer ámbito
+    if (index !== 0) {
+      setFormData(prevState => ({
+        ...prevState,
+        scopes: prevState.scopes.filter((_, i) => i !== index)
+      }));
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const startDate = new Date(formData.startDate).toISOString();
+    const endDate = new Date(formData.endDate).toISOString();
 
     const actividad: Actividad = {
       name: formData.name,
       description: formData.description,
-      mainCareerId: parseInt(formData.mainCareerId, 10) || 0,
-      availableCareers: formData.availableCareers.flat(), 
-      startDate: formData.startDate,
-      endDate: formData.endDate,
+      foreignCareersIds: formData.foreignCareersIds,
+      startDate: startDate,
+      endDate: endDate,
       goals: formData.goals,
-      scopes: formData.scopes.map(scope => ({
-        scope: parseInt(scope.scope, 10) || 0,
-        hours: parseInt(scope.hours, 10) || 0
-      })),
-      careerTeacherId: parseInt(formData.careerTeacherId, 10) || 0,
-      careerStudentId: parseInt(formData.careerStudentId, 10) || 0,
-      totalSpots: parseInt(formData.totalSpots, 10) || 0,
+      scopes: formData.scopes,
+      supervisorId: formData.supervisorId,
+      coordinatorId: formData.coordinatorId,
+      totalSpots: formData.totalSpots,
       location: formData.location,
       mainActivities: formData.mainActivities.filter(activity => activity.trim() !== ''),
+      organizers: formData.organizers
     };
-
+    setIsLoading(true);
     try {
       const result = await crearActividad(actividad);
       console.log('Activity created:', result);
 
+      // Reset form data after successful creation
       setFormData({
         name: '',
         description: '',
-        mainCareerId: '',
-        availableCareers: [],
+        foreignCareersIds: [],
         startDate: '',
         endDate: '',
-        goals: '',
-        scopes: [{ scope: '', hours: '' }],
+        goals: [''],
+        scopes: [{ scope: 0, hours: 0 }],
+        supervisorId: 0,
+        coordinatorId: 0,
+        totalSpots: 0,
         location: '',
         mainActivities: [''],
-        careerTeacherId: '',
-        careerStudentId: '',
-        totalSpots: '',
+        organizers: [{ careerId: null, organizationId: 3, type: 1 }]
       });
+      if (location.pathname.includes('/dashboard-voae')) {
+        navigate('/dashboard-voae/main');
+      } else if (location.pathname.includes('/dashboard-estudiante')) {
+        navigate('/dashboard-estudiante/main');
+      } else if (location.pathname.includes('/dashboard-coordinador')) {
+        navigate('/dashboard-coordinador/main');
+      } else {
+        navigate('/');
+      }
+
     } catch (error) {
       console.error('Error creating activity:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-4xl bg-white shadow-md rounded-lg p-6">
-        <h1 className="text-center text-2xl font-bold mb-6">Formulario Crear Actividad</h1>
+      <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-8">
+        <h1 className="text-center text-3xl font-semibold mb-8 text-gray-800">Formulario de solicitud</h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Name */}
-          <div>
-            <label htmlFor="name" className="block text-sm font-semibold mb-1">Nombre Actividad:</label>
+          <div className="flex flex-col">
+            <label htmlFor="name" className="text-sm font-bold text-gray-700 mb-1">Nombre Actividad:</label>
             <input
               type="text"
               id="name"
               value={formData.name}
               onChange={handleChange}
-              className="shadow border rounded w-full py-2 px-3 text-gray-700"
+              className="border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
 
           {/* Description */}
-          <div>
-            <label htmlFor="description" className="block text-sm font-semibold mb-1">Descripción:</label>
+          <div className="flex flex-col">
+            <label htmlFor="description" className="text-sm font-bold text-gray-700 mb-1">Descripción:</label>
             <textarea
               id="description"
               value={formData.description}
               onChange={handleChange}
-              className="shadow border rounded w-full py-2 px-3 text-gray-700"
+              className="border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows={4}
               required
             />
           </div>
 
-          {/* Main Career */}
-          <div>
-            <label htmlFor="mainCareerId" className="block text-sm font-semibold mb-1">Carrera Principal:</label>
+          {/* Foreign Careers IDs */}
+          <div className="flex flex-col">
+            <label htmlFor="careersSelect" className="text-sm font-bold text-gray-700 mb-1">Seleccionar Carrera:</label>
             <select
-              id="mainCareerId"
-              value={formData.mainCareerId}
-              onChange={handleChange}
-              className="shadow border rounded w-full py-2 px-3 text-gray-700"
-              required
+              id="careersSelect"
+              value={selectedCareer}
+              onChange={handleCareerChange}
+              className="border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="">Selecciona una opción</option>
-              <option value="1">Carrera 1</option>
-              <option value="2">Carrera 2</option>
-              <option value="3">Carrera 3</option>
-              <option value="4">Carrera 4</option>
+              <option value="none" disabled>Seleccione una carrera</option>
+              {carreras.map(carrera => (
+                <option key={carrera.id} value={carrera.id}>
+                  {carrera.name}
+                </option>
+              ))}
             </select>
+            <button
+              type="button"
+              onClick={handleAddCareer}
+              className="bg-blue-600 text-white py-2 px-4 rounded-lg mt-2 hover:bg-blue-700 transition duration-200"
+            >
+              Agregar Carrera Extra
+            </button>
           </div>
 
-          {/* Available Careers */}
-          {[...Array(4)].map((_, index) => (
-            <div key={index}>
-              <label htmlFor={`availableCareers-${index}`} className="block text-sm font-semibold mb-1">Carreras Participantes {index + 1}:</label>
-              <select
-                id={`availableCareers-${index}`}
-                multiple
-                value={formData.availableCareers[index]?.map(String) || []} // Convierte los números a cadenas
-                onChange={(e) => handleCareerChange(e, index)}
-                className="shadow border rounded w-full py-2 px-3 text-gray-700"
-                required
-              >
-
-               <option value="">Selecciona una opción</option>
-              <option value="1">Carrera 1</option>
-              <option value="2">Carrera 2</option>
-              <option value="3">Carrera 3</option>
-              <option value="4">Carrera 4</option>
-              </select>
+          {/* Preview Selected Careers */}
+          {formData.foreignCareersIds.length > 0 && (
+            <div className="mt-6">
+              <label className="text-xs font-bold text-gray-700 mb-2">Carreras Seleccionadas:</label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {formData.foreignCareersIds.map(careerId => {
+                  const carrera = carreras.find(c => c.id === careerId);
+                  return (
+                    <div key={careerId} className="bg-gray-200 p-4 rounded-lg shadow-sm text-sm">
+                      <h3 className="font-semibold text-gray-800">{carrera?.name}</h3>
+                      <p className="text-xs text-gray-600">{carrera?.faculty.name}</p>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveCareer(careerId)}
+                        className="mt-2 text-red-500 hover:underline text-xs"
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          ))}
+          )}
 
           {/* Start Date */}
-          <div>
-            <label htmlFor="startDate" className="block text-sm font-semibold mb-1">Fecha Inicio</label>
-            <input
-              type="datetime-local"
-              id="startDate"
-              value={formData.startDate}
-              onChange={handleChange}
-              className="shadow border rounded w-full py-2 px-3 text-gray-700"
-              required
-            />
-          </div>
+          <div className='block md:flex ml-auto w-full gap-4'>
 
-          {/* End Date */}
-          <div>
-            <label htmlFor="endDate" className="block text-sm font-semibold mb-1">Fecha Final</label>
-            <input
-              type="datetime-local"
-              id="endDate"
-              value={formData.endDate}
-              onChange={handleChange}
-              className="shadow border rounded w-full py-2 px-3 text-gray-700"
-              required
-            />
+            <div className="w-full">
+              <label htmlFor="startDate" className="text-sm font-bold text-gray-700 mb-1">Fecha Inicio:</label>
+              <input
+                type="datetime-local"
+                id="startDate"
+                value={formData.startDate}
+                onChange={handleChange}
+                className="border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+
+            {/* End Date */}
+            <div className="w-full">
+              <label htmlFor="endDate" className="text-sm font-bold text-gray-700 mb-1">Fecha Final:</label>
+              <input
+                type="datetime-local"
+                id="endDate"
+                value={formData.endDate}
+                onChange={handleChange}
+                className="border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
           </div>
 
           {/* Goals */}
-          <div>
-            <label htmlFor="goals" className="block text-sm font-semibold mb-1">Metas:</label>
-            <textarea
-              id="goals"
-              value={formData.goals}
-              onChange={handleChange}
-              className="shadow border rounded w-full py-2 px-3 text-gray-700"
-              rows={3}
-              required
-            />
-          </div>
-
-          {/* Scopes */}
-          <div>
-            <label className="block text-sm font-semibold mb-1">Ambito:</label>
-            {formData.scopes.map((scope, index) => (
-              <div key={index} className="flex space-x-4 mb-4">
-                <select
-                  id="scope"
-                  value={scope.scope}
-                  onChange={e => handleScopeChange(index, e)}
-                  className="shadow border rounded w-1/2 py-2 px-3 text-gray-700"
-                  required
-                >
-                   <option value="">Selecciona una opción</option>
-                  <option value="0">Social</option>
-                  <option value="1">Cultural</option>
-                  <option value="2">Sports</option>
-                  <option value="3">Scientific</option>
-                </select>
+          <div className="flex flex-col">
+            <label className="text-sm font-bold text-gray-700 mb-1">Objetivos:</label>
+            {formData.goals.map((goal, index) => (
+              <div key={index} className="flex items-center space-x-4 mb-2">
                 <input
-                  type="number"
-                  id="hours"
-                  value={scope.hours}
-                  onChange={e => handleScopeChange(index, e)}
-                  className="shadow border rounded w-1/2 py-2 px-3 text-gray-700"
-                  min={0}
-                  required
+                  type="text"
+                  value={goal}
+                  onChange={(e) => handleGoalChange(index, e)}
+                  className="border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
             ))}
+            <button
+              type="button"
+              onClick={handleAddGoals}
+              className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200"
+            >
+              Agregar objetivo Extra
+            </button>
           </div>
-        
+
+          {/* Scopes */}
+          <div className="flex flex-col">
+            <label className="text-sm font-bold text-gray-700 mb-1">Ámbitos:</label>
+
+            {formData.scopes.map((scope, index) => (
+              <div key={index} className="flex items-center mb-2">
+                <select
+                  value={scope.scope}
+                  onChange={(e) => handleScopeChange(index, e)}
+                  className="border border-gray-300 rounded-lg py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  {Object.entries(EtiquetasÁmbitosActividad).map(([key, value]) => (
+                    <option key={key} value={key}>
+                      {value}
+                    </option>
+                  ))}
+                </select>
+
+                <input
+                  type="number"
+                  value={scope.hours}
+                  onChange={(e) => handleHoursChange(index, e)}
+                  className="border border-gray-300 rounded-lg w-1/3 py-2 px-3 text-gray-700 ml-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Horas"
+                  min="0"
+                  required
+                />
+
+                {index !== 0 && (
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveScope(index)}
+                    className="bg-red-600 text-white py-1 px-2 rounded-lg ml-2 hover:bg-red-700 transition duration-200"
+                  >
+                    Eliminar
+                  </button>
+                )}
+              </div>
+            ))}
+
+            <button
+              type="button"
+              onClick={handleAddScope}
+              className="bg-blue-600 text-white py-1 px-2 rounded-lg mt-2 hover:bg-blue-700 transition duration-200"
+            >
+              Agregar Ámbito Extra
+            </button>
+          </div>
 
           {/* Location */}
-          <div>
-            <label htmlFor="location" className="block text-sm font-semibold mb-1">Ubicación:</label>
+          <div className="flex flex-col">
+            <label htmlFor="location" className="text-sm font-bold text-gray-700 mb-1">Ubicación:</label>
             <input
               type="text"
               id="location"
               value={formData.location}
               onChange={handleChange}
-              className="shadow border rounded w-full py-2 px-3 text-gray-700"
+              className="border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
 
           {/* Main Activities */}
-          <div>
-            <label className="block text-sm font-semibold mb-1">Actividades Principales:</label>
+          <div className="flex flex-col">
+            <label className="text-sm font-bold text-gray-700 mb-1">Actividades Principales:</label>
             {formData.mainActivities.map((activity, index) => (
-              <div key={index} className="flex space-x-4 mb-4">
+              <div key={index} className="flex items-center space-x-4 mb-2">
                 <input
                   type="text"
                   value={activity}
-                  onChange={e => handleActivityChange(index, e)}
-                  className="shadow border rounded w-full py-2 px-3 text-gray-700"
-                  placeholder={`Actividad ${index + 1}`}
-                  required
+                  onChange={(e) => handleActivityChange(index, e)}
+                  className="border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                {formData.mainActivities.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => setFormData(prevState => ({
-                      ...prevState,
-                      mainActivities: prevState.mainActivities.filter((_, i) => i !== index),
-                    }))}
-                    className="bg-red-500 text-white px-3 py-1 rounded"
-                  >
-                    Remover
-                  </button>
-                )}
               </div>
             ))}
             <button
               type="button"
               onClick={handleAddActivity}
-              className="bg-blue-500 text-white px-4 py-2 rounded"
+              className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200"
             >
-              Agregar Actividad
+              Agregar Actividad Extra
             </button>
           </div>
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl font-bold mb-4 text-gray-800">Asignación de Catedrático</h2>
 
-          {/* Teacher Career ID */}
-            <label htmlFor="careerTeacherId" className="block text-sm font-semibold mb-1">Docente de Carrera:</label>
-          <div>
-            <input
-              type="number"
-              id="careerTeacherId"
-              value={formData.careerTeacherId}
-              onChange={handleChange}
-              className="shadow border rounded w-full py-2 px-3 text-gray-700"
-              min={0}
-              required
-            />
+            {/* Carrera para Supervisor */}
+            <div className="space-y-4">
+              <div className="flex gap-4">
+                <div className="w-full">
+                  <label htmlFor="supervisorCarreraId" className="block text-sm font-semibold mb-1">Carrera:</label>
+                  <select
+                    id="supervisorCarreraId"
+                    value={selectedSupervisorCarreraId || ''}
+                    onChange={handleSupervisorCarreraChange}
+                    className="shadow border rounded w-full py-2 px-3 text-gray-700"
+                    required
+                  >
+                    <option value="">Seleccione una Carrera</option>
+                    {carreras.map(carrera => (
+                      <option key={carrera.id} value={carrera.id}>
+                        {carrera.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="w-full">
+                  <label htmlFor="supervisorText" className="block text-sm font-semibold mb-1">Buscar:</label>
+                  <input
+                    type="text"
+                    id="supervisorText"
+                    value={formData.supervisorText}
+                    placeholder="nombre, apellido, numero de empleado"
+                    onChange={(e) => setFormData({ ...formData, supervisorText: e.target.value })}
+                    className="shadow border rounded w-full py-2 px-3 text-gray-700"
+                  />
+                </div>
+              </div>
+
+              {/* Supervisor ID */}
+              <div>
+                <label htmlFor="supervisorId" className="block text-sm font-semibold mb-1">Catedrático:</label>
+                <select
+                  id="supervisorId"
+                  value={formData.supervisorId}
+                  onChange={handleChange}
+                  className="shadow border rounded w-full py-2 px-3 text-gray-700"
+                  required
+                >
+                  <option value="">Seleccione un Supervisor</option>
+                  {teachers.map(teacher => (
+                    <option key={teacher.id} value={teacher.id}>
+                      {teacher.names} {teacher.lastnames}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
           </div>
 
-          {/* Student Career ID */}
-          <div>
-            <label htmlFor="careerStudentId" className="block text-sm font-semibold mb-1">Estudiante Carrera:</label>
-            <input
-              type="number"
-              id="careerStudentId"
-              value={formData.careerStudentId}
-              onChange={handleChange}
-              className="shadow border rounded w-full py-2 px-3 text-gray-700"
-              min={0}
-              required
-            />
-          </div>
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl font-bold mb-4 text-gray-800">Asignación de Coordinador</h2>
 
+            {/* Carrera para Coordinador */}
+            <div className="space-y-4">
+              <div className="flex gap-4">
+                <div className="w-full">
+                  <label htmlFor="coordinatorCarreraId" className="block text-sm font-semibold mb-1">Carrera:</label>
+                  <select
+                    id="coordinatorCarreraId"
+                    value={selectedCoordinatorCarreraId || ''}
+                    onChange={handleCoordinatorCarreraChange}
+                    className="shadow border rounded w-full py-2 px-3 text-gray-700"
+                    required
+                  >
+                    <option value="">Seleccione una Carrera</option>
+                    {carreras.map(carrera => (
+                      <option key={carrera.id} value={carrera.id}>
+                        {carrera.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="w-full">
+                  <label htmlFor="coordinatorText" className="block text-sm font-semibold mb-1">Buscar:</label>
+                  <input
+                    type="text"
+                    id="coordinatorText"
+                    value={formData.coordinatorText}
+                    placeholder="nombre, apellido, numero de cuenta"
+                    onChange={(e) => setFormData({ ...formData, coordinatorText: e.target.value })}
+                    className="shadow border rounded w-full py-2 px-3 text-gray-700"
+                  />
+                </div>
+              </div>
+
+              {/* Coordinator ID */}
+              <div>
+                <label htmlFor="coordinatorId" className="block text-sm font-semibold mb-1">Encargado de la Actividad:</label>
+                <select
+                  id="coordinatorId"
+                  value={formData.coordinatorId}
+                  onChange={handleChange}
+                  className="shadow border rounded w-full py-2 px-3 text-gray-700"
+                  required
+                >
+                  <option value="">Seleccione un Coordinador</option>
+                  {students.map(student => (
+                    <option key={student.id} value={student.id}>
+                      {student.names} {student.lastnames}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
           {/* Total Spots */}
           <div>
-            <label htmlFor="totalSpots" className="block text-sm font-semibold mb-1">Total Horas:</label>
+            <label htmlFor="totalSpots" className="block text-sm font-bold mb-1">Cupos Totales:</label>
             <input
               type="number"
               id="totalSpots"
               value={formData.totalSpots}
               onChange={handleChange}
               className="shadow border rounded w-full py-2 px-3 text-gray-700"
-              min={0}
               required
             />
           </div>
 
+         {/* Organizers */}
+<div className="flex flex-col">
+  <label className="block text-sm font-bold mb-1">Entidad Responsable:</label>
+
+  {formData.organizers.map((organizer, index) => (
+    <div key={index} className="flex space-x-4 mb-2 items-center">
+      <select
+        id="type"
+        value={organizer.type}
+        onChange={(e) => handleOrganizerChange(index, e)}
+        className="border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        <option value={0}>Carrera del CUROC</option>
+        <option value={1}>Organización</option>
+      </select>
+      {/* Render condicionalmente el select para carrera u organización basado en type */}
+      {organizer.type === 0 ? (
+        <select
+          id="careersSelect"
+          value={organizer.careerId ?? ''}
+          onChange={(e) => handleOrganizerChange(index, e)}
+          className="border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="" disabled>Seleccione una carrera</option>
+          {carreras.map(carrera => (
+            <option key={carrera.id} value={carrera.id}>
+              {carrera.name}
+            </option>
+          ))}
+        </select>
+      ) : (
+        <select
+          id="organizationId"
+          value={organizer.organizationId ?? ''}
+          onChange={(e) => handleOrganizerChange(index, e)}
+          className="border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="" disabled>Seleccione una organización</option>
+          {organizacion.map(org => (
+            <option key={org.id} value={org.id}>
+              {org.name}
+            </option>
+          ))}
+        </select>
+      )}
+
+      {index !== 0 && (
+        <button
+          type="button"
+          onClick={() => handleRemoveOrganizer(index)}
+          className="bg-red-600 text-white py-1 px-2 rounded-lg hover:bg-red-700 transition duration-200"
+        >
+          Eliminar
+        </button>
+      )}
+    </div>
+  ))}
+
+  <button
+    type="button"
+    onClick={handleAddOrganizer}
+    className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200"
+  >
+    Agregar Entidad Extra
+  </button>
+</div>
+
+          {/* Submit Button */}
           <div className="flex justify-center">
             <button
-              type="submit"
-              className="bg-green-500 text-white px-6 py-2 rounded"
-            >
-             Enviar
+              disabled={isLoading} className="bg-blue-700 hover:bg-blue-600 text-white py-2 px-4 rounded">
+              {isLoading ? (<FiLoader className="mr-2 animate-spin" />) : ('Enviar Solicitud')}
             </button>
           </div>
         </form>

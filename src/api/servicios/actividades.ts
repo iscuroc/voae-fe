@@ -63,12 +63,45 @@ export const ObtenerActividadesPorEstado = async (status: number): Promise<Activ
     }
 };
 
-export const ObtenerActividadesPorNombre = async (slug: string): Promise<Activity[]> => {
+interface Coordinator {
+    id: number;
+    names: string;
+    lastnames: string; // Use 'lastnames' here if that's what your data has
+    role: number;
+}
+
+export interface Scope2 {
+    id: number;
+    hours: number;
+    scope: number;
+}
+
+export interface Activity2 {
+    id: number;
+    name: string;
+    goals: string[];
+    mainActivities: string[];
+    description: string;
+    coordinator: Coordinator;
+    supervisor: Coordinator;
+    location: string;
+    scopes: Scope2[];
+    foreingCareers: ForeignCareer[];
+    totalSpots: number;
+    startDate: string;
+    endDate: string;
+}
+
+
+export const ObtenerActividadesPorNombre = async (slug: string): Promise<Activity2[]> => {
     try {
-        const response = await axiosInstance.get(`/activities?slug=${slug}`);
-        return Array.isArray(response.data.items) ? response.data.items : []; 
+        const response = await axiosInstance.get(`/activities/by-slug/${slug}`);
+        console.log('Respuesta de la API:', response.data); // Verifica la respuesta de la API
+       
+            return response.data;
+      
     } catch (error) {
-        console.error('Error fetching activities:', error);
-        return [];
+        console.error('Error al obtener actividades:', error);
+        throw error;
     }
 };
