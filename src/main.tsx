@@ -29,7 +29,6 @@ import ResetPassword from './pages/auth/reset-password';
 import ActividadesSolicitadas from './components/paginas/ActividadesSolicitadas';
 import GestionUsuarios from './components/paginas/GestionUsuarios';
 import CambiarContrasena from './components/otraPaginas/CambiarContrasena';
-import EditarPerfil from './components/otraPaginas/EditarPerfil';
 import Calendario from './components/otraPaginas/PaginaDeCalendario';
 // import EstudianteRoute from './api/seguridad/EstudiantesAuth';
 // import CoordinadoresAuth from './api/seguridad/CoordinadoresAuth';
@@ -68,7 +67,6 @@ root.render(
               <Route path="dashboard-estudiante/editar-actividad" element={<CrearActividad />} />
               <Route path="dashboard-estudiante/calendario" element={<Calendario />} />
               <Route path="dashboard-estudiante/perfil" element={<Perfil />} />
-              <Route path="dashboard-estudiante/editar-perfil" element={<EditarPerfil />} />
               <Route path="dashboard-estudiante/cambiar-contrasena" element={<CambiarContrasena />} />
               <Route path="dashboard-estudiante/detalles-actividad" element={<DetallesActividad />} />
  {/* </Route>  */}
@@ -83,9 +81,8 @@ root.render(
               <Route path="dashboard-coordinador/crear-actividad" element={<CrearActividad />} />
               <Route path="dashboard-coordinador/calendario" element={<Calendario />} />
               <Route path="dashboard-coordinador/perfil" element={<Perfil />} />
-              <Route path="dashboard-coordinador/editar-perfil" element={<EditarPerfil />} />
               <Route path="dashboard-coordinador/cambiar-contrasena" element={<CambiarContrasena />} />
-              <Route path="dashboard-coordinador/horas-voae" element={<HorasVOAE />} />
+              <Route path="dashboard-coordinador/horas-estudiantes" element={<HorasVOAE />} />
   {/* </Route>  */}
 
             {/* Dashboard de voae */}
@@ -101,9 +98,8 @@ root.render(
               <Route path="dashboard-voae/gestionar-solicitud" element={<GestionSolicitudes />} />
               <Route path="dashboard-voae/solicitudes/:slug" element={<PaginaGestionSolicitudesVOAE />} />
               <Route path="dashboard-voae/perfil" element={<Perfil />} />
-              <Route path="dashboard-voae/editar-perfil" element={<EditarPerfil />} />
               <Route path="dashboard-voae/cambiar-contrasena" element={<CambiarContrasena />} />
-              <Route path="dashboard-voae/horas-voae" element={<HorasVOAE />} />
+              <Route path="dashboard-voae/horas-estudiantes" element={<HorasVOAE />} />
               <Route path="dashboard-voae/gestion-usuarios" element={<GestionUsuarios />} />
  {/* </Route>  */}
           </Route>

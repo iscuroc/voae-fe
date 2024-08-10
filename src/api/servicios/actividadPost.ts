@@ -11,7 +11,7 @@ interface Organizer {
     organizationId: number | null;
   }
 
-export interface Actividad {
+export interface ActividadCrear {
     name: string;
     description: string;
     foreignCareersIds: number[];
@@ -25,11 +25,11 @@ export interface Actividad {
     location: string;
     mainActivities: string[];
     organizers: Organizer[];
-    supervisorText?: string;  // Agregar esta línea
-    coordinatorText?: string; // Agregar esta línea
+    supervisorText?: string; 
+    coordinatorText?: string;
 }
 
-export const crearActividad = async (actividad: Actividad) => {
+export const crearActividad = async (actividad: ActividadCrear) => {
     try {
         const response = await axiosInstance.post('/activities', actividad);
         return response.data;

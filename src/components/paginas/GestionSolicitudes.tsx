@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import Pagination from "../Pagination";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
-import { Activity, ObtenerActividadesPorEstado} from "../../api/servicios/actividades";
+import { ActividadEstado, ObtenerActividadesPorEstado} from "../../api/servicios/actividades";
 import Skeleton from "../Skeleton";
 import FiltroGS from "../filtros/FiltroGestionSolicitudes";
 import { EtiquetasÁmbitosActividad, EtiquetasEstadoActividad, formatDate } from "../../api/servicios/enums";
@@ -12,7 +12,7 @@ const GestionSolicitudes: React.FC = () => {
         document.title = "Actividades Solicitadas - UNAH COPAN";
     }, []);
 
-    const [filtrarData, setFiltrarData] = useState<Activity[]>([]); // Estado para datos filtrados
+    const [filtrarData, setFiltrarData] = useState<ActividadEstado[]>([]); // Estado para datos filtrados
     const [loading, setLoading] = useState<boolean>(true); // Estado para manejar la carga miestra trae los datos del backend
     const [error, setError] = useState<string | null>(null); // Estado para manejar errores
     const [paginaInicial, setPaginaInicial] = useState(1); // Página inicial para paginación

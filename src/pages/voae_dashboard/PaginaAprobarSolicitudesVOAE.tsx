@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import {  Activity2, ObtenerActividadesPorNombre } from '../../api/servicios/actividades';
+import {   ActividadNombre, ObtenerActividadesPorNombre } from '../../api/servicios/actividades';
 import {  EtiquetasÁmbitosActividad, formatDate } from '../../api/servicios/enums';
 
 const PaginaGestionSolicitudesVOAE: React.FC = () => {
@@ -8,9 +8,10 @@ const PaginaGestionSolicitudesVOAE: React.FC = () => {
         document.title = "Coordinadores - UNAH CUROC"
     }, []);
 
-    const [activity, setActivity] = useState<Activity2 | null>(null); // Handle a single object
+    const [activity, setActivity] = useState<ActividadNombre | null>(null); // Handle a single object
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    
     const { slug } = useParams<{ slug?: string }>();
 
     useEffect(() => {
