@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import Pagination from "../Pagination";
 import Filtro from "../filtros/Filtros";
-import { ObtenerActividadesPorEstado, Activity } from "../../api/servicios/actividades";
+import { ActividadEstado, ObtenerActividadesPorEstado } from "../../api/servicios/actividades";
 import { EtiquetasÁmbitosActividad, formatDate } from "../../api/servicios/enums";
 
 const ActvidadesEnCurso: React.FC = () => {
@@ -10,9 +10,9 @@ const ActvidadesEnCurso: React.FC = () => {
         document.title = "Actividades en Curso - UNAH COPAN";
     }, []);
 
-    const [filtrarData, setFiltrarData] = useState<Activity[]>([]);
+    const [filtrarData, setFiltrarData] = useState<ActividadEstado[]>([]);
     const [paginaInicial, setPaginaInicial] = useState(1);
-    const [initialData, setInitialData] = useState<Activity[]>([]);
+    const [initialData, setInitialData] = useState<ActividadEstado[]>([]);
     const [loading, setLoading] = useState(true); // Estado para mostrar un cargando
     const [error, setError] = useState<string | null>(null);
 

@@ -14,7 +14,7 @@ export const coordinadorRoutes = {
   "Crear Actividad": "/dashboard-coordinador/crear-actividad",
   "Actividades Disponibles": "/dashboard-coordinador/actividad-en-curso",
   "Gestion de Actividades": "/dashboard-coordinador/gestion-actividad",
-  "Horas por Estudiante": "/dashboard-coordinador/horas-voae",
+  "Horas por Estudiante": "/dashboard-coordinador/horas-estudiantes",
 } as const;
 
 export type CoordinadorRouteKeys = keyof typeof coordinadorRoutes;
@@ -25,7 +25,7 @@ export const voaeRoutes = {
   "Actividades": "/dashboard-voae/gestion-actividad",
   "Actividades Disponibles": "/dashboard-voae/actividad-en-curso",
   "Crear Actividad": "/dashboard-voae/crear-actividad",
-  "Horas por Usuario": "/dashboard-voae/horas-voae",
+  "Horas por Usuario": "/dashboard-voae/horas-estudiantes",
   "Gestión de Usuarios" : "/dashboard-voae/gestion-usuarios"
    // Agrega más rutas según sea necesario
 } as const;

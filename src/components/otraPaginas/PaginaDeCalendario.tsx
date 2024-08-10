@@ -4,7 +4,7 @@ import 'react-calendar/dist/Calendar.css';
 import './DiseñCalendario.css';
 import { NavLink } from 'react-router-dom';
 import { format, parseISO, isSameDay } from 'date-fns';
-import { Activity, ObtenerActividadesPorEstado } from '../../api/servicios/actividades';
+import { ActividadEstado, ObtenerActividadesPorEstado } from '../../api/servicios/actividades';
 
 const formatDate = (date: Date) => format(date, 'yyyy-MM-dd'); // Formatear solo la fecha
 
@@ -15,8 +15,8 @@ const Calendario: React.FC = () => {
 
   const [date, setDate] = useState<Date | null>(null);
   const [showPanel, setShowPanel] = useState<boolean>(false); 
-  const [actividades, setActividades] = useState<Activity[]>([]);
-  const [selectedActivities, setSelectedActivities] = useState<Activity[]>([]); // Agregado para almacenar las actividades del día seleccionado
+  const [actividades, setActividades] = useState<ActividadEstado[]>([]);
+  const [selectedActivities, setSelectedActivities] = useState<ActividadEstado[]>([]); // Agregado para almacenar las actividades del día seleccionado
   const [, setError] = useState<string | null>(null); 
 
   useEffect(() => {

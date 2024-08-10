@@ -29,7 +29,7 @@ export interface Scope {
     scope: number;
 }
 
-export interface Activity {
+export interface ActividadEstado {
     id: number;
     slug: string;
     name: string;
@@ -53,7 +53,7 @@ export interface Activity {
     scopes: Scope[];
 }
 
-export const ObtenerActividadesPorEstado = async (status: number): Promise<Activity[]> => {
+export const ObtenerActividadesPorEstado = async (status: number): Promise<ActividadEstado[]> => {
     try {
         const response = await axiosInstance.get(`/activities?status=${status}`);
         return Array.isArray(response.data.items) ? response.data.items : []; 
@@ -66,7 +66,7 @@ export const ObtenerActividadesPorEstado = async (status: number): Promise<Activ
 interface Coordinator {
     id: number;
     names: string;
-    lastnames: string; // Use 'lastnames' here if that's what your data has
+    lastnames: string;
     role: number;
 }
 
@@ -76,7 +76,7 @@ export interface Scope2 {
     scope: number;
 }
 
-export interface Activity2 {
+export interface ActividadNombre {
     id: number;
     name: string;
     goals: string[];
@@ -93,7 +93,7 @@ export interface Activity2 {
 }
 
 
-export const ObtenerActividadesPorNombre = async (slug: string): Promise<Activity2[]> => {
+export const ObtenerActividadesPorNombre = async (slug: string): Promise<ActividadNombre[]> => {
     try {
         const response = await axiosInstance.get(`/activities/by-slug/${slug}`);
         console.log('Respuesta de la API:', response.data); // Verifica la respuesta de la API

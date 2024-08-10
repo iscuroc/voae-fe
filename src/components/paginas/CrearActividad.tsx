@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Actividad, crearActividad } from '../../api/servicios/actividadPost';
+import { ActividadCrear, crearActividad } from '../../api/servicios/actividadPost';
 import { Carrera, obtenerEstudiantesPorCarreras, obtenerProfesorPorCarreras, obtenerTodasLasCarreras, User } from '../../api/servicios/carreras';
 import { EtiquetasÁmbitosActividad } from '../../api/servicios/enums';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -7,7 +7,7 @@ import { organizations, obtenerLasOrganizaciones } from '../../api/servicios/org
 import { FiLoader } from 'react-icons/fi';
 
 const CrearActividad = () => {
-  const [formData, setFormData] = useState<Actividad>({
+  const [formData, setFormData] = useState<ActividadCrear>({
     name: '',
     description: '',
     foreignCareersIds: [], // Asegúrate de que coincida con el tipo number[]
@@ -234,7 +234,7 @@ const CrearActividad = () => {
     const startDate = new Date(formData.startDate).toISOString();
     const endDate = new Date(formData.endDate).toISOString();
 
-    const actividad: Actividad = {
+    const actividad: ActividadCrear = {
       name: formData.name,
       description: formData.description,
       foreignCareersIds: formData.foreignCareersIds,
