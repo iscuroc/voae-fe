@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import logo1 from '../../assets/logo.png';
-import logo2 from '../../assets/logo2.jpeg';
+import logo1 from '@/assets/logo.avif';
+import logo2 from '@/assets/logo2.avif';
 import { MdOutlineAlternateEmail } from 'react-icons/md';
 import { FiLoader } from 'react-icons/fi';
 import axios from 'axios';
-import axiosInstance from '../../api/axiosInstance';
+import axiosInstance from '@/api/axiosInstance';
 
 const verificarEmailUnah = /^[a-zA-Z0-9._%+-]+@unah\.(edu\.)?hn$/;
 

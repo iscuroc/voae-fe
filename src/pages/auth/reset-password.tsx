@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import logo1 from '../../assets/logo.png';
-import logo2 from '../../assets/logo2.jpeg';
+import logo1 from '@/assets/logo.avif';
+import logo2 from '@/assets/logo2.avif';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FiLoader } from 'react-icons/fi';
@@ -13,7 +13,6 @@ interface FormData {
     passwordConfirmation: string;
     resetToken: string;
 }
-
 
 const ResetPassword: React.FC = () => {
     useEffect(() => {

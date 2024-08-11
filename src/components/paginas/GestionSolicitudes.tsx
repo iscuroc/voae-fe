@@ -90,7 +90,7 @@ const GestionSolicitudes: React.FC = () => {
                             <tr className="border text-xs border-gray-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto md:relative bg-yellow-500 text-black">
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Actividad</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Solicitante</th>
-                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Carrera</th>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Entidad organizadora</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Ámbito</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Fecha Inicio</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Fecha Final</th>
@@ -105,10 +105,10 @@ const GestionSolicitudes: React.FC = () => {
                                         <span className="inline-block w-1/3 md:hidden font-bold mr-4">Actividad:</span>{item.name}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Solicitante:</span>{item.requestedBy.names} {item.requestedBy.lastNames}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Solicitante:</span>{item.coordinator.names} {item.coordinator.lastNames}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Carrera:</span>{item.foreingCareers.map(fc => fc.name).join(", ")}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Entidad organizadora:</span>{item.organizers.map(fc => fc.career?.name || fc.organization?.name).join(", ")}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
                                         <span className="inline-block w-1/3 md:hidden font-bold mr-4">Ámbito:</span>{item.scopes.map(s => EtiquetasÁmbitosActividad[s.scope] || s.scope).join(", ")}

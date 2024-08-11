@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import Pagination from "../Pagination";
 import Filtro from "../filtros/Filtros";
-import { ActividadEstado, ObtenerActividadesPorEstado } from "../../api/servicios/actividades";
-import { EtiquetasÁmbitosActividad, formatDate } from "../../api/servicios/enums";
+import { EtiquetasÁmbitosActividad, formatDate } from "@/api/servicios/enums";
+import { ActividadEstado, ObtenerActividadesPorEstado } from "@/api/servicios/actividades";
 
 const ActvidadesEnCurso: React.FC = () => {
     useEffect(() => {
@@ -55,7 +55,7 @@ const ActvidadesEnCurso: React.FC = () => {
                 setFiltrarData(data);
                 setLoading(false);
             } catch (error) {
-                setError('Failed to fetch activities');
+                setError('Error!, recarge la pagina para ver las actividades');
                 setLoading(false);
             }
         };
