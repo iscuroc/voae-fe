@@ -114,7 +114,7 @@ const PaginaGestionSolicitudesVOAE: React.FC = () => {
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td className="border-2 border-black px-4 py-2 font-bold bg-yellow-500">Carreras Relacionadas</td>
+                                    <td className="border-2 border-black px-4 py-2 font-bold bg-yellow-500">Carreras admitidas</td>
                                     <td className="border-2 border-black px-4 py-2 bg-white">
                                         <ul className="list-disc pl-5">
                                             {activity.foreingCareers.map((career, index) => (

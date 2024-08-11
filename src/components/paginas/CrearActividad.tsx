@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { ActividadCrear, crearActividad } from '../../api/servicios/actividadPost';
 import { Carrera, obtenerEstudiantesPorCarreras, obtenerProfesorPorCarreras, obtenerTodasLasCarreras, User } from '../../api/servicios/carreras';
 import { EtiquetasÁmbitosActividad } from '../../api/servicios/enums';
-import { useLocation, useNavigate } from 'react-router-dom';
+// import { useLocation, useNavigate } from 'react-router-dom';
 import { organizations, obtenerLasOrganizaciones } from '../../api/servicios/organizaciones';
 import { FiLoader } from 'react-icons/fi';
+import axios from 'axios';
+import SuccessModal from '../Modal';
+
 
 const CrearActividad = () => {
   const [formData, setFormData] = useState<ActividadCrear>({
@@ -28,13 +31,16 @@ const CrearActividad = () => {
   const [selectedSupervisorCarreraId, setSelectedSupervisorCarreraId] = useState<number | undefined>(undefined);
   const [selectedCoordinatorCarreraId, setSelectedCoordinatorCarreraId] = useState<number | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
-
-  const location = useLocation();
-  const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const location = useLocation();
+  // const navigate = useNavigate();
   const [carreras, setCarreras] = useState<Carrera[]>([]);
   const [organizacion, setOrganizacion] = useState<organizations[]>([]);
   const [teachers, setTeachers] = useState<User[]>([]);
   const [students, setStudents] = useState<User[]>([]);
+  const [error, setError] = useState<string[]>([]);
+  const [selectAll, setSelectAll] = useState(false);
+
   useEffect(() => {
     const obtenerCarreras = async () => {
       try {
@@ -202,6 +208,25 @@ const CrearActividad = () => {
     setSelectedCareer(parseInt(e.target.value, 10));
   };
 
+
+  const handleSelectAllChange = () => {
+    if (selectAll) {
+      // Desmarcar "Seleccionar todas" y limpiar las carreras seleccionadas
+      setFormData(prevState => ({
+        ...prevState,
+        foreignCareersIds: []
+      }));
+    } else {
+      // Marcar "Seleccionar todas" y añadir todas las carreras
+      setFormData(prevState => ({
+        ...prevState,
+        foreignCareersIds: carreras.map(carrera => carrera.id)
+      }));
+    }
+    setSelectAll(!selectAll); // Alternar el estado de selectAll
+  };
+
+
   const handleAddCareer = () => {
     if (selectedCareer !== 'none' && !formData.foreignCareersIds.includes(selectedCareer)) {
       setFormData(prevState => ({
@@ -231,6 +256,7 @@ const CrearActividad = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError([]);
     const startDate = new Date(formData.startDate).toISOString();
     const endDate = new Date(formData.endDate).toISOString();
 
@@ -270,19 +296,52 @@ const CrearActividad = () => {
         mainActivities: [''],
         organizers: [{ careerId: null, organizationId: 3, type: 1 }]
       });
-      if (location.pathname.includes('/dashboard-voae')) {
-        navigate('/dashboard-voae/main');
-      } else if (location.pathname.includes('/dashboard-estudiante')) {
-        navigate('/dashboard-estudiante/main');
-      } else if (location.pathname.includes('/dashboard-coordinador')) {
-        navigate('/dashboard-coordinador/main');
-      } else {
-        navigate('/');
-      }
+      setIsModalOpen(true);
 
-    } catch (error) {
-      console.error('Error creating activity:', error);
-    } finally {
+
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        if (err.response?.status === 409) {
+          const errorDetails = err.response.data.errors.find(
+            (error: { code: string }) => error.code === 'Activity.ActivityNameAlreadyExists'
+          );
+          if (errorDetails) {
+            setError(prev => [...prev, 'Ya existe una actividad con ese nombre.']);
+            return;
+          }
+        }
+
+        if (err.response?.status === 400) {
+          const errorMessages = err.response.data.errors;
+          const translatedErrors = errorMessages.reduce((acc: string[], msg: string) => {
+            if (msg.includes('The length of \'Description\' must be at least')) {
+              acc.push('La descripción debe tener al menos 4 caracteres.');
+            }
+            if (msg.includes('The length of \'Location\' must be at least')) {
+              acc.push('La ubicación debe tener al menos 4 caracteres.');
+            }
+            if (msg.includes('\'Start Date\' must be greater than')) {
+              acc.push('La fecha debe ser posterior a la fecha actual.');
+            }
+            if (msg.includes('\'End Date\' must be greater than')) {
+              acc.push('La fecha y hora de finalizacion no deben ser iguales a la de Inicio.');
+            }
+            if (msg.includes('\'Foreign Careers Ids\' must not be empty')) {
+              acc.push('El campo de carreras permitidas no pueden estar vacíos.');
+            }
+            return acc;
+          }, []);
+
+          setError(prev => [...prev, ...translatedErrors]);
+          return;
+        }
+
+        setError(prev => [...prev, 'Ocurrió un error al crear la actividad.']);
+      } else {
+        setError(prev => [...prev, 'Ocurrió un error inesperado.']);
+      }
+    }
+    finally {
       setIsLoading(false);
     }
   };
@@ -321,7 +380,8 @@ const CrearActividad = () => {
 
           {/* Foreign Careers IDs */}
           <div className="flex flex-col">
-            <label htmlFor="careersSelect" className="text-sm font-bold text-gray-700 mb-1">Seleccionar Carreras admitidas:</label>
+            <label htmlFor="careersSelect" className="text-sm font-bold text-gray-700 mb-1">Seleccionar Carreras admitidas(Para participar en la actividad):</label>
+
             <select
               id="careersSelect"
               value={selectedCareer}
@@ -335,6 +395,17 @@ const CrearActividad = () => {
                 </option>
               ))}
             </select>
+            <div className="mb-">
+              <label className="text-sm font-bold text-gray-700 mb-2">
+                Seleccionar todas las carreras:
+                <input
+                  type="checkbox"
+                  checked={selectAll}
+                  onChange={handleSelectAllChange}
+                  className="ml-2"
+                />
+              </label>
+            </div>
             <button
               type="button"
               onClick={handleAddCareer}
@@ -444,7 +515,7 @@ const CrearActividad = () => {
                   onChange={(e) => handleHoursChange(index, e)}
                   className="border border-gray-300 rounded-lg w-1/3 py-2 px-3 text-gray-700 ml-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Horas"
-                  min="0"
+                  min="1"
                   required
                 />
 
@@ -628,6 +699,7 @@ const CrearActividad = () => {
               value={formData.totalSpots}
               onChange={handleChange}
               className="shadow border rounded w-full py-2 px-3 text-gray-700"
+              min="10"
               required
             />
           </div>
@@ -654,6 +726,7 @@ const CrearActividad = () => {
                     value={organizer.careerId ?? ''}
                     onChange={(e) => handleOrganizerChange(index, e)}
                     className="border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
                   >
                     <option value="" disabled>Seleccione una carrera</option>
                     {carreras.map(carrera => (
@@ -668,8 +741,9 @@ const CrearActividad = () => {
                     value={organizer.organizationId ?? ''}
                     onChange={(e) => handleOrganizerChange(index, e)}
                     className="border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
                   >
-                    <option value="" disabled>Seleccione una organización</option>
+                    <option value="" >Seleccione una organización</option>
                     {organizacion.map(org => (
                       <option key={org.id} value={org.id}>
                         {org.name}
@@ -699,6 +773,13 @@ const CrearActividad = () => {
             </button>
           </div>
 
+          {error.length > 0 && (
+            <ul style={{ color: 'red' }}>
+              {error.map((error, index) => (
+                <li key={index}>{error}</li>
+              ))}
+            </ul>
+          )}
           {/* Submit Button */}
           <div className="flex justify-center">
             <button
@@ -706,6 +787,12 @@ const CrearActividad = () => {
               {isLoading ? (<FiLoader className="mr-2 animate-spin" />) : ('Enviar Solicitud')}
             </button>
           </div>
+          <SuccessModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onConfirm={() => setIsModalOpen(false)} 
+            message="La solicitud de actividad se enviado con exito."
+          />
         </form>
       </div>
     </div>

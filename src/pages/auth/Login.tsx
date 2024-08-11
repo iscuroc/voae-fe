@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import logo1 from '../../assets/logo.png';
-import logo2 from '../../assets/logo2.jpeg';
+import logo1 from '@/assets/logo.avif';
+import logo2 from '@/assets/logo2.avif';
 import { FiLoader } from 'react-icons/fi';
-import axiosInstance from '../../api/axiosInstance';
-import useAuth from '../../api/useAuth';
-import { AuthContext } from '../../api/AuthContext';
+import useAuth from '@/api/useAuth';
+import { AuthContext } from '@/api/AuthContext';
+import axiosInstance from '@/api/axiosInstance';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -39,10 +39,12 @@ const Login: React.FC = () => {
     setIsLoading(true);
     setError('');
     try {
+      console.time('Login Request');
       const response = await axiosInstance.post('/auth/login', {
         email,
         password,
       });
+      console.timeEnd('Login Request');
       const { accessToken, role } = response.data;
       login(accessToken, role, email);
       if (role === 0) {
