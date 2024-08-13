@@ -1,9 +1,55 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { Activity2, ObtenerActividadesPorNombre } from '../../api/servicios/actividades';
+import { EtiquetasÁmbitosActividad, formatDate } from '../../api/servicios/enums';
 
 const DetallesActividad: React.FC = () => {
   useEffect(() => {
     document.title = "Detalle de Actividad - UNAH COPAN";
   }, []);
+
+  const [activity, setActivity] = useState<Activity2 | null>(null); // Handle a single object
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const { slug } = useParams<{ slug?: string }>();
+
+  useEffect(() => {
+    const obtenerDatos = async () => {
+      setLoading(true);
+      try {
+        if (slug) {
+          const data = await ObtenerActividadesPorNombre(slug);
+          console.log('Datos obtenidos:', data); // Verify data structure
+
+          if (data && typeof data === 'object' && !Array.isArray(data)) {
+            setActivity(data); // Set single activity object
+          } else {
+            setError('Data is not an object');
+          }
+        } else {
+          setError('No name parameter provided');
+        }
+      } catch (error) {
+        console.error('Error fetching activities:', error);
+        setError('Failed to fetch activities');
+      } finally {
+        setLoading(false);
+      }
+    };
+    obtenerDatos();
+  }, [slug]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!activity) {
+    return <div>No activity data found</div>;
+  }
 
   const participants = [
     { nombre: "Juan Pérez", numerocuenta: "20182100006", carrera: "Ingenieria en sistemas", observaciones: "Estaré pendiente" },
@@ -41,63 +87,77 @@ const DetallesActividad: React.FC = () => {
                 <tbody>
                   <tr>
                     <td className="border px-4 py-2 bg-yellow-500 w-1/4">Nombre de la Actividad</td>
-                    <td className="border px-4 py-2">Ejemplo de Actividad</td>
+                    <td className="border px-4 py-2">{activity.name}</td>
                   </tr>
                   <tr>
                     <td className="border px-4 py-2 bg-yellow-500">Objetivos</td>
-                    <td className="border px-4 py-2">Descripción de los objetivos.</td>
+                    <td className="border px-4 py-2">
+                      <ul className="list-disc pl-5">
+                        {activity.goals.map((goal, index) => (
+                          <li key={index}>{goal}</li>
+                        ))}
+                      </ul>
+                    </td>
                   </tr>
                   <tr>
                     <td className="border px-4 py-2 bg-yellow-500">Descripción</td>
-                    <td className="border px-4 py-2">Esta es una descripción de ejemplo de la actividad.</td>
+                    <td className="border px-4 py-2">{activity.description}</td>
                   </tr>
                   <tr>
                     <td className="border px-4 py-2 bg-yellow-500">Carrera</td>
-                    <td className="border px-4 py-2">Ingeniería</td>
+                    <td className="border px-4 py-2">
+                      <ul className="list-disc pl-5">
+                        {activity.foreingCareers.map((career, index) => (
+                          <li key={index}>{career.name}</li>
+                        ))}
+                      </ul>
+                    </td>
                   </tr>
                   <tr>
                     <td className="border px-4 py-2 bg-yellow-500">Ámbito</td>
-                    <td className="border px-4 py-2">Académico</td>
+                    <td className="border px-4 py-2">
+                      <ul className="list-disc pl-5">
+                        {activity.scopes.map((scope, index) => (
+                          <li key={index}>
+                            {EtiquetasÁmbitosActividad[scope.scope] || scope.scope} | {scope.hours} horas
+                          </li>
+                        ))}
+                      </ul>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border px-4 py-2 bg-yellow-500">supervisor</td>
+                    <td className="border px-4 py-2">{activity.supervisor.names} {activity.supervisor.lastnames}</td>
                   </tr>
                   <tr>
                     <td className="border px-4 py-2 bg-yellow-500">Coordinador</td>
-                    <td className="border px-4 py-2">Dr. Juan Pérez</td>
-                  </tr>
-                  <tr>
-                    <td className="border px-4 py-2 bg-yellow-500">Encargado</td>
-                    <td className="border px-4 py-2">María García</td>
-                  </tr>
-                  <tr>
-                    <td className="border px-4 py-2 bg-yellow-500">Horas Sociales Becados</td>
-                    <td className="border px-4 py-2">20</td>
-                  </tr>
-                  <tr>
-                    <td className="border px-4 py-2 bg-yellow-500">Horas Art. 140</td>
-                    <td className="border px-4 py-2">10</td>
+                    <td className="border px-4 py-2">{activity.coordinator.names} {activity.coordinator.lastnames}</td>
                   </tr>
                   <tr>
                     <td className="border px-4 py-2 bg-yellow-500">Cupos</td>
-                    <td className="border px-4 py-2">30</td>
-                  </tr>
-                  <tr>
-                    <td className="border px-4 py-2 bg-yellow-500">Cupos Disponibles</td>
-                    <td className="border px-4 py-2">10</td>
+                    <td className="border px-4 py-2">{activity.totalSpots}</td>
                   </tr>
                   <tr>
                     <td className="border px-4 py-2 bg-yellow-500">Fecha Inicio</td>
-                    <td className="border px-4 py-2">01/07/2024</td>
+                    <td className="border px-4 py-2">{formatDate(activity.startDate)}</td>
                   </tr>
                   <tr>
                     <td className="border px-4 py-2 bg-yellow-500">Fecha Final</td>
-                    <td className="border px-4 py-2">01/08/2024</td>
+                    <td className="border px-4 py-2">{formatDate(activity.endDate)}</td>
                   </tr>
                   <tr>
-                    <td className="border px-4 py-2 bg-yellow-500">Estado</td>
-                    <td className="border px-4 py-2">Activo</td>
+                    <td className="border px-4 py-2 bg-yellow-500">Acticidades Principales</td>
+                    <td className="border px-4 py-2">
+                      <ul className="list-disc pl-5">
+                        {activity.mainActivities.map((activity, index) => (
+                          <li key={index}>{activity}</li>
+                        ))}
+                      </ul>
+                    </td>
                   </tr>
                   <tr>
-                    <td className="border px-4 py-2 bg-yellow-500">Observaciones</td>
-                    <td className="border px-4 py-2">Ninguna</td>
+                    <td className="border px-4 py-2 bg-yellow-500">Ubicaxion</td>
+                    <td className="border px-4 py-2">{activity.location}</td>
                   </tr>
                 </tbody>
               </table>
