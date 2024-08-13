@@ -91,7 +91,7 @@ root.render(
               <Route path="dashboard-voae/main" element={<DashboardAdminVoae />} />
               <Route path="dashboard-voae/actividad-en-curso" element={<ActvidadesEnCurso />} />
               <Route path="dashboard-voae/gestion-actividad" element={<PaginaGestionActividad />} />
-              <Route path="dashboard-voae/detalles-actividades" element={<DetallesActividad />} />
+              <Route path="dashboard-voae/detalles-actividades/:slug" element={<DetallesActividad />} />
               <Route path="dashboard-voae/novedades-admin" element={<NovedadesAdmin />} />
               <Route path="dashboard-voae/crear-actividad" element={<CrearActividad />} />
               <Route path="dashboard-voae/calendario" element={<Calendario />} />

@@ -1,70 +1,80 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import Pagination from "../Pagination";
-import Filtro from "../filtros/Filtros";
+import Skeleton from "../Skeleton";
+import FiltroGS from "../filtros/FiltroGestionSolicitudes";
+import { ActividadEstado, ObtenerActividadesPorEstado} from "../../api/servicios/actividades";
+import { EtiquetasÁmbitosActividad,  formatDate } from "../../api/servicios/enums";
 
 const PaginaGestionActividad: React.FC = () => {
+    
+    const [filtrarData, setFiltrarData] = useState<ActividadEstado[]>([]); // Estado para datos filtrados
+    const [loading, setLoading] = useState<boolean>(true); // Estado para manejar la carga miestra trae los datos del backend
+    const [error, setError] = useState<string | null>(null); // Estado para manejar errores
+    const [paginaInicial, setPaginaInicial] = useState(1); // Página inicial para paginación
+    const location = useLocation(); //(trae la url y ayuda redigir a ptr pagina dependiendo el path)
+    // Obtener los datos
     useEffect(() => {
-        document.title = "Coordinadores - UNAH COPAN";
+        const obtenerDatos = async () => {
+            setLoading(true); // Inicia la carga
+            try {
+                const data = await ObtenerActividadesPorEstado(0); // El número es el estado que quieres filtrar
+                console.log("Datos obtenidos de la API:", data); // Verifica todos los datos obtenidos
+                setFiltrarData(data);
+            } catch (error) {
+                setError('Failed to fetch activities');
+            } finally {
+                setLoading(false); // Finaliza la carga
+            }
+        };
+        obtenerDatos();
     }, []);
 
-      
-    const initialData = [
-        // Tu array de datos aquí
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "2024-07-10 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Comercio Internacional", cupos: 20, duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "2024-07-05 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "2024-07-01 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Comercio Internacional", cupos: 20, duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingeniería Agroindustrial", cupos: 20, duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingeniería Agroindustrial", cupos: 20, duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", cupos: 20, duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingeniería Agroindustrial", cupos: 20, duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
-        
-    ];
+   // Función para aplicar filtro
+   const aplicarFiltros = (carrera: string, ambito: string, fechaInicio: string, fechaFin: string, busqueda: string) => {
 
-    const [filtrarData, setFiltrarData] = useState(initialData); // Estado para datos filtrados
-    const [PaginaInicial, setPaginaInicial] = useState(1);
-    
-    //funcion de paginacion
-    const itemsPerPage = 10;
-    const TotalPaginas = Math.ceil(filtrarData.length / itemsPerPage); // Usar FiltrarData en lugar de initialData
+    const fechaInicioDate = fechaInicio ? new Date(fechaInicio.split('T')[0]) : null;
+    const fechaFinDate = fechaFin ? new Date(fechaFin.split('T')[0]) : null;
 
-    const handlePageChange = (page: number) => {
-        setPaginaInicial(page);
-    };
+    const filtrar = filtrarData.filter(item => {
+        const inicioDate = new Date(item.startDate.split('T')[0]);
+        return (
+            (carrera === "" || item.foreingCareers.some(fc => fc.name === carrera)) &&
+            (ambito === "" || item.scopes.some(s => EtiquetasÁmbitosActividad[s.scope] === ambito)) &&
+            (!fechaInicioDate || inicioDate >= fechaInicioDate) &&
+            (!fechaFinDate || inicioDate <= fechaFinDate) &&
+            (busqueda === "" || item.name.toLowerCase().includes(busqueda.toLowerCase()))
+        );
+    });
 
-    const paginatedData = filtrarData.slice((PaginaInicial - 1) * itemsPerPage, PaginaInicial * itemsPerPage); // Usar FiltrarData en lugar de initialData
+    setFiltrarData(filtrar);
+    setPaginaInicial(1); // Reiniciar la página actual al aplicar filtros
+};
 
-     // Función para aplicar filtro
-     const aplicarFiltros = (carrera: string, ambito: string, fechaInicio: string, fechaFin: string, busqueda: string) => {
-        const fechaInicioDate = fechaInicio ? new Date(fechaInicio.split('T')[0]) : null; // Obtener solo la fecha
-        const fechaFinDate = fechaFin ? new Date(fechaFin.split('T')[0]) : null; // Obtener solo la fecha
-    
-        const filtrar = initialData.filter(item => {
-            const inicioDate = new Date(item.inicio.split(' ')[0]); // Obtener solo la fecha desde la cadena de inicio
-    
-            return (
-                (carrera === "" || item.carrera === carrera) &&
-                (ambito === "" || item.ambito === ambito) &&
-                (!fechaInicioDate || inicioDate >= fechaInicioDate) &&
-                (!fechaFinDate || inicioDate <= fechaFinDate) &&
-                (busqueda === "" || item.nombre.toLowerCase().includes(busqueda.toLowerCase()))
-            );
-        });
-    
-        setFiltrarData(filtrar);
-        setPaginaInicial(1); // Reiniciar la página actual al aplicar filtros
-    };
-    
+// Paginación
+const itemsPerPage = 10;
+const totalPaginas = Math.ceil(filtrarData.length / itemsPerPage); // Usar FiltrarData en lugar de initialData
+
+const handlePageChange = (page: number) => {
+    setPaginaInicial(page);
+};
+
+const paginatedData = filtrarData.slice((paginaInicial - 1) * itemsPerPage, paginaInicial * itemsPerPage); // Usar FiltrarData en lugar de initialData
+
+
+
+if (loading) {
+    return <Skeleton/>; // Muestra un mensaje de carga
+}
+
+if (error) {
+    return <div>Error: {error}</div>; // Muestra un error si ocurre
+}
+
     return (
         <div className="container mx-auto p-4">
             <div className="block md:flex items-center justify-center mb-4 mt-2">
-            <Filtro aplicarFiltros={aplicarFiltros} />
+                <FiltroGS aplicarFiltros={aplicarFiltros} />
             </div>
 
             <div className="rounded-xl">
@@ -74,10 +84,10 @@ const PaginaGestionActividad: React.FC = () => {
                             <tr className="border text-sm border-gray-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto md:relative bg-yellow-500 text-black">
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Nombre</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Ubicación</th>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Entidad Organizadora</th>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Organizador</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Ámbito</th>
-                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Carrera</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Cupos</th>
-                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Duración</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Inicio</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Final</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Acción</th>
@@ -87,55 +97,57 @@ const PaginaGestionActividad: React.FC = () => {
                             {paginatedData.map((item, index) => (
                                 <tr key={index} className="bg-yellow-500 md:bg-white text-left md:text-center hover:bg-gray-200 transition-colors duration-200 border border-gray-500 md:border-none block md:table-row">
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Nombre:</span>{item.nombre}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Nombre:</span>{item.name}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Ubicación:</span>{item.ubicacion}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Ubicación:</span>{item.location}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Ámbito:</span>{item.ambito}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Entidad organizadora:</span>{item.organizers.map(fc => fc.career?.name || fc.organization?.name).join(", ")}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Carrera:</span>{item.carrera}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Encargado:</span>{item.coordinator.names}{item.coordinator.lastNames}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Cupos:</span>{item.cupos}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Ámbito:</span>{item.scopes.map(s => EtiquetasÁmbitosActividad[s.scope] || s.scope).join(", ")}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Duración:</span>{item.duracion}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Cupos:</span>{item.totalSpots}
+                                    </td>
+                                    
+                                    <td className="p-1 md:border md:border-gray-500 block md:table-cell">
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Fecha Inicio:</span>{formatDate(item.startDate)}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Inicio:</span>{item.inicio}
-                                    </td>
-                                    <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Final:</span>{item.final}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Fecha Final:</span>{formatDate(item.endDate)}
                                     </td>
                                     <td className="p-1 md:border text-center md:border-gray-500 block md:table-cell relative">
-                                    <NavLink
-                                        to={
-                                            location.pathname.includes('dashboard-coordinador')
-                                                ? "/dashboard-coordinador/detalles-actividad"
-                                                : location.pathname.includes('dashboard-estudiante')
-                                                    ? "#"
-                                                    : "/dashboard-voae/detalles-actividades"
-                                        }
-                                        className="flex justify-center items-center font-bold group"
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={32} height={32} color={"#000000"} fill={"none"} className="group-hover:text-blue-500 hidden md:block">
-                                                <path d="M21.544 11.045C21.848 11.4713 22 11.6845 22 12C22 12.3155 21.848 12.5287 21.544 12.955C20.1779 14.8706 16.6892 19 12 19C7.31078 19 3.8221 14.8706 2.45604 12.955C2.15201 12.5287 2 12.3155 2 12C2 11.6845 2.15201 11.4713 2.45604 11.045C3.8221 9.12944 7.31078 5 12 5C16.6892 5 20.1779 9.12944 21.544 11.045Z" stroke="currentColor" strokeWidth="1.5" />
-                                                <path d="M15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15C13.6569 15 15 13.6569 15 12Z" stroke="currentColor" strokeWidth="1.5" />
+                                        <NavLink
+                                            to={
+                                                location.pathname.includes('dashboard-coordinador')
+                                                    ? "/dashboard-coordinador/detalles-actividad/${item.slug}"
+                                                    : location.pathname.includes('dashboard-estudiante')
+                                                        ? "#"
+                                                        : "/dashboard-voae/detalles-actividades/${item.slug}"
+                                            }
+                                            className="flex justify-center items-center font-bold group"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-black group-hover:text-yellow-500 transition-colors duration-200">
+                                                <path d="M12 20h9V4H3v16h9" fill="none"/>
+                                                <path d="M12 12l4 4M12 12l-4 4M12 12v9" fill="none"/>
                                             </svg>
-                                            <span className="hover:text-blue-500 group-hover:text-blue-500 md:hidden">Ver detalles</span>
-                                    </NavLink>
+                                        </NavLink>
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
-            </div>
 
-            <Pagination PaginaInicial={PaginaInicial} TotalPaginas={TotalPaginas} onPageChange={handlePageChange} />
+                <div className="flex justify-center mt-4">
+                    <Pagination PaginaInicial={paginaInicial} TotalPaginas={totalPaginas} onPageChange={handlePageChange} />
+                </div>
+            </div>
         </div>
     );
 };
