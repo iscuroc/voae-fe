@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Activity2, ObtenerActividadesPorNombre } from '../../api/servicios/actividades';
+import { ActividadNombre, ObtenerActividadesPorNombre } from '../../api/servicios/actividades';
 import { EtiquetasÁmbitosActividad, formatDate } from '../../api/servicios/enums';
 
 const DetallesActividad: React.FC = () => {
@@ -8,7 +8,7 @@ const DetallesActividad: React.FC = () => {
     document.title = "Detalle de Actividad - UNAH COPAN";
   }, []);
 
-  const [activity, setActivity] = useState<Activity2 | null>(null); // Handle a single object
+  const [activity, setActivity] = useState<ActividadNombre | null>(null); // Handle a single object
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const { slug } = useParams<{ slug?: string }>();
