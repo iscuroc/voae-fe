@@ -11,7 +11,6 @@ const PaginaGestionSolicitudesVOAE: React.FC = () => {
     const [activity, setActivity] = useState<ActividadNombre | null>(null); // Handle a single object
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    
     const { slug } = useParams<{ slug?: string }>();
 
     useEffect(() => {
@@ -66,6 +65,14 @@ const PaginaGestionSolicitudesVOAE: React.FC = () => {
                                     <td className="border-2 border-black px-4 py-2 bg-white">{activity.name}</td>
                                 </tr>
                                 <tr>
+                                    <td className="border-2 border-black px-4 py-2 font-bold bg-yellow-500">Ubicacion</td>
+                                    <td className="border-2 border-black px-4 py-2 bg-white">{activity.location}</td>
+                                </tr>
+                                <tr>
+                                    <td className="border-2 border-black px-4 py-2 font-bold bg-yellow-500">Descripción</td>
+                                    <td className="border-2 border-black px-4 py-2 bg-white">{activity.description}</td>
+                                </tr>
+                                <tr>
                                     <td className="border-2 border-black px-4 py-2 font-bold bg-yellow-500">Objetivos</td>
                                     <td className="border-2 border-black px-4 py-2 bg-white">
                                         <ul className="list-disc pl-5">
@@ -85,22 +92,16 @@ const PaginaGestionSolicitudesVOAE: React.FC = () => {
                                         </ul>
                                     </td>
                                 </tr>
+                              
                                 <tr>
-                                    <td className="border-2 border-black px-4 py-2 font-bold bg-yellow-500">Descripción</td>
-                                    <td className="border-2 border-black px-4 py-2 bg-white">{activity.description}</td>
-                                </tr>
-                                <tr>
-                                    <td className="border-2 border-black px-4 py-2 font-bold bg-yellow-500">Coordinador de actividad</td>
+                                    <td className="border-2 border-black px-4 py-2 font-bold bg-yellow-500">Encargado de actividad</td>
                                     <td className="border-2 border-black px-4 py-2 bg-white">{activity.coordinator.names} {activity.coordinator.lastnames}</td>
                                 </tr>
                                 <tr>
                                     <td className="border-2 border-black px-4 py-2 font-bold bg-yellow-500">Supervisor</td>
                                     <td className="border-2 border-black px-4 py-2 bg-white">{activity.supervisor.names} {activity.supervisor.lastnames}</td>
                                 </tr>
-                                <tr>
-                                    <td className="border-2 border-black px-4 py-2 font-bold bg-yellow-500">Ubicacion</td>
-                                    <td className="border-2 border-black px-4 py-2 bg-white">{activity.location}</td>
-                                </tr>
+                               
                                 <tr>
                                     <td className="border-2 border-black px-4 py-2 font-bold bg-yellow-500">Ámbito</td>
                                     <td className="border-2 border-black px-4 py-2 bg-white">

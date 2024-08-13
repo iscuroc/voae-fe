@@ -56,7 +56,7 @@ export interface ActividadEstado {
 export const ObtenerActividadesPorEstado = async (status: number): Promise<ActividadEstado[]> => {
     try {
         const response = await axiosInstance.get(`/activities?status=${status}`);
-        return Array.isArray(response.data.items) ? response.data.items : []; 
+        return Array.isArray(response.data.items) ? response.data.items : [];
     } catch (error) {
         console.error('Error fetching activities:', error);
         return [];
@@ -97,9 +97,9 @@ export const ObtenerActividadesPorNombre = async (slug: string): Promise<Activid
     try {
         const response = await axiosInstance.get(`/activities/by-slug/${slug}`);
         console.log('Respuesta de la API:', response.data); // Verifica la respuesta de la API
-       
-            return response.data;
-      
+
+        return response.data;
+
     } catch (error) {
         console.error('Error al obtener actividades:', error);
         throw error;
