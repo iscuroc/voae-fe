@@ -68,14 +68,14 @@ root.render(
               <Route path="dashboard-estudiante/calendario" element={<Calendario />} />
               <Route path="dashboard-estudiante/perfil" element={<Perfil />} />
               <Route path="dashboard-estudiante/cambiar-contrasena" element={<CambiarContrasena />} />
-              <Route path="dashboard-estudiante/detalles-actividad" element={<DetallesActividad />} />
+              <Route path="dashboard-estudiante/detalles-actividad/:slug" element={<DetallesActividad />} />
  {/* </Route>  */}
 
             {/* Dashboard de coordinadores */}
 
  {/* <Route path="/" element={<CoordinadoresAuth />}>  */}
               <Route path="dashboard-coordinador/main" element={<DashboardCoordinador />} />
-              <Route path="dashboard-coordinador/detalles-actividad" element={<DetallesActividad />} />
+              <Route path="dashboard-coordinador/detalles-actividad/:slug" element={<DetallesActividad />} />
               <Route path="dashboard-coordinador/actividad-en-curso" element={<ActvidadesEnCurso />} />
               <Route path="dashboard-coordinador/gestion-actividad" element={<PaginaGestionActividad />} />
               <Route path="dashboard-coordinador/crear-actividad" element={<CrearActividad />} />

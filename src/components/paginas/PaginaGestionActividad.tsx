@@ -3,11 +3,12 @@ import { NavLink, useLocation } from "react-router-dom";
 import Pagination from "../Pagination";
 import Skeleton from "../Skeleton";
 import FiltroGS from "../filtros/FiltroGestionSolicitudes";
-import { ActividadEstado, ObtenerActividadesPorEstado} from "../../api/servicios/actividades";
-import { EtiquetasÁmbitosActividad,  formatDate } from "../../api/servicios/enums";
+import { ActividadEstado, ObtenerActividadesPorEstado } from "../../api/servicios/actividades";
+import { EtiquetasÁmbitosActividad, formatDate } from "../../api/servicios/enums";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
 
 const PaginaGestionActividad: React.FC = () => {
-    
+
     const [filtrarData, setFiltrarData] = useState<ActividadEstado[]>([]); // Estado para datos filtrados
     const [loading, setLoading] = useState<boolean>(true); // Estado para manejar la carga miestra trae los datos del backend
     const [error, setError] = useState<string | null>(null); // Estado para manejar errores
@@ -30,46 +31,46 @@ const PaginaGestionActividad: React.FC = () => {
         obtenerDatos();
     }, []);
 
-   // Función para aplicar filtro
-   const aplicarFiltros = (carrera: string, ambito: string, fechaInicio: string, fechaFin: string, busqueda: string) => {
+    // Función para aplicar filtro
+    const aplicarFiltros = (carrera: string, ambito: string, fechaInicio: string, fechaFin: string, busqueda: string) => {
 
-    const fechaInicioDate = fechaInicio ? new Date(fechaInicio.split('T')[0]) : null;
-    const fechaFinDate = fechaFin ? new Date(fechaFin.split('T')[0]) : null;
+        const fechaInicioDate = fechaInicio ? new Date(fechaInicio.split('T')[0]) : null;
+        const fechaFinDate = fechaFin ? new Date(fechaFin.split('T')[0]) : null;
 
-    const filtrar = filtrarData.filter(item => {
-        const inicioDate = new Date(item.startDate.split('T')[0]);
-        return (
-            (carrera === "" || item.foreingCareers.some(fc => fc.name === carrera)) &&
-            (ambito === "" || item.scopes.some(s => EtiquetasÁmbitosActividad[s.scope] === ambito)) &&
-            (!fechaInicioDate || inicioDate >= fechaInicioDate) &&
-            (!fechaFinDate || inicioDate <= fechaFinDate) &&
-            (busqueda === "" || item.name.toLowerCase().includes(busqueda.toLowerCase()))
-        );
-    });
+        const filtrar = filtrarData.filter(item => {
+            const inicioDate = new Date(item.startDate.split('T')[0]);
+            return (
+                (carrera === "" || item.foreingCareers.some(fc => fc.name === carrera)) &&
+                (ambito === "" || item.scopes.some(s => EtiquetasÁmbitosActividad[s.scope] === ambito)) &&
+                (!fechaInicioDate || inicioDate >= fechaInicioDate) &&
+                (!fechaFinDate || inicioDate <= fechaFinDate) &&
+                (busqueda === "" || item.name.toLowerCase().includes(busqueda.toLowerCase()))
+            );
+        });
 
-    setFiltrarData(filtrar);
-    setPaginaInicial(1); // Reiniciar la página actual al aplicar filtros
-};
+        setFiltrarData(filtrar);
+        setPaginaInicial(1); // Reiniciar la página actual al aplicar filtros
+    };
 
-// Paginación
-const itemsPerPage = 10;
-const totalPaginas = Math.ceil(filtrarData.length / itemsPerPage); // Usar FiltrarData en lugar de initialData
+    // Paginación
+    const itemsPerPage = 10;
+    const totalPaginas = Math.ceil(filtrarData.length / itemsPerPage); // Usar FiltrarData en lugar de initialData
 
-const handlePageChange = (page: number) => {
-    setPaginaInicial(page);
-};
+    const handlePageChange = (page: number) => {
+        setPaginaInicial(page);
+    };
 
-const paginatedData = filtrarData.slice((paginaInicial - 1) * itemsPerPage, paginaInicial * itemsPerPage); // Usar FiltrarData en lugar de initialData
+    const paginatedData = filtrarData.slice((paginaInicial - 1) * itemsPerPage, paginaInicial * itemsPerPage); // Usar FiltrarData en lugar de initialData
 
 
 
-if (loading) {
-    return <Skeleton/>; // Muestra un mensaje de carga
-}
+    if (loading) {
+        return <Skeleton />; // Muestra un mensaje de carga
+    }
 
-if (error) {
-    return <div>Error: {error}</div>; // Muestra un error si ocurre
-}
+    if (error) {
+        return <div>Error: {error}</div>; // Muestra un error si ocurre
+    }
 
     return (
         <div className="container mx-auto p-4">
@@ -114,7 +115,7 @@ if (error) {
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
                                         <span className="inline-block w-1/3 md:hidden font-bold mr-4">Cupos:</span>{item.totalSpots}
                                     </td>
-                                    
+
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
                                         <span className="inline-block w-1/3 md:hidden font-bold mr-4">Fecha Inicio:</span>{formatDate(item.startDate)}
                                     </td>
@@ -125,17 +126,16 @@ if (error) {
                                         <NavLink
                                             to={
                                                 location.pathname.includes('dashboard-coordinador')
-                                                    ? "/dashboard-coordinador/detalles-actividad/${item.slug}"
+                                                    ? `/dashboard-estudiante/detalles-actividad/${item.slug}`
                                                     : location.pathname.includes('dashboard-estudiante')
-                                                        ? "#"
-                                                        : "/dashboard-voae/detalles-actividades/${item.slug}"
+                                                        ? `/dashboard-coordinador/detalles-actividad/${item.slug}`
+                                                        : `/dashboard-voae/detalles-actividades/${item.slug}`
                                             }
                                             className="flex justify-center items-center font-bold group"
                                         >
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-black group-hover:text-yellow-500 transition-colors duration-200">
-                                                <path d="M12 20h9V4H3v16h9" fill="none"/>
-                                                <path d="M12 12l4 4M12 12l-4 4M12 12v9" fill="none"/>
-                                            </svg>
+                                            <MdOutlineRemoveRedEye className="group-hover:text-blue-500 hidden md:block h-7 w-7" />
+
+                                            <span className="hover:text-blue-500 group-hover:text-blue-500 md:hidden">Revisar</span>
                                         </NavLink>
                                     </td>
                                 </tr>

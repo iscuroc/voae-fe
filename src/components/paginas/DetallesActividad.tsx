@@ -8,7 +8,7 @@ const DetallesActividad: React.FC = () => {
     document.title = "Detalle de Actividad - UNAH COPAN";
   }, []);
 
-  const [activity, setActivity] = useState<ActividadNombre | null>(null); // Handle a single object
+  const [activity, setActivity] = useState<ActividadNombre | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const { slug } = useParams<{ slug?: string }>();
@@ -19,7 +19,7 @@ const DetallesActividad: React.FC = () => {
       try {
         if (slug) {
           const data = await ObtenerActividadesPorNombre(slug);
-          console.log('Datos obtenidos:', data); // Verify data structure
+          console.log('Datos obtenidos:', data);
 
           if (data && typeof data === 'object' && !Array.isArray(data)) {
             setActivity(data); // Set single activity object
@@ -78,8 +78,8 @@ const DetallesActividad: React.FC = () => {
   return (
     <>
       <div className="my-3"></div>
-      <div className="h-full mx-3 overflow-hidden flex flex-col md:flex-row items-center justify-center space-y-8 lg:space-y-0 lg:space-x-4">
-        <div className="bg-blue-900 w-full lg:w-5/12 md:w-6/12 shadow-xl relative rounded-lg ">
+      <div className="h-full mx-3 md:mx-6 overflow-hidden flex flex-col md:flex-row items-center justify-center space-y-8 lg:space-y-0 lg:space-x-4">
+        <div className="bg-blue-900 w-full md:w-2/3 shadow-xl relative rounded-lg ">
           <div className="p-3 md:p-6">
             <h2 className="text-base md:text-2xl font-bold mb-6 text-center text-white">Detalles de la Actividad</h2>
             <div className="overflow-y-auto max-h-96 rounded-lg border shadow-md" style={{ scrollbarWidth: 'thin' }}>
@@ -90,40 +90,24 @@ const DetallesActividad: React.FC = () => {
                     <td className="border px-4 py-2">{activity.name}</td>
                   </tr>
                   <tr>
-                    <td className="border px-4 py-2 bg-yellow-500">Objetivos</td>
-                    <td className="border px-4 py-2">
-                      <ul className="list-disc pl-5">
-                        {activity.goals.map((goal, index) => (
-                          <li key={index}>{goal}</li>
-                        ))}
-                      </ul>
-                    </td>
+                    <td className="border px-4 py-2 bg-yellow-500">Ubicaxion</td>
+                    <td className="border px-4 py-2">{activity.location}</td>
                   </tr>
                   <tr>
                     <td className="border px-4 py-2 bg-yellow-500">Descripción</td>
                     <td className="border px-4 py-2">{activity.description}</td>
                   </tr>
                   <tr>
-                    <td className="border px-4 py-2 bg-yellow-500">Carrera</td>
-                    <td className="border px-4 py-2">
-                      <ul className="list-disc pl-5">
-                        {activity.foreingCareers.map((career, index) => (
-                          <li key={index}>{career.name}</li>
-                        ))}
-                      </ul>
-                    </td>
-                  </tr>
-                  <tr>
                     <td className="border px-4 py-2 bg-yellow-500">Ámbito</td>
-                    <td className="border px-4 py-2">
-                      <ul className="list-disc pl-5">
-                        {activity.scopes.map((scope, index) => (
-                          <li key={index}>
-                            {EtiquetasÁmbitosActividad[scope.scope] || scope.scope} | {scope.hours} horas
-                          </li>
-                        ))}
-                      </ul>
-                    </td>
+
+                    <ul className="list-disc pl-5">
+                      {activity.scopes.map((scope, index) => (
+                        <li key={index}>
+                          {EtiquetasÁmbitosActividad[scope.scope] || scope.scope} | {scope.hours} horas
+                        </li>
+                      ))}
+                    </ul>
+
                   </tr>
                   <tr>
                     <td className="border px-4 py-2 bg-yellow-500">supervisor</td>
@@ -133,6 +117,35 @@ const DetallesActividad: React.FC = () => {
                     <td className="border px-4 py-2 bg-yellow-500">Coordinador</td>
                     <td className="border px-4 py-2">{activity.coordinator.names} {activity.coordinator.lastnames}</td>
                   </tr>
+                  <tr>
+                    <td className="border px-4 py-2 bg-yellow-500">Objetivos</td>
+
+                    <ul className="list-disc pl-5">
+                      {activity.goals.map((goal, index) => (
+                        <li key={index}>{goal}</li>
+                      ))}
+                    </ul>
+                  </tr>
+                  <tr>
+                    <td className="border px-4 py-2 bg-yellow-500">Acticidades Principales</td>
+                    <ul className="list-disc pl-5">
+                      {activity.mainActivities.map((activity, index) => (
+                        <li key={index}>{activity}</li>
+                      ))}
+                    </ul>
+                  </tr>
+
+                  <tr>
+                    <td className="border px-4 py-2 bg-yellow-500">Carrera</td>
+
+                    <ul className="list-disc pl-5">
+                      {activity.foreingCareers.map((career, index) => (
+                        <li key={index}>{career.name}</li>
+                      ))}
+                    </ul>
+
+                  </tr>
+
                   <tr>
                     <td className="border px-4 py-2 bg-yellow-500">Cupos</td>
                     <td className="border px-4 py-2">{activity.totalSpots}</td>
@@ -145,27 +158,14 @@ const DetallesActividad: React.FC = () => {
                     <td className="border px-4 py-2 bg-yellow-500">Fecha Final</td>
                     <td className="border px-4 py-2">{formatDate(activity.endDate)}</td>
                   </tr>
-                  <tr>
-                    <td className="border px-4 py-2 bg-yellow-500">Acticidades Principales</td>
-                    <td className="border px-4 py-2">
-                      <ul className="list-disc pl-5">
-                        {activity.mainActivities.map((activity, index) => (
-                          <li key={index}>{activity}</li>
-                        ))}
-                      </ul>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="border px-4 py-2 bg-yellow-500">Ubicaxion</td>
-                    <td className="border px-4 py-2">{activity.location}</td>
-                  </tr>
+
                 </tbody>
               </table>
             </div>
           </div>
         </div>
 
-        <div className="bg-yellow-500 w-full lg:w-5/12 md:w-6/12 shadow-xl relative rounded-lg">
+        <div className="bg-yellow-500 w-full md:w-3/5 shadow-xl relative rounded-lg">
           <div className="p-3 md:p-6">
             <h2 className="text-base md:text-2xl font-bold mb-6 text-center text-gray-900">Lista de Participantes Inscriptos</h2>
             <div className="overflow-y-auto max-h-96 rounded-lg border border-gray-200 bg-white shadow-md" style={{ scrollbarWidth: 'thin' }}>
@@ -176,7 +176,6 @@ const DetallesActividad: React.FC = () => {
                     <th className="border px-4 py-2 bg-blue-900 text-white">Número de Cuenta</th>
                     <th className="border px-4 py-2 bg-blue-900 text-white">Correo institucional</th>
                     <th className="border px-4 py-2 bg-blue-900 text-white">carrera</th>
-                    <th className="border px-4 py-2 bg-blue-900 text-white">Observaciones</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -186,7 +185,6 @@ const DetallesActividad: React.FC = () => {
                       <td className="border px-4 py-2">{participant.numerocuenta}</td>
                       <td className="border px-4 py-2">{participant.nombre.toLowerCase().replace(" ", ".")}@unah.hn</td>
                       <td className="border px-4 py-2">{participant.carrera}</td>
-                      <td className="border px-4 py-2">{participant.observaciones}</td>
                     </tr>
                   ))}
                 </tbody>
