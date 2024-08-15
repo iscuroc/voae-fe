@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import {   ActividadNombre, ObtenerActividadesPorNombre } from '../../api/servicios/actividades';
+import { useNavigate, useParams } from 'react-router-dom';
+import {   ActividadNombre, AprobarActividad, ObtenerActividadesPorNombre, RechazarActividad } from '../../api/servicios/actividades';
 import {  EtiquetasÁmbitosActividad, formatDate } from '../../api/servicios/enums';
 
 const PaginaGestionSolicitudesVOAE: React.FC = () => {
@@ -8,10 +8,12 @@ const PaginaGestionSolicitudesVOAE: React.FC = () => {
         document.title = "Coordinadores - UNAH CUROC"
     }, []);
 
-    const [activity, setActivity] = useState<ActividadNombre | null>(null); // Handle a single object
+    const [activity, setActivity] = useState<ActividadNombre | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [observation, setObservation] = useState<string>('');  
     const { slug } = useParams<{ slug?: string }>();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const obtenerDatos = async () => {
@@ -19,7 +21,6 @@ const PaginaGestionSolicitudesVOAE: React.FC = () => {
             try {
                 if (slug) {
                     const data = await ObtenerActividadesPorNombre(slug);
-                    console.log('Datos obtenidos:', data); // Verify data structure
                     
                     if (data && typeof data === 'object' && !Array.isArray(data)) {
                         setActivity(data); // Set single activity object
@@ -39,6 +40,31 @@ const PaginaGestionSolicitudesVOAE: React.FC = () => {
         obtenerDatos();
     }, [slug]);
 
+    const botonAprobar = async () => {
+        if (activity) {
+            try {
+                await AprobarActividad(activity.id, observation);
+                alert('Actividad aprobada con éxito');
+                navigate(-1);
+            } catch (error) {
+                alert('Error al aprobar la actividad, debe colocar una Observacion');
+            }
+        }
+    };
+
+    const botonRechazar = async () => {
+        if (activity) {
+            try {
+                
+                await RechazarActividad(activity.id, observation);
+                alert('Actividad rechazada con éxito');
+                navigate(-1);
+            } catch (error) {
+                alert('Error al rechazar la actividad, debe ingresar una Observacion');
+            }
+        }
+    };
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -55,14 +81,14 @@ const PaginaGestionSolicitudesVOAE: React.FC = () => {
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
             <div className="w-full max-w-4xl">
                 <h1 className="text-center text-2xl font-bold mb-4">Revisión de Solicitud</h1>
-                <div className="bg-blue-900 shadow-lg rounded-lg flex overflow-hidden mb-4">
-                    <div className="w-2/3 p-6">
+                <div className="bg-blue-900 shadow-lg rounded-lg block md:flex overflow-hidden mb-4">
+                    <div className=" p-6">
                         <h5 className="text-center text-2xl font-bold mb-4 text-white">Datos de la solicitud</h5>
-                        <table className="table-auto border-collapse border border-gray-400">
+                        <table className="table-auto border-collapse border text-sm md:text-base border-gray-400">
                             <tbody>
                                 <tr>
                                     <td className="border-2 border-black px-4 py-2 font-bold bg-yellow-500">Nombre</td>
-                                    <td className="border-2 border-black px-4 py-2 bg-white">{activity.name}</td>
+                                    <td className="border-2 border-black px-4 py-2 bg-white">{activity.id} {activity.name}</td>
                                 </tr>
                                 <tr>
                                     <td className="border-2 border-black px-4 py-2 font-bold bg-yellow-500">Ubicacion</td>
@@ -139,32 +165,33 @@ const PaginaGestionSolicitudesVOAE: React.FC = () => {
                             </tbody>
                         </table>
                     </div>
-                    <div className="w-1/3 bg-blue-900 p-6 rounded-l-lg flex flex-col items-center justify-center">
+                    <div className=" bg-blue-900 p-6 rounded-l-lg flex flex-col items-center justify-center">
                         <div className="mb-4">
-                            <a
-                                href=""
+                            <button
+                                onClick={botonAprobar}
                                 className="block text-center bg-yellow-500 text-black font-bold py-2 px-4 rounded-lg hover:bg-yellow-600 transition duration-300"
                             >
                                 Aprobar
-                            </a>
+                            </button>
                         </div>
                         <div className="mb-4">
-                            <a
-                                href=""
+                            <button
+                               onClick={botonRechazar}
                                 className="block text-center bg-red-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-600 transition duration-300"
                             >
                                 Rechazar
-                            </a>
+                            </button>
                         </div>
                         <div className="mb-4">
                             <textarea
                                 id="observations"
                                 placeholder="Escribe tus observaciones aquí..."
                                 maxLength={500}
+                                value={observation}  // Vincula el valor del textarea con el estado
+                                onChange={(e) => setObservation(e.target.value)}  // Actualiza el estado al cambiar
                                 className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline resize-none"
                                 rows={5}
                             />
-
                         </div>
                     </div>
                 </div>

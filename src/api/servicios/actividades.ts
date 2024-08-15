@@ -96,12 +96,33 @@ export interface ActividadNombre {
 export const ObtenerActividadesPorNombre = async (slug: string): Promise<ActividadNombre[]> => {
     try {
         const response = await axiosInstance.get(`/activities/by-slug/${slug}`);
-        console.log('Respuesta de la API:', response.data); // Verifica la respuesta de la API
-
         return response.data;
-
     } catch (error) {
         console.error('Error al obtener actividades:', error);
+        throw error;
+    }
+};
+
+export const AprobarActividad = async (id: number, reviewerObservation: string): Promise<void> => {
+    try {
+        const response = await axiosInstance.put(`/activities/${id}/approve`, {
+            reviewerObservation,
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error al aprobar la actividad:', error);
+        throw error;
+    }
+};
+
+export const RechazarActividad = async (id: number, reviewerObservation: string): Promise<void> => {
+    try {
+        const response = await axiosInstance.put(`/activities/${id}/reject`, {
+            reviewerObservation,
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error al aprobar la actividad:', error);
         throw error;
     }
 };
