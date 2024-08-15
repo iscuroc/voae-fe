@@ -24,7 +24,6 @@ const GestionSolicitudes: React.FC = () => {
             setLoading(true); // Inicia la carga
             try {
                 const data = await ObtenerActividadesPorEstado(0); // el numero es el estado que queres filtrar en el pagina de enums.ts estan los numeros de los estados
-                console.log("Datos obtenidos de la API:", data); // Verifica todos los datos obtenidos
                 setFiltrarData(data);
             } catch (error) {
                 setError('Failed to fetch activities');

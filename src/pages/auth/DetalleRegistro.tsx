@@ -6,6 +6,8 @@ import axios from 'axios';
 import { FiLoader } from 'react-icons/fi';
 import axiosInstance from '../../api/axiosInstance';
 import { Carrera, obtenerTodasLasCarreras } from '../../api/servicios/carreras';
+import { IoEye } from 'react-icons/io5';
+import { IoMdEyeOff } from 'react-icons/io';
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
 
@@ -53,6 +55,8 @@ const DetallesRegistro: React.FC = () => {
     });
     const [carrera, setCarreras] = useState<Carrera[]>([]);
     const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [showPasswordConfirmation, setShowPasswordConfirmation] = useState<boolean>(false);
 
     useEffect(() => {
         document.title = "Registro - UNAH COPAN";
@@ -114,7 +118,7 @@ const DetallesRegistro: React.FC = () => {
                 if (axios.isAxiosError(error) && error.response) {
                     const { status, data } = error.response;
                     const responseData = data as { type?: string, errors?: ErrorDetail[] };
-                    
+
                     if (errorMessages[status]) {
                         errorMessage = errorMessages[status];
                     } else if (responseData.errors && responseData.errors.length > 0) {
@@ -146,6 +150,15 @@ const DetallesRegistro: React.FC = () => {
             }
         }
     };
+
+    const visibilidadDeLaContrasena = () => {
+        setShowPassword((prev) => !prev);
+    };
+
+    const visibilidadDeLaContrasenaDeValidacion = () => {
+        setShowPasswordConfirmation((prev) => !prev);
+    };
+
 
     return (
         <div className="ml-5 mr-5 h-full md:mt-5 bg-white overflow-hidden flex items-center justify-center">
@@ -213,27 +226,55 @@ const DetallesRegistro: React.FC = () => {
                         </div>
                         <div className="flex flex-col mb-4">
                             <label htmlFor="password" className="text-sm font-medium">Contraseña</label>
-                            <input
-                                type="password"
-                                id="password"
-                                value={formData.password}
-                                onChange={handleInputChange}
-                                className="bg-gray-200 p-2 focus:outline-none rounded-md shadow-lg focus:ring-2 focus:ring-blue-500 text-sm"
-                                placeholder="Contraseña"
-                                required
-                            />
+                            <div className="relative">
+                                <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    id="password"
+                                    value={formData.password}
+                                    onChange={handleInputChange}
+                                    className="bg-gray-200 p-2 w-full focus:outline-none rounded-md shadow-lg focus:ring-2 focus:ring-blue-500 text-sm"
+                                    placeholder="Contraseña"
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    onClick={visibilidadDeLaContrasena}
+                                    className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+                                >
+                                    {showPassword ? (
+                                        <IoEye className='bg-gray-200 '/>
+
+                                    ) : (
+                                        <IoMdEyeOff className='bg-gray-200 '/>
+
+                                    )}
+                                </button>
+                            </div>
                             {errors.password && <span className="text-red-500 text-xs">{errors.password}</span>}
                         </div>
                         <div className="flex flex-col mb-4">
                             <label htmlFor="passwordConfirmation" className="text-sm font-medium">Confirmar Contraseña</label>
-                            <input
-                                type="password"
-                                id="passwordConfirmation"
-                                value={formData.passwordConfirmation}
-                                onChange={handleInputChange}
-                                className="bg-gray-200 p-2 focus:outline-none rounded-md shadow-lg focus:ring-2 focus:ring-blue-500 text-sm"
-                                placeholder="Confirmar Contraseña"
-                            />
+                            <div className="relative">
+                                <input
+                                    type={showPasswordConfirmation ? 'text' : 'password'}
+                                    id="passwordConfirmation"
+                                    value={formData.passwordConfirmation}
+                                    onChange={handleInputChange}
+                                    className="bg-gray-200 p-2 w-full focus:outline-none rounded-md shadow-lg focus:ring-2 focus:ring-blue-500 text-sm"
+                                    placeholder="Confirmar Contraseña"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={visibilidadDeLaContrasenaDeValidacion}
+                                    className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+                                >
+                                    {showPasswordConfirmation ? (
+                                        <IoEye className='bg-gray-200 ' />
+                                    ) : (
+                                        <IoMdEyeOff className='bg-gray-200 '  />
+                                    )}
+                                </button>
+                            </div>
                             {errors.passwordConfirmation && <span className="text-red-500 text-xs">{errors.passwordConfirmation}</span>}
                         </div>
                         {errors.general && <div className="text-red-500 text-sm mb-4">{errors.general}</div>}
