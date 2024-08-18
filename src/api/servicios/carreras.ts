@@ -21,7 +21,7 @@ export interface User {
     lastnames: string;
     email: string;
     accountNumber: number;
-    careerId: number;
+    career: number;
   }
 
   export const obtenerEstudiantesPorCarreras = async (carreraId: number, query: string): Promise<User[]> => {
