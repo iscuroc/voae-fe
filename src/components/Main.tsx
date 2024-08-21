@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
+import avoae1 from '@/assets/avoae1.jpg'
+import avoae2 from '@/assets/avoae2.jpg'
 const Main: React.FC = () => {
+
   const [banners, setBanners] = useState([
-    { id: 1, src: "/src/assets/avoae1.jpg", title: "Musica virtual" },
-    { id: 2, src: "/src/assets/avoae2.jpg", title: "Torneo de futbol" },
+    { id: 1, src: `${avoae1}`, title: "Musica virtual" },
+    { id: 2, src: `${avoae2}`, title: "Torneo de futbol" },
   ]);
 
 
