@@ -4,6 +4,7 @@ import { CiLogout, CiUser } from 'react-icons/ci';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 import { LuLayoutDashboard } from 'react-icons/lu';
 import useAuth from '../api/useAuth';
+import logoCuroc from '@/assets/logoCuroc.avif'
 
 export default function Header_login() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,7 +15,7 @@ export default function Header_login() {
         <>
             <header className="px-4 lg:px-6 h-14 flex items-center bg-primary text-primary-foreground bg-blue-900">
                 <a className="flex md:hidden items-center justify-center" href="/">
-                    <img src="https://res.cloudinary.com/dxc3qadsk/image/upload/v1719073675/curoc-removebg-preview_f5xnoe.png" alt="logo unah" className="w-8 h-8" />
+                    <img src={logoCuroc} alt="logo unah" className="w-8 h-8" />
                     <span className="text-xs font-bold text-white ml-2">UNAH COPAN</span>
                 </a>
                 <nav className="ml-auto hidden md:flex gap-4 text-white">

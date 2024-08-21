@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ActividadNombre, ObtenerActividadesPorNombre } from '../../api/servicios/actividades';
 import { EtiquetasÁmbitosActividad, formatDate } from '../../api/servicios/enums';
+import Loading from '../Loading';
 
 const DetallesActividad: React.FC = () => {
   useEffect(() => {
@@ -13,13 +14,12 @@ const DetallesActividad: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const { slug } = useParams<{ slug?: string }>();
 
- useEffect(() => {
+  useEffect(() => {
     const obtenerDatos = async () => {
       setLoading(true);
       try {
         if (slug) {
           const data = await ObtenerActividadesPorNombre(slug);
-          console.log('Datos obtenidos:', data);
 
           if (data && typeof data === 'object' && !Array.isArray(data)) {
             setActivity(data); // Set single activity object
@@ -40,7 +40,7 @@ const DetallesActividad: React.FC = () => {
   }, [slug]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading/>;
   }
 
   if (error) {

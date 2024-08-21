@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {   ActividadNombre, AprobarActividad, ObtenerActividadesPorNombre, RechazarActividad } from '../../api/servicios/actividades';
 import {  EtiquetasÁmbitosActividad, formatDate } from '../../api/servicios/enums';
+import Alert from '@/components/Alert';
+import Loading from '@/components/Loading';
 
 const PaginaGestionSolicitudesVOAE: React.FC = () => {
     useEffect(() => {
@@ -10,11 +12,13 @@ const PaginaGestionSolicitudesVOAE: React.FC = () => {
 
     const [activity, setActivity] = useState<ActividadNombre | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
+    const [isLoadingAprobar, setIsLoadingAprobar] = useState(false);
+    const [isLoadingRechazar, setIsLoadingRechazar] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [observation, setObservation] = useState<string>('');  
     const { slug } = useParams<{ slug?: string }>();
     const navigate = useNavigate();
-
+    
     useEffect(() => {
         const obtenerDatos = async () => {
             setLoading(true);
@@ -42,31 +46,54 @@ const PaginaGestionSolicitudesVOAE: React.FC = () => {
 
     const botonAprobar = async () => {
         if (activity) {
+            setIsLoadingAprobar(true); // Mostrar el loading
             try {
                 await AprobarActividad(activity.id, observation);
-                alert('Actividad aprobada con éxito');
-                navigate(-1);
+                Alert({
+                    title: 'Éxito',
+                    text: 'Actividad aprobada con éxito',
+                    icon: 'success',
+                    callback: () => navigate(-1),
+                });
             } catch (error) {
-                alert('Error al aprobar la actividad, debe colocar una Observacion');
+                Alert({
+                    title: 'Advertencia',
+                    text: 'Debe colocar una Observación para aprobar la actividad',
+                    icon: 'warning',
+                });
+            } finally {
+                setIsLoadingAprobar(false); // Ocultar el loading
             }
         }
     };
 
     const botonRechazar = async () => {
         if (activity) {
+            setIsLoadingRechazar(true); // Mostrar el loading
             try {
-                
                 await RechazarActividad(activity.id, observation);
-                alert('Actividad rechazada con éxito');
-                navigate(-1);
+                Alert({
+                    title: 'Éxito',
+                    text: 'Actividad rechazada con éxito',
+                    icon: 'success',
+                    callback: () => navigate(-1),
+                });
             } catch (error) {
-                alert('Error al rechazar la actividad, debe ingresar una Observacion');
+                Alert({
+                    title: 'Advertencia',
+                    text: 'Debe ingresar una Observación para rechazar la actividad',
+                    icon: 'warning',
+                });
+            } finally {
+                setIsLoadingRechazar(false);
             }
         }
     };
 
+
+
     if (loading) {
-        return <div>Loading...</div>;
+        return <Loading/>;
     }
 
     if (error) {
@@ -88,7 +115,7 @@ const PaginaGestionSolicitudesVOAE: React.FC = () => {
                             <tbody>
                                 <tr>
                                     <td className="border-2 border-black px-4 py-2 font-bold bg-yellow-500">Nombre</td>
-                                    <td className="border-2 border-black px-4 py-2 bg-white">{activity.id} {activity.name}</td>
+                                    <td className="border-2 border-black px-4 py-2 bg-white">{activity.name}</td>
                                 </tr>
                                 <tr>
                                     <td className="border-2 border-black px-4 py-2 font-bold bg-yellow-500">Ubicacion</td>
@@ -169,17 +196,19 @@ const PaginaGestionSolicitudesVOAE: React.FC = () => {
                         <div className="mb-4">
                             <button
                                 onClick={botonAprobar}
+                                disabled={isLoadingAprobar}
                                 className="block text-center bg-yellow-500 text-black font-bold py-2 px-4 rounded-lg hover:bg-yellow-600 transition duration-300"
                             >
-                                Aprobar
+                                {isLoadingAprobar ? 'Cargando...' : 'Aprobar'}
                             </button>
                         </div>
                         <div className="mb-4">
                             <button
                                onClick={botonRechazar}
+                               disabled={isLoadingRechazar}
                                 className="block text-center bg-red-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-600 transition duration-300"
                             >
-                                Rechazar
+                                 {isLoadingRechazar ? 'Cargando...' : 'Rechazar'}
                             </button>
                         </div>
                         <div className="mb-4">

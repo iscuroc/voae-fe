@@ -20,12 +20,12 @@ export interface User {
     organizations: Organization[];
 }
 
-export const ObtenerDatosUsuarioIniciado = async (): Promise<User[]> => {
+export const ObtenerDatosUsuarioIniciado = async (): Promise<User | null> => {
     try {
         const response = await axiosInstance.get(`/users/me`);
-        return Array.isArray(response.data.items) ? response.data.items : [];
+        return response.data ? response.data : null;
     } catch (error) {
-        console.error('Error fetching activities:', error);
-        return [];
+        console.error('Error fetching user data:', error);
+        return null;
     }
 };

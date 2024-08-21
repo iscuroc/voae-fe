@@ -4,6 +4,7 @@ import { FaRegCalendarAlt } from "react-icons/fa";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { NavLink } from "react-router-dom";
 import useAuth from "../api/useAuth";
+import logoCuroc from '@/assets/logoCuroc.avif'
 
 const Sidebar: React.FC = () => {
   const { logout } = useAuth();
@@ -15,7 +16,7 @@ const Sidebar: React.FC = () => {
         <ul className="space-y-2">
           <li>
             <a className="flex items-center justify-center" href="/">
-              <img src="https://res.cloudinary.com/dxc3qadsk/image/upload/v1719073675/curoc-removebg-preview_f5xnoe.png" alt="logo unah" className="w-11 h-11" />
+              <img src={logoCuroc} alt="logo unah" className="w-10 h-10" />
               <span className="text-sm font-bold text-white ml-2">UNAH COPAN</span>
             </a>
           </li>

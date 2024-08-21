@@ -14,7 +14,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src'), // Alias '@' apuntando a la carpeta 'src'
+      '@': path.resolve(__dirname, 'src'), 
     },
   },
   build: {
@@ -22,8 +22,9 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom']
-        }
+        },
       }
-    }
+    },
+    chunkSizeWarningLimit: 1000,
   }
 });

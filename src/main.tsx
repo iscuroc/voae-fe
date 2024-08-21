@@ -61,9 +61,9 @@ root.render(
               <Route path="dashboard-estudiante/actividades-solicitadas" element={<ActividadesSolicitadas />} />
               <Route path="dashboard-estudiante/actividades-en-curso" element={<ActvidadesEnCurso />} />
               <Route path="dashboard-estudiante/mis-actividades" element={<PaginaMisActividades />} />
-              <Route path="dashboard-estudiante/unirse-actividad" element={<UnirseActividad />} />
+              <Route path="dashboard-estudiante/unirse-actividad/:slug" element={<UnirseActividad />} />
               <Route path="dashboard-estudiante/mis-certificados" element={<MisCertificados />} />
-              <Route path="dashboard-estudiante/crear-actividad" element={<CrearActividad />} />
+              <Route path="dashboard-estudiante/crear-actividad/:slug" element={<CrearActividad />} />
               <Route path="dashboard-estudiante/editar-actividad" element={<CrearActividad />} />
               <Route path="dashboard-estudiante/calendario" element={<Calendario />} />
               <Route path="dashboard-estudiante/perfil" element={<Perfil />} />

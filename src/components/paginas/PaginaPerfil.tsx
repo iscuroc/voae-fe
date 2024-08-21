@@ -1,32 +1,30 @@
-
-import axiosInstance from '@/api/axiosInstance';
-import { User } from '@/api/servicios/carreras';
+import { ObtenerDatosUsuarioIniciado, User } from '@/api/servicios/usuarios';
 import useAuth from '@/api/useAuth';
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import Loading from '../Loading';
 
 const Perfil = () => {
     useEffect(() => {
         document.title = "Perfil - UNAH COPAN";
     }, []);
 
-    const [user, setUser] = useState<User | null>(null); 
-    const [loading, setLoading] = useState(true); 
+    const [user, setUser] = useState<User | null>(null);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    const { email } = useAuth(); 
+    const { email } = useAuth();
 
     useEffect(() => {
         const obtenerDatos = async () => {
             try {
-                const response = await axiosInstance.get('/users/me');
-                if (response.data) {
-                    setUser(response.data); 
+                const response = await ObtenerDatosUsuarioIniciado();
+                if (response && typeof response === 'object') {
+                    setUser(response);
                 } else {
-                    setError('No se encontraron datos de usuario');
+                    setError('No se encontró información del usuario');
                 }
             } catch (error) {
-                console.error('Error fetching user data:', error);
                 setError('Error al cargar la información del usuario.');
             } finally {
                 setLoading(false);
@@ -34,6 +32,7 @@ const Perfil = () => {
         };
         obtenerDatos();
     }, []);
+    
 
     const obtenerFechaHoraActual = (): string => {
         const fecha = new Date();
@@ -47,15 +46,15 @@ const Perfil = () => {
         });
     };
 
-    const ultimaSesion = localStorage.getItem('ultimaSesion') || obtenerFechaHoraActual();
-    localStorage.setItem('ultimaSesion', obtenerFechaHoraActual());
+    const ultimaSesion = sessionStorage.getItem('ultimaSesion') || obtenerFechaHoraActual();
+    sessionStorage.setItem('ultimaSesion', obtenerFechaHoraActual());
 
     if (loading) {
-        return <p>Cargando...</p>; 
+        return   <Loading/>
     }
 
     if (error) {
-        return <p>{error}</p>; 
+        return <p>{error}</p>;
     }
 
     return (
@@ -77,9 +76,21 @@ const Perfil = () => {
                     <h2 className="text-xl font-semibold text-gray-700">Información Personal</h2>
                     {user && (
                         <>
-                            <p className="mt-4"><span>Nº Cuenta:</span> {user.accountNumber}</p>
-                            <p className="mt-2"><span>Carrera:</span> {user.career}</p>
-                            <p className="mt-2"><span>Última vez conectado:</span> {ultimaSesion}</p>
+                            <p className="mt-4"><span className='font-bold'>Nº Cuenta:</span> {user.accountNumber}</p>
+                            <p className="mt-2"><span className='font-bold'>Carrera:</span> {user.career.name}</p>
+                            <p className="mt-2"><span className='font-bold'>Última vez conectado:</span> {ultimaSesion}</p>
+                            {user.organizations.length > 0 ? (
+                                <div className="mt-4">
+                                    <h3 className="text-lg font-semibold text-gray-700">Organizaciones:</h3>
+                                    <ul className="list-disc list-inside">
+                                        {user.organizations.map((org) => (
+                                            <li key={org.id} className="text-gray-600">{org.name}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            ) : (
+                                <p className="mt-2">No está asociado a ninguna organización.</p>
+                            )}
                         </>
                     )}
                 </div>
@@ -99,11 +110,9 @@ const Perfil = () => {
                     </NavLink>
                 </div>
             </div>
-            <div className="mt-8 bg-white p-6 rounded-lg shadow-md">
-                <h2 className="text-xl font-semibold text-gray-700"></h2>
-            </div>
         </div>
     );
+    
 };
 
 export default Perfil;
