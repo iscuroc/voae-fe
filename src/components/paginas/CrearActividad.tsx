@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ActividadCrear, crearActividad } from '../../api/servicios/actividadPost';
-import { Carrera, obtenerEstudiantesPorCarreras, obtenerProfesorPorCarreras, obtenerTodasLasCarreras, User } from '../../api/servicios/carreras';
+import { Carrera, obtenerEstudiantesPorCarreras, obtenerProfesorPorCarreras, obtenerTodasLasCarreras, UserCarrera } from '../../api/servicios/carreras';
 import { EtiquetasÁmbitosActividad } from '../../api/servicios/enums';
 // import { useLocation, useNavigate } from 'react-router-dom';
 import { organizations, obtenerLasOrganizaciones } from '../../api/servicios/organizaciones';
@@ -32,12 +32,10 @@ const CrearActividad = () => {
   const [selectedCoordinatorCarreraId, setSelectedCoordinatorCarreraId] = useState<number | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const location = useLocation();
-  // const navigate = useNavigate();
   const [carreras, setCarreras] = useState<Carrera[]>([]);
   const [organizacion, setOrganizacion] = useState<organizations[]>([]);
-  const [teachers, setTeachers] = useState<User[]>([]);
-  const [students, setStudents] = useState<User[]>([]);
+  const [teachers, setTeachers] = useState<UserCarrera[]>([]);
+  const [students, setStudents] = useState<UserCarrera[]>([]);
   const [error, setError] = useState<string[]>([]);
   const [selectAll, setSelectAll] = useState(false);
 

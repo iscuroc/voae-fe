@@ -93,10 +93,10 @@ const ActvidadesEnCurso: React.FC = () => {
                                         <NavLink
                                             to={
                                                 location.pathname.includes('dashboard-coordinador')
-                                                    ? "/dashboard-coordinador/detalles-actividad"
+                                                    ? `/dashboard-coordinador/detalles-actividad/${item.slug}`
                                                     : location.pathname.includes('dashboard-estudiante')
-                                                        ? "/dashboard-estudiante/unirse-actividad"
-                                                        : "/dashboard-voae/detalles-actividades"
+                                                        ? `/dashboard-estudiante/unirse-actividad/${item.slug}`
+                                                        : `/dashboard-voae/detalles-actividades/${item.slug}`
                                             }
                                             className="block text-center bg-yellow-500 text-black font-bold py-2 rounded-lg hover:bg-yellow-600 transition duration-300"
                                         >

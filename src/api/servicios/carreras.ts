@@ -15,16 +15,16 @@ export const obtenerTodasLasCarreras = async (): Promise<Carrera[]> => {
     return response.data;
 };
 
-export interface User {
+export interface UserCarrera {
     id: number;
     names: string;
     lastnames: string;
     email: string;
     accountNumber: number;
-    career: number;
+    careerID: number;
   }
 
-  export const obtenerEstudiantesPorCarreras = async (carreraId: number, query: string): Promise<User[]> => {
+  export const obtenerEstudiantesPorCarreras = async (carreraId: number, query: string): Promise<UserCarrera[]> => {
     const response = await axiosInstance.get(`/careers/${carreraId}/students`, {
         params: { query }
     });
@@ -32,7 +32,7 @@ export interface User {
 };
 
 // Función para obtener profesores filtrados por carrera y texto de consulta
-export const obtenerProfesorPorCarreras = async (carreraId: number, query: string): Promise<User[]> => {
+export const obtenerProfesorPorCarreras = async (carreraId: number, query: string): Promise<UserCarrera[]> => {
     const response = await axiosInstance.get(`/careers/${carreraId}/teachers`, {
         params: { query }
     });

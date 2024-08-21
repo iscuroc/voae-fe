@@ -12,34 +12,34 @@ export interface AuthContextType {
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [accessToken, setAccessToken] = useState<string | null>(localStorage.getItem('accessToken'));
+  const [accessToken, setAccessToken] = useState<string | null>(sessionStorage.getItem('accessToken'));
   const [userRole, setUserRole] = useState<number | null>(() => {
-    const role = localStorage.getItem('userRole');
+    const role = sessionStorage.getItem('userRole');
     return role ? Number(role) : null;
   });
-  const [email, setEmail] = useState<string | null>(localStorage.getItem('email'));
+  const [email, setEmail] = useState<string | null>(sessionStorage.getItem('email'));
 
   useEffect(() => {
     if (accessToken) {
-      localStorage.setItem('accessToken', accessToken);
+      sessionStorage.setItem('accessToken', accessToken);
     } else {
-      localStorage.removeItem('accessToken');
+      sessionStorage.removeItem('accessToken');
     }
   }, [accessToken]);
 
   useEffect(() => {
     if (userRole !== null) {
-      localStorage.setItem('userRole', userRole.toString());
+      sessionStorage.setItem('userRole', userRole.toString());
     } else {
-      localStorage.removeItem('userRole');
+      sessionStorage.removeItem('userRole');
     }
   }, [userRole]);
 
   useEffect(() => {
     if (email) {
-      localStorage.setItem('email', email);
+      sessionStorage.setItem('email', email);
     } else {
-      localStorage.removeItem('email');
+      sessionStorage.removeItem('email');
     }
   }, [email]);
 

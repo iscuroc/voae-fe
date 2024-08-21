@@ -5,7 +5,7 @@ import './DiseñCalendario.css';
 import { NavLink } from 'react-router-dom';
 import { format, parseISO, isSameDay } from 'date-fns';
 import { ActividadEstado, ObtenerActividadesPorEstado } from '../../api/servicios/actividades';
-import { FiLoader } from 'react-icons/fi';
+import Loading from '../Loading';
 
 const formatDate = (date: Date) => format(date, 'yyyy-MM-dd'); // Formatear solo la fecha
 
@@ -61,9 +61,7 @@ const Calendario: React.FC = () => {
   return (
     <div className="flex justify-center items-center h-full  relative">
       {loading ? (
-        <div className=" inset-0 flex items-center justify-center  z-50">
-        <FiLoader className="w-16 mt-60 h-16 border-4 border-t-4 border-solid rounded-full  border-t-transparent animate-spin" />
-      </div>
+        <Loading/>
       ) : (
         <>
           <div className="bg-white p-2 md:p-6 rounded-lg shadow-lg w-full relative z-10">
@@ -93,10 +91,10 @@ const Calendario: React.FC = () => {
                       <NavLink
                         to={
                           location.pathname.includes('dashboard-coordinador')
-                            ? "/dashboard-coordinador/detalles-actividad"
+                            ? `/dashboard-coordinador/detalles-actividad/${activity.slug}`
                             : location.pathname.includes('dashboard-estudiante')
-                              ? "/dashboard-estudiante/unirse-actividad"
-                              : "/dashboard-voae/detalles-actividades"
+                              ? `/dashboard-estudiante/unirse-actividad/${activity.slug}`
+                              : `/dashboard-voae/detalles-actividades/${activity.slug}`
                         }
                         className="px-4 py-2 text-sm text-blue-500 hover:underline flex items-center"
                       >

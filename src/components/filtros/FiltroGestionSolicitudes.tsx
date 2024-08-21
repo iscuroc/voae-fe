@@ -116,7 +116,7 @@ const FiltroGS: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
                         onChange={handleAmbitoChange}
                     >
                         <option value="">Seleccione Ámbito...</option>
-                        <option value="Academico">Académico</option>
+                        <option value="Científico">Científico</option>
                         <option value="Cultural">Cultural</option>
                         <option value="Social">Social</option>
                         <option value="Deportivo">Deportes</option>

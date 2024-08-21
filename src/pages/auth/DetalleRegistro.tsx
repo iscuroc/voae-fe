@@ -92,7 +92,7 @@ const DetallesRegistro: React.FC = () => {
         let isValid = true;
 
         if (!passwordRegex.test(formData.password)) {
-            newErrors.password = 'La contraseña debe tener al menos 8 caracteres, una letra minúscula, una letra mayúscula, un dígito y un carácter especial.';
+            newErrors.password = 'La contraseña debe tener al menos 8 caracteres, una letra minúscula, una letra mayúscula, un dígito y un solo carácter especial(@, $, !, %, ?, &).';
             isValid = false;
         }
 

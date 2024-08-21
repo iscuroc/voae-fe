@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { IoHomeOutline } from 'react-icons/io5';
 import { MdLogin, MdRoundaboutRight } from 'react-icons/md';
+import logoCuroc from '@/assets/logoCuroc.avif'
 
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -9,7 +10,7 @@ export default function Header() {
         <>
             <header className="px-4 lg:px-6 h-14 flex items-center bg-primary text-primary-foreground bg-blue-900">
                 <a className="flex items-center justify-center" href="/">
-                    <img src="https://res.cloudinary.com/dxc3qadsk/image/upload/v1719073675/curoc-removebg-preview_f5xnoe.png" alt="logo unah" className="w-10 h-10 md:w-7 md:h-7" />
+                    <img src={logoCuroc} alt="logo unah" className="w-8 h-8" />
                     <span className="text-xs md:text-lg font-bold text-white ml-2">UNAH COPAN</span>
                 </a>
                 <nav className="ml-auto hidden md:flex gap-4 text-white">
