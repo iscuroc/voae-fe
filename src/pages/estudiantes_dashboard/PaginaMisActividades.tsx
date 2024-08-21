@@ -19,12 +19,12 @@ export default function PaginaMisActividades() {
     const horas = useMemo(() => initialData2.map(item => item.horas), [initialData2]);
 
     const initialData = [
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Arboles", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-11 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-10 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Discurso", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-09 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-08 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-07 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", encargado: 'jose contreras', duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Arboles", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas", encargado: 'jose contreras', duracion: "2 horas", inicio: "2024-07-11 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas", encargado: 'jose contreras', duracion: "2 horas", inicio: "2024-07-10 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Discurso", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", encargado: 'jose contreras', duracion: "2 horas", inicio: "2024-07-09 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", encargado: 'jose contreras', duracion: "2 horas", inicio: "2024-07-08 01:14:23", final: "20/05/2022 7:00pm" },
+        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", encargado: 'jose contreras', duracion: "2 horas", inicio: "2024-07-07 01:14:23", final: "20/05/2022 7:00pm" },
     ];
 
     const [filtrarData, setFiltrarData] = useState(initialData); // Estado para datos filtrados
@@ -111,8 +111,8 @@ export default function PaginaMisActividades() {
                                     <th className=" p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Nombre</th>
                                     <th className=" p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Ubicación</th>
                                     <th className=" p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Ámbito</th>
-                                    <th className=" p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Encargado</th>
                                     <th className=" p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Carrera</th>
+                                    <th className=" p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Encargado</th>
                                     <th className=" p-2  font-bold md:border md:border-grey-500 text-left block md:table-cell">Duración</th>
                                     <th className=" p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Inicio</th>
                                     <th className=" p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Final</th>

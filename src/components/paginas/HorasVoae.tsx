@@ -8,9 +8,9 @@ const HorasVOAE: React.FC = () => {
 
     const initialData = [
         // Array de datos iniciales
-        { nombre: "Jose Alfredo Herrera Posadas", cuenta: "20182100006", correo: "jose.herrera@unah.hn", carrera: "Ingenieria en sistemas", cientifico: 10, social: 5, deportivas: 3, cultural: 2, totalHoras: 20 },
-        { nombre: "Juan Carlos Rodriguez Lopez", cuenta: "20182100007", correo: "juan.rodriguez@unah.hn", carrera: "Ingenieria en sistemas", cientifico: 8, social: 7, deportivas: 4, cultural: 1, totalHoras: 20 },
-        { nombre: "Maria Alejandra Garcia Perez", cuenta: "20182100008", correo: "maria.garcia@unah.hn", carrera: "Ingenieria en sistemas", cientifico: 6, social: 9, deportivas: 5, cultural: 0, totalHoras: 20 },
+        { nombre: "Jose Contreras ", cuenta: "20182100278", correo: "jcontrerasr@unah.hn", carrera: "Ingenieria en sistemas", cientifico: 10, social: 5, deportivas: 3, cultural: 2, totalHoras: 20 },
+        { nombre: "Jimmy Albert", cuenta: "20192100095", correo: "jimmya@unah.hn", carrera: "Ingenieria en sistemas", cientifico: 8, social: 7, deportivas: 4, cultural: 15, totalHoras: 34 },
+        { nombre: "Lendy Abigail", cuenta: "20161001633", correo: "lendy.a@unah.hn", carrera: "Ingenieria en sistemas", cientifico: 6, social: 9, deportivas: 5, cultural: 8, totalHoras: 28 },
     ];
     
     const [filtrarData, setFiltrarData] = useState(initialData);
@@ -30,7 +30,7 @@ const HorasVOAE: React.FC = () => {
     const aplicarFiltros = (carrera: string, correo: string) => {
         const filtrar = initialData.filter(item =>
             (carrera === "" || item.carrera === carrera) &&
-            (correo === "" || item.correo.includes(correo))
+            (correo === "" || item.cuenta.includes(correo))
         );
 
         setFiltrarData(filtrar);

@@ -52,7 +52,7 @@ const DetallesActividad: React.FC = () => {
   }
 
   const participants = [
-    { nombre: "Jose Luis Contreras", numerocuenta: "20182100006", carrera: "Ingenieria en sistemas"},
+    { nombre: "Jose Luis Contreras", numerocuenta: "20182100278", carrera: "Ingenieria en sistemas"},
     { nombre: "Jimmy Albert", numerocuenta: "20182100004", carrera: "Ingenieria en sistemas"},
     { nombre: "Eduard Javier", numerocuenta: "20192100095", carrera: "Ingenieria en sistemas"},
     { nombre: "Lendy Abigail", numerocuenta: "20161001633", carrera: "Ingenieria en sistemas"},
