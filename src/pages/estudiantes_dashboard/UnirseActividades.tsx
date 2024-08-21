@@ -1,4 +1,7 @@
-import React, { useEffect } from 'react';
+import { ActividadNombre, ObtenerActividadesPorNombre } from '@/api/servicios/actividades';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { EtiquetasÁmbitosActividad, formatDate } from '../../api/servicios/enums';
 
 const UnirseActividad: React.FC = () => {
   useEffect(() => {
@@ -9,6 +12,47 @@ const UnirseActividad: React.FC = () => {
     alert("Te has unido a la actividad");
     // Lógica para unirse a la actividad
   };
+  const [activity, setActivity] = useState<ActividadNombre | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const { slug } = useParams<{ slug?: string }>();
+
+  useEffect(() => {
+    const obtenerDatos = async () => {
+      setLoading(true);
+      try {
+        if (slug) {
+          const data = await ObtenerActividadesPorNombre(slug);
+          console.log('Datos obtenidos:', data);
+
+          if (data && typeof data === 'object' && !Array.isArray(data)) {
+            setActivity(data); // Set single activity object
+          } else {
+            setError('Data is not an object');
+          }
+        } else {
+          setError('No name parameter provided');
+        }
+      } catch (error) {
+        console.error('Error fetching activities:', error);
+        setError('Failed to fetch activities');
+      } finally {
+        setLoading(false);
+      }
+    };
+    obtenerDatos();
+  }, [slug]);
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!activity) {
+    return <div>No activity data found</div>;
+  }
 
   const handleGoBack = () => {
     window.history.back();
@@ -27,62 +71,68 @@ const UnirseActividad: React.FC = () => {
                   <tbody>
                     <tr>
                       <td className="border px-4 py-2 bg-yellow-500 w-1/4">Nombre de la Actividad</td>
-                      <td className="border px-4 py-2">Ejemplo de Actividad</td>
+                      <td className="border px-4 py-2">{activity.name}</td>
                     </tr>
                     <tr>
                       <td className="border px-4 py-2 bg-yellow-500">Objetivos</td>
-                      <td className="border px-4 py-2">Descripción de los objetivos.</td>
+
+                      <ul className="list-disc pl-5">
+                        {activity.goals.map((goal, index) => (
+                          <li key={index}>{goal}</li>
+                        ))}
+                      </ul>
                     </tr>
                     <tr>
                       <td className="border px-4 py-2 bg-yellow-500">Descripción</td>
-                      <td className="border px-4 py-2">Esta es una descripción de ejemplo de la actividad.</td>
+                      <td className="border px-4 py-2">{activity.description}</td>
                     </tr>
                     <tr>
                       <td className="border px-4 py-2 bg-yellow-500">Carrera</td>
-                      <td className="border px-4 py-2">Ingeniería</td>
+
+                      <ul className="list-disc pl-5">
+                        {activity.foreingCareers.map((career, index) => (
+                          <li key={index}>{career.name}</li>
+                        ))}
+                      </ul>
+
                     </tr>
                     <tr>
                       <td className="border px-4 py-2 bg-yellow-500">Ámbito</td>
-                      <td className="border px-4 py-2">Académico</td>
+
+                      <ul className="list-disc pl-5">
+                        {activity.scopes.map((scope, index) => (
+                          <li key={index}>
+                            {EtiquetasÁmbitosActividad[scope.scope] || scope.scope} | {scope.hours} horas
+                          </li>
+                        ))}
+                      </ul>
+
+                    </tr>
+                    <tr>
+                      <td className="border px-4 py-2 bg-yellow-500">supervisor</td>
+                      <td className="border px-4 py-2">{activity.supervisor.names} {activity.supervisor.lastnames}</td>
                     </tr>
                     <tr>
                       <td className="border px-4 py-2 bg-yellow-500">Coordinador</td>
-                      <td className="border px-4 py-2">Dr. Juan Pérez</td>
+                      <td className="border px-4 py-2">{activity.coordinator.names} {activity.coordinator.lastnames}</td>
                     </tr>
-                    <tr>
-                      <td className="border px-4 py-2 bg-yellow-500">Encargado</td>
-                      <td className="border px-4 py-2">María García</td>
-                    </tr>
-                    <tr>
-                      <td className="border px-4 py-2 bg-yellow-500">Horas Sociales Becados</td>
-                      <td className="border px-4 py-2">20</td>
-                    </tr>
-                    <tr>
-                      <td className="border px-4 py-2 bg-yellow-500">Horas Art. 140</td>
-                      <td className="border px-4 py-2">10</td>
-                    </tr>
+
+
                     <tr>
                       <td className="border px-4 py-2 bg-yellow-500">Cupos</td>
-                      <td className="border px-4 py-2">30</td>
-                    </tr>
-                    <tr>
-                      <td className="border px-4 py-2 bg-yellow-500">Cupos Disponibles</td>
-                      <td className="border px-4 py-2">10</td>
+                      <td className="border px-4 py-2">{activity.totalSpots}</td>
                     </tr>
                     <tr>
                       <td className="border px-4 py-2 bg-yellow-500">Fecha Inicio</td>
-                      <td className="border px-4 py-2">01/07/2024 4:00 pm</td>
+                      <td className="border px-4 py-2">{formatDate(activity.startDate)}</td>
                     </tr>
                     <tr>
                       <td className="border px-4 py-2 bg-yellow-500">Fecha Final</td>
-                      <td className="border px-4 py-2">01/08/2024 6:00 pm</td>
+                      <td className="border px-4 py-2">{formatDate(activity.endDate)}</td>
                     </tr>
-                   
-                    
-                    <tr>
-                      <td className="border px-4 py-2 bg-yellow-500">Observaciones</td>
-                      <td className="border px-4 py-2">Ninguna</td>
-                    </tr>
+
+
+
                   </tbody>
                 </table>
               </div>
@@ -122,7 +172,7 @@ const UnirseActividad: React.FC = () => {
                 >
                   Volver
                 </button>
-                
+
               </div>
             </div>
           </div>

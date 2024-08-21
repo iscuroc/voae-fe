@@ -13,7 +13,7 @@ const DetallesActividad: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const { slug } = useParams<{ slug?: string }>();
 
-  useEffect(() => {
+ useEffect(() => {
     const obtenerDatos = async () => {
       setLoading(true);
       try {
