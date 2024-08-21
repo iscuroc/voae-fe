@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
 import { FaFileImage } from 'react-icons/fa';
+import axiosInstance from '@/api/axiosInstance';
+import { useNavigate, useParams } from 'react-router-dom';
+import Alert from '../Alert';
 
 const SubirImagen: React.FC = () => {
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [uploading, setUploading] = useState<boolean>(false);
+    const { id } = useParams<{ id?: string }>();
+    const numericId = id ? parseInt(id, 10) : undefined;
+    const navigate = useNavigate();
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files ? event.target.files[0] : null;
@@ -18,12 +25,41 @@ const SubirImagen: React.FC = () => {
         }
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (selectedFile) {
-            // Aquí puedes agregar la lógica para enviar la imagen al servidor
-            console.log('Enviando archivo:', selectedFile);
+            setUploading(true);
+            const formData = new FormData();
+            formData.append('Banner', selectedFile);
+
+            try {
+                const response = await axiosInstance.put(`/activities/${numericId}/banner`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+              
+                console.log('Respuesta del servidor:', response.data);
+                Alert({
+                    title: 'Éxito',
+                    text: 'Te has unido a la actividad con exito',
+                    icon: 'success',
+                    callback: () => navigate(-1),
+                  });
+            } catch (error) {
+                Alert({
+                    title: 'Error',
+                    text: 'Hubo un error al subir la imagen (formato no aceptado).',
+                    icon: 'error'
+                  });
+            } finally {
+                setUploading(false);
+            }
         } else {
-            alert('Por favor, selecciona una imagen antes de enviar.');
+            Alert({
+                title: 'Advertencia',
+                text: 'Por favor, selecciona una imagen antes de enviar.',
+                icon: 'warning'
+              });
         }
     };
 
@@ -66,12 +102,12 @@ const SubirImagen: React.FC = () => {
             <button
                 onClick={handleSubmit}
                 className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition duration-200"
+                disabled={uploading}
             >
-                Enviar Imagen
+                {uploading ? 'Subiendo...' : 'Enviar Imagen'}
             </button>
         </div>
     );
 };
 
 export default SubirImagen;
-

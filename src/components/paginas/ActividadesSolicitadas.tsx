@@ -1,97 +1,199 @@
-import React, { useState } from 'react';
-import { FaFileImage } from 'react-icons/fa';
-import axiosInstance from '@/api/axiosInstance';
+import { EtiquetasÁmbitosActividad, EtiquetasEstadoActividad, formatDate } from "../../api/servicios/enums";
+import { ActividadEstado, ObtenerActividadesSolicitadas } from "../../api/servicios/actividades";
+import FiltroGS from "../filtros/FiltroGestionSolicitudes";
+import { NavLink, useLocation } from "react-router-dom";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
+import React, { useEffect, useState } from "react";
+import { FaEdit, FaFileImage } from "react-icons/fa";
+import Pagination from "../Pagination";
+import Skeleton from "../Skeleton";
 
-const SubirImagen: React.FC = () => {
-    const [imagePreview, setImagePreview] = useState<string | null>(null);
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const [uploading, setUploading] = useState<boolean>(false);
 
-    const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files ? event.target.files[0] : null;
 
-        if (file) {
-            setSelectedFile(file);
-            const reader = new FileReader();
-            reader.onload = () => {
-                setImagePreview(reader.result as string);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
+const ActividadesSolicitadas: React.FC = () => {
+    useEffect(() => {
+        document.title = "Activdades Solicitadas - UNAH COPAN";
+    }, []);
 
-    const handleSubmit = async () => {
-        if (selectedFile) {
-            setUploading(true);
-            const formData = new FormData();
-            formData.append('Banner', selectedFile);
+    /*
+        const initialData = [
+            // Tu array de datos aquí
+            { nombre: "Actividad 1", coordinador: "Odair Sauceda", carrera: "Ingenieria en sistemas", ambito: "Academico", inicio: "2024-07-12 01:14:23", final: "20/06/2025 7:00pm", estado: "Pendiente" },
+            { nombre: "Actividad 2", coordinador: "Odair Sauceda", carrera: "Ingenieria en sistemas", ambito: "Social", inicio: "2024-07-10 01:14:23", final: "20/06/2025 7:00pm", estado: "Aprobado" },
+            { nombre: "Actividad 3", coordinador: "Odair Sauceda", carrera: "Ingenieria en sistemas", ambito: "Academico", inicio: "2024-07-05 01:14:23", final: "20/06/2025 7:00pm", estado: "Rechazado" },
+    
+        ];
+    */
 
+    const [filtrarData, setFiltrarData] = useState<ActividadEstado[]>([]); // Estado para datos filtrados
+    const [loading, setLoading] = useState<boolean>(true); // Estado para manejar la carga miestra trae los datos del backend
+    const [error, setError] = useState<string | null>(null); // Estado para manejar errores
+    const [paginaInicial, setPaginaInicial] = useState(1); // Página inicial para paginación
+    const location = useLocation(); //(trae la url y ayuda redigir a ptr pagina dependiendo el path)
+
+    // obtener los datos
+    useEffect(() => {
+        const obtenerDatos = async () => {
+            setLoading(true); // Inicia la carga
             try {
-                const id = 24; // Reemplaza con el ID real de la actividad
-                const response = await axiosInstance.put(`/activities/${id}/banner`, formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                });
+                const data = await ObtenerActividadesSolicitadas(); // el numero es el estado que queres filtrar en el pagina de enums.ts estan los numeros de los estados
+                console.log('data:', data)
 
-                console.log('Respuesta del servidor:', response.data);
-                alert('Imagen subida exitosamente.');
+                setFiltrarData(data);
             } catch (error) {
-                console.error('Error al subir la imagen:', error);
-                alert('Hubo un error al subir la imagen.');
+                setError('Failed to fetch activities');
             } finally {
-                setUploading(false);
+                setLoading(false); // Finaliza la carga
             }
-        } else {
-            alert('Por favor, selecciona una imagen antes de enviar.');
-        }
+        };
+        obtenerDatos();
+    }, []);
+
+    // Función para aplicar filtro
+    const aplicarFiltros = (carrera: string, ambito: string, fechaInicio: string, fechaFin: string, estado: string) => {
+        const fechaInicioDate = fechaInicio ? new Date(fechaInicio.split('T')[0]) : null; // Obtener solo la fecha
+        const fechaFinDate = fechaFin ? new Date(fechaFin.split('T')[0]) : null; // Obtener solo la fecha
+
+        const filtrar = filtrarData.filter(item => {
+            const inicioDate = new Date(item.startDate.split('T')[0]);
+
+            return (
+                (carrera === "" || item.foreingCareers.some(fc => fc.name === carrera)) &&
+                (ambito === "" || item.scopes.some(s => EtiquetasÁmbitosActividad[s.scope] === ambito)) &&
+                (!fechaInicioDate || inicioDate >= fechaInicioDate) &&
+                (!fechaFinDate || inicioDate <= fechaFinDate) &&
+                (estado === "" || EtiquetasEstadoActividad[item.activityStatus] === estado)
+            );
+        });
+
+        setFiltrarData(filtrar);
+        setPaginaInicial(1); // Reiniciar la página actual al aplicar filtros
     };
+
+    // Paginación
+    const itemsPerPage = 10;
+    const totalPaginas = Math.ceil(filtrarData.length / itemsPerPage); // Usar FiltrarData en lugar de initialData
+
+    const handlePageChange = (page: number) => {
+        setPaginaInicial(page);
+    };
+
+    const paginatedData = filtrarData.slice((paginaInicial - 1) * itemsPerPage, paginaInicial * itemsPerPage); // Usar FiltrarData en lugar de initialData
+
+
+    if (loading) {
+        return <Skeleton />; // Muestra un mensaje de carga
+    }
+
+    if (error) {
+        return <div>Error: {error}</div>; // Muestra un error si ocurre
+    }
+
 
     return (
-        <div className="container mx-auto p-8 max-w-lg">
-            <h1 className="text-3xl font-bold text-center mb-8 text-gray-700">Subir Imagen</h1>
-            
-            <div className="mb-6">
-                <label className="block text-gray-500 font-bold mb-2" htmlFor="file-upload">
-                    Selecciona una imagen para subir:
-                </label>
-                <div className="flex items-center justify-center w-full">
-                    <label
-                        htmlFor="file-upload"
-                        className="flex flex-col items-center justify-center w-full h-32 bg-gray-100 border-2 border-dashed border-gray-300 cursor-pointer hover:bg-gray-200"
-                    >
-                        <FaFileImage  className='text-gray-600'/>
-                        <span className="text-sm text-gray-500 mt-2">Haz clic para seleccionar una imagen</span>
-                        <input
-                            id="file-upload"
-                            type="file"
-                            className="hidden"
-                            onChange={handleImageUpload}
-                        />
-                    </label>
+        <div className="container mx-auto p-4">
+            <div className="block md:flex items-center justify-center mb-4 mt-2">
+                <FiltroGS aplicarFiltros={aplicarFiltros} />
+            </div>
+
+            <div className="rounded-xl">
+                <div className="overflow-x-auto">
+                    <table className="border-collapse block md:table min-w-full table-auto bg-white border border-gray-200">
+                        <thead className="block md:table-header-group">
+                            <tr className="border text-sm border-gray-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto md:relative bg-yellow-500 text-black">
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Nombre</th>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Coordinador</th>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Carrera</th>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Ámbito</th>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Fecha Inicio</th>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Fecha Final</th>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Estado</th>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Observaciones</th>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Revision</th>
+                            </tr>
+                        </thead>
+                        <tbody className="block md:table-row-group text-sm md:text-xs">
+                            {paginatedData.map((item, index) => (
+                                <tr key={index} className="bg-yellow-500 md:bg-white text-left md:text-center hover:bg-gray-200 transition-colors duration-200 border border-gray-500 md:border-none block md:table-row">
+                                    <td className="p-1 md:border md:border-gray-500 block md:table-cell">
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Nombre:</span>{item.name}
+                                    </td>
+                                    <td className="p-1 md:border md:border-gray-500 block md:table-cell">
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Coordinador:</span>{item.coordinator.names} {item.coordinator.lastNames}
+                                    </td>
+                                    <td className="p-1 md:border md:border-gray-500 block md:table-cell">
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Entidad organizadora:</span>{item.organizers.map(fc => fc.career?.name || fc.organization?.name).join(", ")}
+                                    </td>
+                                    <td className="p-1 md:border md:border-gray-500 block md:table-cell">
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Ámbitos:</span>{item.scopes.map(s => EtiquetasÁmbitosActividad[s.scope] || s.scope).join(", ")}
+                                    </td>
+                                    <td className="p-1 md:border md:border-gray-500 block md:table-cell">
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Fecha Inicio:</span>{formatDate(item.startDate)}
+                                    </td>
+                                    <td className="p-1 md:border md:border-gray-500 block md:table-cell">
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Fecha Final:</span>{formatDate(item.endDate)}
+                                    </td>
+                                    <td className="p-1 md:border md:border-gray-500 block md:table-cell">
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Estado:</span>{EtiquetasEstadoActividad[item.activityStatus] || item.activityStatus}
+                                    </td>
+                                    <td className="p-1 md:border md:border-gray-500 block md:table-cell">
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Observaciones:</span>{item.reviewObservations}
+                                    </td>
+                                    <td className="p-1 md:border text-center md:border-gray-500 md:table-cell relative flex">
+                                        {item.activityStatus === 1 ? (
+                                            <>
+                                                <NavLink
+                                                    to={
+                                                        location.pathname.includes('dashboard-coordinador')
+                                                            ? "#"
+                                                            : location.pathname.includes('dashboard-estudiante')
+                                                                ? `/dashboard-estudiante/actualizar-actividad/${item.id}`
+                                                                : "/dashboard-voae/gestion-solicitud"
+                                                    }
+                                                    className="flex justify-center items-center font-bold group"
+                                                >
+                                                    <FaEdit className="w-5 h-5 text-red-600 hover:text-black" />
+                                                    <span className="hover:text-blue-500 group-hover:text-blue-500 md:hidden">Ver detalles</span>
+                                                </NavLink>
+                                            </>
+                                        ) : (
+                                            <div className="flex justify-center items-center text-center gap-2">
+                                                <NavLink
+                                                    to={
+                                                        location.pathname.includes('dashboard-coordinador')
+                                                            ? "#"
+                                                            : location.pathname.includes('dashboard-estudiante')
+                                                                ? `/dashboard-estudiante/detalles-actividad/${item.slug}`
+                                                                : "/dashboard-voae/gestion-solicitud"
+                                                    }
+                                                    className="flex justify-center items-center font-bold group"
+                                                >
+                                                    <MdOutlineRemoveRedEye className="group-hover:text-blue-500 hidden md:block h-5 w-5" />
+
+                                                    <span className="hover:text-blue-500 group-hover:text-blue-500 md:hidden">Ver detalles</span>
+                                                </NavLink>
+                                                <NavLink
+                                                    to={`/dashboard-estudiante/subir-imagen/${item.id}`}
+                                                    className="flex justify-center items-center font-bold group"
+                                                >
+                                                    <FaFileImage className="group-hover:text-blue-500 hidden md:block h-5 w-5" />
+                                                    <span className="hover:text-blue-500 group-hover:text-blue-500 md:hidden">Subir imagen</span>
+                                                </NavLink>
+
+                                            </div>
+                                        )}
+
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
-            {imagePreview && (
-                <div className="mt-8">
-                    <h2 className="text-xl font-semibold text-gray-600 mb-4">Vista previa de la imagen:</h2>
-                    <img
-                        src={imagePreview}
-                        alt="Vista previa"
-                        className="w-full h-auto rounded shadow-lg mb-6"
-                    />
-                </div>
-            )}
-
-            <button
-                onClick={handleSubmit}
-                className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition duration-200"
-                disabled={uploading}
-            >
-                {uploading ? 'Subiendo...' : 'Enviar Imagen'}
-            </button>
+            <Pagination PaginaInicial={paginaInicial} TotalPaginas={totalPaginas} onPageChange={handlePageChange} />
         </div>
     );
 };
 
-export default SubirImagen;
+export default ActividadesSolicitadas;
