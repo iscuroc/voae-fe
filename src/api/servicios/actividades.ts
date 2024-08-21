@@ -63,10 +63,10 @@ export const ObtenerActividadesPorEstado = async (status: number): Promise<Activ
     }
 };
 
-export const ObtenerActividadesSolicitadas = async (status: number): Promise<ActividadEstado[]> => {
+export const ObtenerActividadesSolicitadas = async (): Promise<ActividadEstado[]> => {
     try {
-        const response = await axiosInstance.get(`/activities?status=${status}`);
-        return Array.isArray(response.data.items) ? response.data.items : [];
+        const response = await axiosInstance.get(`/users/my-requests`);
+        return response.data;
     } catch (error) {
         console.error('Error fetching activities:', error);
         return [];

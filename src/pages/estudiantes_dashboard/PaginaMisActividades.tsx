@@ -25,20 +25,6 @@ export default function PaginaMisActividades() {
         { nombre: "Discurso", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-09 01:14:23", final: "20/05/2022 7:00pm" },
         { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-08 01:14:23", final: "20/05/2022 7:00pm" },
         { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Academico", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-07 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Social", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-06 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-07 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-08 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-05 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-04 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-03 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-02 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-01 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Caminata", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Tarde de pelicula", ubicacion: "Biblioteca", ambito: "Cultural", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
-        { nombre: "Charla", ubicacion: "Biblioteca", ambito: "Deportivo", carrera: "Ingenieria en sistemas", encargado: 'juan', duracion: "2 horas", inicio: "2024-07-12 01:14:23", final: "20/05/2022 7:00pm" },
-
     ];
 
     const [filtrarData, setFiltrarData] = useState(initialData); // Estado para datos filtrados

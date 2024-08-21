@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { MdLogin } from "react-icons/md";
-
 const Main: React.FC = () => {
   const [banners, setBanners] = useState([
-    { id: 1, src: "/ruta/a/tu/imagen1.jpg", title: "Banner 1" },
-    { id: 2, src: "/ruta/a/tu/imagen2.jpg", title: "Banner 2" },
+    { id: 1, src: "/src/assets/avoae1.jpg", title: "Musica virtual" },
+    { id: 2, src: "/src/assets/avoae2.jpg", title: "Torneo de futbol" },
   ]);
 
-  const navigate = useNavigate(); // Hook para navegación
 
   useEffect(() => {
     // título de la pestaña del navegador
@@ -38,7 +34,7 @@ const Main: React.FC = () => {
       for (let i = 0; i < banners.length; i += 2) {
         bannerRows.push(
           <div className="flex flex-col md:flex-row mb-4" key={i}>
-            <div className="flex-1 bg-white shadow-md rounded-lg p-4 mb-4 md:mb-0 md:mr-4">
+            <div className="flex-1 shadow-md rounded-lg p-4 mb-4 md:mb-0 md:mr-4">
               <h2 className="text-xl font-bold mb-2">{banners[i].title}</h2>
               <img
                 src={banners[i].src}
@@ -47,7 +43,7 @@ const Main: React.FC = () => {
               />
             </div>
             {banners[i + 1] && (
-              <div className="flex-1 bg-white shadow-md rounded-lg p-4">
+              <div className="flex-1  shadow-md rounded-lg p-4">
                 <h2 className="text-xl font-bold mb-2">{banners[i + 1].title}</h2>
                 <img
                   src={banners[i + 1].src}
@@ -65,9 +61,6 @@ const Main: React.FC = () => {
     return <>{renderBanners()}</>;
   };
 
-  const handleRegisterClick = () => {
-    navigate('/login'); // Redirige a la ruta /login
-  };
 
   return (
     <>
@@ -77,15 +70,7 @@ const Main: React.FC = () => {
           <div className=" shadow-lg rounded-lg p-6 min-h-[80vh]">
             <Banners banners={banners} />
           </div>
-          <div className="flex justify-center mt-6">
-            <button 
-              onClick={handleRegisterClick} 
-              className="bg-blue-500 text-white px-4 py-2 rounded flex items-center"
-            >
-              <MdLogin className="mr-1" />
-              Registrarse en una actividad
-            </button>
-          </div>
+          
         </div>
       </main>
     </>

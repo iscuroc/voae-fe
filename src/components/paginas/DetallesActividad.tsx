@@ -22,7 +22,7 @@ const DetallesActividad: React.FC = () => {
           const data = await ObtenerActividadesPorNombre(slug);
 
           if (data && typeof data === 'object' && !Array.isArray(data)) {
-            setActivity(data); // Set single activity object
+            setActivity(data); 
           } else {
             setError('Data is not an object');
           }
@@ -52,27 +52,10 @@ const DetallesActividad: React.FC = () => {
   }
 
   const participants = [
-    { nombre: "Juan Pérez", numerocuenta: "20182100006", carrera: "Ingenieria en sistemas", observaciones: "Estaré pendiente" },
-    { nombre: "María García", numerocuenta: "20182100007", carrera: "Ingenieria en sistemas", observaciones: "" },
-    { nombre: "Luis Rodríguez", numerocuenta: "20182100008", carrera: "Ingenieria en sistemas", observaciones: "Estaré presente" },
-    { nombre: "Mario Pineda", numerocuenta: "20182100009", carrera: "Administracion de empresas", observaciones: "Llegaré un poco tarde" },
-    { nombre: "Julia Lopez", numerocuenta: "20182100010", carrera: "Administracion de empresas", observaciones: "" },
-    { nombre: "Carlos Martínez", numerocuenta: "20182100011", carrera: "Administracion de empresas", observaciones: "Participaré con entusiasmo" },
-    { nombre: "Ana Sánchez", numerocuenta: "20182100012", carrera: "Ingenieria en sistemas", observaciones: "" },
-    { nombre: "Pedro Morales", numerocuenta: "20182100013", carrera: "Ingenieria en sistemas", observaciones: "Estaré allí" },
-    { nombre: "Sofía Ramírez", numerocuenta: "20182100014", carrera: "Comercio Internacional", observaciones: "" },
-    { nombre: "Diego Gómez", numerocuenta: "20182100015", carrera: "Comercio Internacional", observaciones: "Confirmo mi asistencia" },
-    { nombre: "Laura Díaz", numerocuenta: "20182100016", carrera: "Ingenieria en sistemas", observaciones: "" },
-    { nombre: "Javier Cruz", numerocuenta: "20182100017", carrera: "Comercio Internacional", observaciones: "Estaré disponible" },
-    { nombre: "Valentina Torres", numerocuenta: "20182100018", carrera: "Comercio Internacional", observaciones: "" },
-    { nombre: "Roberto Herrera", numerocuenta: "20182100019", carrera: "Administracion de empresas", observaciones: "Llego temprano" },
-    { nombre: "Fernanda Medina", numerocuenta: "20182100020", carrera: "Comercio Internacional", observaciones: "" },
-    { nombre: "Miguel Castro", numerocuenta: "20182100021", carrera: "Ingenieria en sistemas", observaciones: "Voy con todo" },
-    { nombre: "Paula Ortega", numerocuenta: "20182100022", carrera: "Desarrrollo Local", observaciones: "" },
-    { nombre: "Gabriel Guzmán", numerocuenta: "20182100023", carrera: "Desarrrollo Local", observaciones: "Estaré presente" },
-    { nombre: "Daniela Vargas", numerocuenta: "20182100024", carrera: "Desarrrollo Local", observaciones: "" },
-    { nombre: "Ricardo Mendoza", numerocuenta: "20182100025", carrera: "Ingenieria en sistemas", observaciones: "Voy con amigos" },
-
+    { nombre: "Jose Luis Contreras", numerocuenta: "20182100006", carrera: "Ingenieria en sistemas"},
+    { nombre: "Jimmy Albert", numerocuenta: "20182100004", carrera: "Ingenieria en sistemas"},
+    { nombre: "Eduard Javier", numerocuenta: "20192100095", carrera: "Ingenieria en sistemas"},
+    { nombre: "Lendy Abigail", numerocuenta: "20161001633", carrera: "Ingenieria en sistemas"},
   ];
 
   return (

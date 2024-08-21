@@ -31,6 +31,7 @@ import GestionUsuarios from './components/paginas/GestionUsuarios';
 import CambiarContrasena from './components/otraPaginas/CambiarContrasena';
 import Calendario from './components/otraPaginas/PaginaDeCalendario';
 import UpdateActividad from './components/paginas/UpdateActividad';
+import SubirImagen from './components/otraPaginas/SubirImagen';
 // import EstudianteRoute from './api/seguridad/EstudiantesAuth';
 // import CoordinadoresAuth from './api/seguridad/CoordinadoresAuth';
 // import VoaeAuth from './api/seguridad/VoaeAuth';
@@ -67,6 +68,7 @@ root.render(
               <Route path="dashboard-estudiante/crear-actividad" element={<CrearActividad />} />
               <Route path="dashboard-estudiante/actualizar-actividad/:id" element={<UpdateActividad />} />
               <Route path="dashboard-estudiante/editar-actividad" element={<CrearActividad />} />
+              <Route path="dashboard-estudiante/subir-imagen" element={<SubirImagen />} />
               <Route path="dashboard-estudiante/calendario" element={<Calendario />} />
               <Route path="dashboard-estudiante/perfil" element={<Perfil />} />
               <Route path="dashboard-estudiante/cambiar-contrasena" element={<CambiarContrasena />} />

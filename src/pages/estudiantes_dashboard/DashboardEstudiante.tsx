@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { FiBell, FiClock, FiLayers, FiClipboard, FiPlusCircle } from "react-icons/fi";
+import { FiBell, FiClock, FiLayers, FiPlusCircle } from "react-icons/fi";
 import DashboardButton from "../../components/DashboardButton";
 import { estudianteRoutes, EstudianteRouteKeys } from "../../api/routesConfig";
 
@@ -18,8 +18,8 @@ const DashboardEstudiante: React.FC = () => {
         return <FiLayers size={32} />;
       case "Crear Actividad":
         return <FiPlusCircle size={32} />;
-      case "Mis Certificados":
-        return <FiClipboard size={32} />;
+      // case "Mis Certificados":
+      //   return <FiClipboard size={32} />;
       default:
         return null;
     }

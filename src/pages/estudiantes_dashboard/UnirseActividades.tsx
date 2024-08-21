@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { EtiquetasÁmbitosActividad, formatDate } from '../../api/servicios/enums';
 import axiosInstance from '@/api/axiosInstance';
 import Alert from '@/components/Alert';
+import Loading from '@/components/Loading';
 
 const UnirseActividad: React.FC = () => {
   useEffect(() => {
@@ -75,7 +76,7 @@ const UnirseActividad: React.FC = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading/>;
   }
 
   if (error) {

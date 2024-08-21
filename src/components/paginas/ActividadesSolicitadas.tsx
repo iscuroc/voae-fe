@@ -1,10 +1,10 @@
 import { EtiquetasÁmbitosActividad, EtiquetasEstadoActividad, formatDate } from "../../api/servicios/enums";
-import { ActividadEstado, ObtenerActividadesSolicitadas} from "../../api/servicios/actividades";
+import { ActividadEstado, ObtenerActividadesSolicitadas } from "../../api/servicios/actividades";
 import FiltroGS from "../filtros/FiltroGestionSolicitudes";
 import { NavLink, useLocation } from "react-router-dom";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import React, { useEffect, useState } from "react";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaFileImage } from "react-icons/fa";
 import Pagination from "../Pagination";
 import Skeleton from "../Skeleton";
 
@@ -15,15 +15,15 @@ const ActividadesSolicitadas: React.FC = () => {
         document.title = "Activdades Solicitadas - UNAH COPAN";
     }, []);
 
-/*
-    const initialData = [
-        // Tu array de datos aquí
-        { nombre: "Actividad 1", coordinador: "Odair Sauceda", carrera: "Ingenieria en sistemas", ambito: "Academico", inicio: "2024-07-12 01:14:23", final: "20/06/2025 7:00pm", estado: "Pendiente" },
-        { nombre: "Actividad 2", coordinador: "Odair Sauceda", carrera: "Ingenieria en sistemas", ambito: "Social", inicio: "2024-07-10 01:14:23", final: "20/06/2025 7:00pm", estado: "Aprobado" },
-        { nombre: "Actividad 3", coordinador: "Odair Sauceda", carrera: "Ingenieria en sistemas", ambito: "Academico", inicio: "2024-07-05 01:14:23", final: "20/06/2025 7:00pm", estado: "Rechazado" },
-
-    ];
-*/
+    /*
+        const initialData = [
+            // Tu array de datos aquí
+            { nombre: "Actividad 1", coordinador: "Odair Sauceda", carrera: "Ingenieria en sistemas", ambito: "Academico", inicio: "2024-07-12 01:14:23", final: "20/06/2025 7:00pm", estado: "Pendiente" },
+            { nombre: "Actividad 2", coordinador: "Odair Sauceda", carrera: "Ingenieria en sistemas", ambito: "Social", inicio: "2024-07-10 01:14:23", final: "20/06/2025 7:00pm", estado: "Aprobado" },
+            { nombre: "Actividad 3", coordinador: "Odair Sauceda", carrera: "Ingenieria en sistemas", ambito: "Academico", inicio: "2024-07-05 01:14:23", final: "20/06/2025 7:00pm", estado: "Rechazado" },
+    
+        ];
+    */
 
     const [filtrarData, setFiltrarData] = useState<ActividadEstado[]>([]); // Estado para datos filtrados
     const [loading, setLoading] = useState<boolean>(true); // Estado para manejar la carga miestra trae los datos del backend
@@ -31,24 +31,14 @@ const ActividadesSolicitadas: React.FC = () => {
     const [paginaInicial, setPaginaInicial] = useState(1); // Página inicial para paginación
     const location = useLocation(); //(trae la url y ayuda redigir a ptr pagina dependiendo el path)
 
-/*
-    //funcion de paginacion
-    const itemsPerPage = 10;
-    const TotalPaginas = Math.ceil(filtrarData.length / itemsPerPage); // Usar FiltrarData en lugar de initialData
-
-    const handlePageChange = (page: number) => {
-        setPaginaInicial(page);
-    };
-
-    const paginatedData = filtrarData.slice((PaginaInicial - 1) * itemsPerPage, PaginaInicial * itemsPerPage); // Usar FiltrarData en lugar de initialData
-*/
-
     // obtener los datos
     useEffect(() => {
         const obtenerDatos = async () => {
             setLoading(true); // Inicia la carga
             try {
-                const data = await ObtenerActividadesSolicitadas(0); // el numero es el estado que queres filtrar en el pagina de enums.ts estan los numeros de los estados
+                const data = await ObtenerActividadesSolicitadas(); // el numero es el estado que queres filtrar en el pagina de enums.ts estan los numeros de los estados
+                console.log('data:', data)
+
                 setFiltrarData(data);
             } catch (error) {
                 setError('Failed to fetch activities');
@@ -58,7 +48,6 @@ const ActividadesSolicitadas: React.FC = () => {
         };
         obtenerDatos();
     }, []);
-    
 
     // Función para aplicar filtro
     const aplicarFiltros = (carrera: string, ambito: string, fechaInicio: string, fechaFin: string, estado: string) => {
@@ -81,19 +70,19 @@ const ActividadesSolicitadas: React.FC = () => {
         setPaginaInicial(1); // Reiniciar la página actual al aplicar filtros
     };
 
-     // Paginación
-     const itemsPerPage = 10;
-     const totalPaginas = Math.ceil(filtrarData.length / itemsPerPage); // Usar FiltrarData en lugar de initialData
- 
-     const handlePageChange = (page: number) => {
-         setPaginaInicial(page);
-     };
- 
-     const paginatedData = filtrarData.slice((paginaInicial - 1) * itemsPerPage, paginaInicial * itemsPerPage); // Usar FiltrarData en lugar de initialData
- 
-     
+    // Paginación
+    const itemsPerPage = 10;
+    const totalPaginas = Math.ceil(filtrarData.length / itemsPerPage); // Usar FiltrarData en lugar de initialData
+
+    const handlePageChange = (page: number) => {
+        setPaginaInicial(page);
+    };
+
+    const paginatedData = filtrarData.slice((paginaInicial - 1) * itemsPerPage, paginaInicial * itemsPerPage); // Usar FiltrarData en lugar de initialData
+
+
     if (loading) {
-        return <Skeleton/>; // Muestra un mensaje de carga
+        return <Skeleton />; // Muestra un mensaje de carga
     }
 
     if (error) {
@@ -133,10 +122,10 @@ const ActividadesSolicitadas: React.FC = () => {
                                         <span className="inline-block w-1/3 md:hidden font-bold mr-4">Coordinador:</span>{item.coordinator.names} {item.coordinator.lastNames}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Carrera:</span>{item.organizers.map(fc => fc.career?.name)}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Entidad organizadora:</span>{item.organizers.map(fc => fc.career?.name || fc.organization?.name).join(", ")}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Ámbito:</span>{item.scopes.map(s => EtiquetasÁmbitosActividad[s.scope] || s.scope).join(", ")}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Ámbitos:</span>{item.scopes.map(s => EtiquetasÁmbitosActividad[s.scope] || s.scope).join(", ")}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
                                         <span className="inline-block w-1/3 md:hidden font-bold mr-4">Fecha Inicio:</span>{formatDate(item.startDate)}
@@ -150,22 +139,50 @@ const ActividadesSolicitadas: React.FC = () => {
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
                                         <span className="inline-block w-1/3 md:hidden font-bold mr-4">Observaciones:</span>{item.reviewObservations}
                                     </td>
-                                    <td className="p-1 md:border text-center md:border-gray-500 block md:table-cell relative">
-                                        
+                                    <td className="p-1 md:border text-center md:border-gray-500 md:table-cell relative flex">
+                                        {item.activityStatus === 1 ? (
+                                            <>
                                                 <NavLink
                                                     to={
                                                         location.pathname.includes('dashboard-coordinador')
                                                             ? "#"
                                                             : location.pathname.includes('dashboard-estudiante')
-                                                                ? `/dashboard-estudiante/actualizar-actividad/${item.slug}`
+                                                                ? `/dashboard-estudiante/actualizar-actividad/${item.id}`
                                                                 : "/dashboard-voae/gestion-solicitud"
                                                     }
-                                                    className="flex justify-center items-center font-bold group"                                                    
+                                                    className="flex justify-center items-center font-bold group"
                                                 >
-                                                    <MdOutlineRemoveRedEye className="group-hover:text-blue-500 hidden md:block h-7 w-7" />
-                                                    <FaEdit className="w-5 h-5 text-red-600 group-hover:text-blue-500" />
-                                                    <span className="hover:text-blue-500 group-hover:text-blue-500 md:hidden">Revisión</span>
+                                                    <FaEdit className="w-5 h-5 text-red-600 hover:text-black" />
+                                                    <span className="hover:text-blue-500 group-hover:text-blue-500 md:hidden">Ver detalles</span>
                                                 </NavLink>
+                                            </>
+                                        ) : (
+                                            <div className="flex justify-center items-center text-center gap-2">
+                                                <NavLink
+                                                    to={
+                                                        location.pathname.includes('dashboard-coordinador')
+                                                            ? "#"
+                                                            : location.pathname.includes('dashboard-estudiante')
+                                                                ? `/dashboard-estudiante/detalles-actividad/${item.slug}`
+                                                                : "/dashboard-voae/gestion-solicitud"
+                                                    }
+                                                    className="flex justify-center items-center font-bold group"
+                                                >
+                                                    <MdOutlineRemoveRedEye className="group-hover:text-blue-500 hidden md:block h-5 w-5" />
+
+                                                    <span className="hover:text-blue-500 group-hover:text-blue-500 md:hidden">Ver detalles</span>
+                                                </NavLink>
+                                                <NavLink
+                                                    to="/dashboard-estudiante/subir-imagen"
+                                                    className="flex justify-center items-center font-bold group"
+                                                >
+                                                    <FaFileImage className="group-hover:text-blue-500 hidden md:block h-5 w-5" />
+
+                                                    <span className="hover:text-blue-500 group-hover:text-blue-500 md:hidden">Subir imagen</span>
+                                                </NavLink>
+                                            </div>
+                                        )}
+
                                     </td>
                                 </tr>
                             ))}
@@ -173,7 +190,7 @@ const ActividadesSolicitadas: React.FC = () => {
                     </table>
                 </div>
             </div>
-            
+
             <Pagination PaginaInicial={paginaInicial} TotalPaginas={totalPaginas} onPageChange={handlePageChange} />
         </div>
     );
