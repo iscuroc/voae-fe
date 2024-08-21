@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import Pagination from "../Pagination";
-import { FaEdit } from "react-icons/fa";
+import { EtiquetasÁmbitosActividad, EtiquetasEstadoActividad, formatDate } from "../../api/servicios/enums";
+import { ActividadEstado, ObtenerActividadesSolicitadas} from "../../api/servicios/actividades";
 import FiltroGS from "../filtros/FiltroGestionSolicitudes";
+import { NavLink, useLocation } from "react-router-dom";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
+import React, { useEffect, useState } from "react";
+import { FaEdit } from "react-icons/fa";
+import Pagination from "../Pagination";
+import Skeleton from "../Skeleton";
+
+
 
 const ActividadesSolicitadas: React.FC = () => {
     useEffect(() => {
         document.title = "Activdades Solicitadas - UNAH COPAN";
     }, []);
 
-
+/*
     const initialData = [
         // Tu array de datos aquí
         { nombre: "Actividad 1", coordinador: "Odair Sauceda", carrera: "Ingenieria en sistemas", ambito: "Academico", inicio: "2024-07-12 01:14:23", final: "20/06/2025 7:00pm", estado: "Pendiente" },
@@ -18,12 +23,15 @@ const ActividadesSolicitadas: React.FC = () => {
         { nombre: "Actividad 3", coordinador: "Odair Sauceda", carrera: "Ingenieria en sistemas", ambito: "Academico", inicio: "2024-07-05 01:14:23", final: "20/06/2025 7:00pm", estado: "Rechazado" },
 
     ];
+*/
 
+    const [filtrarData, setFiltrarData] = useState<ActividadEstado[]>([]); // Estado para datos filtrados
+    const [loading, setLoading] = useState<boolean>(true); // Estado para manejar la carga miestra trae los datos del backend
+    const [error, setError] = useState<string | null>(null); // Estado para manejar errores
+    const [paginaInicial, setPaginaInicial] = useState(1); // Página inicial para paginación
+    const location = useLocation(); //(trae la url y ayuda redigir a ptr pagina dependiendo el path)
 
-    const [filtrarData, setFiltrarData] = useState(initialData);
-    const [PaginaInicial, setPaginaInicial] = useState(1);
-    const location = useLocation();
-
+/*
     //funcion de paginacion
     const itemsPerPage = 10;
     const TotalPaginas = Math.ceil(filtrarData.length / itemsPerPage); // Usar FiltrarData en lugar de initialData
@@ -33,27 +41,65 @@ const ActividadesSolicitadas: React.FC = () => {
     };
 
     const paginatedData = filtrarData.slice((PaginaInicial - 1) * itemsPerPage, PaginaInicial * itemsPerPage); // Usar FiltrarData en lugar de initialData
+*/
+
+    // obtener los datos
+    useEffect(() => {
+        const obtenerDatos = async () => {
+            setLoading(true); // Inicia la carga
+            try {
+                const data = await ObtenerActividadesSolicitadas(0); // el numero es el estado que queres filtrar en el pagina de enums.ts estan los numeros de los estados
+                setFiltrarData(data);
+            } catch (error) {
+                setError('Failed to fetch activities');
+            } finally {
+                setLoading(false); // Finaliza la carga
+            }
+        };
+        obtenerDatos();
+    }, []);
+    
 
     // Función para aplicar filtro
     const aplicarFiltros = (carrera: string, ambito: string, fechaInicio: string, fechaFin: string, estado: string) => {
         const fechaInicioDate = fechaInicio ? new Date(fechaInicio.split('T')[0]) : null; // Obtener solo la fecha
         const fechaFinDate = fechaFin ? new Date(fechaFin.split('T')[0]) : null; // Obtener solo la fecha
 
-        const filtrar = initialData.filter(item => {
-            const inicioDate = new Date(item.inicio.split(' ')[0]); // Obtener solo la fecha desde la cadena de inicio
+        const filtrar = filtrarData.filter(item => {
+            const inicioDate = new Date(item.startDate.split('T')[0]);
 
             return (
-                (carrera === "" || item.carrera === carrera) &&
-                (ambito === "" || item.ambito === ambito) &&
+                (carrera === "" || item.foreingCareers.some(fc => fc.name === carrera)) &&
+                (ambito === "" || item.scopes.some(s => EtiquetasÁmbitosActividad[s.scope] === ambito)) &&
                 (!fechaInicioDate || inicioDate >= fechaInicioDate) &&
                 (!fechaFinDate || inicioDate <= fechaFinDate) &&
-                (estado === "" || item.estado === estado)
+                (estado === "" || EtiquetasEstadoActividad[item.activityStatus] === estado)
             );
         });
 
         setFiltrarData(filtrar);
         setPaginaInicial(1); // Reiniciar la página actual al aplicar filtros
     };
+
+     // Paginación
+     const itemsPerPage = 10;
+     const totalPaginas = Math.ceil(filtrarData.length / itemsPerPage); // Usar FiltrarData en lugar de initialData
+ 
+     const handlePageChange = (page: number) => {
+         setPaginaInicial(page);
+     };
+ 
+     const paginatedData = filtrarData.slice((paginaInicial - 1) * itemsPerPage, paginaInicial * itemsPerPage); // Usar FiltrarData en lugar de initialData
+ 
+     
+    if (loading) {
+        return <Skeleton/>; // Muestra un mensaje de carga
+    }
+
+    if (error) {
+        return <div>Error: {error}</div>; // Muestra un error si ocurre
+    }
+
 
     return (
         <div className="container mx-auto p-4">
@@ -81,75 +127,54 @@ const ActividadesSolicitadas: React.FC = () => {
                             {paginatedData.map((item, index) => (
                                 <tr key={index} className="bg-yellow-500 md:bg-white text-left md:text-center hover:bg-gray-200 transition-colors duration-200 border border-gray-500 md:border-none block md:table-row">
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Estudiante:</span>{item.nombre}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Nombre:</span>{item.name}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Coordinador:</span>{item.coordinador}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Coordinador:</span>{item.coordinator.names} {item.coordinator.lastNames}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Carrera:</span>{item.carrera}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Carrera:</span>{item.organizers.map(fc => fc.career?.name)}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Ámbito:</span>{item.ambito}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Ámbito:</span>{item.scopes.map(s => EtiquetasÁmbitosActividad[s.scope] || s.scope).join(", ")}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Fecha Inicio:</span>{item.inicio}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Fecha Inicio:</span>{formatDate(item.startDate)}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Fecha Final:</span>{item.final}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Fecha Final:</span>{formatDate(item.endDate)}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Estado:</span>{item.estado}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Estado:</span>{EtiquetasEstadoActividad[item.activityStatus] || item.activityStatus}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Estado:</span>{item.estado}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Observaciones:</span>{item.reviewObservations}
                                     </td>
                                     <td className="p-1 md:border text-center md:border-gray-500 block md:table-cell relative">
-                                        {item.estado === "Rechazado" ? (
-                                            <>
+                                        
                                                 <NavLink
                                                     to={
                                                         location.pathname.includes('dashboard-coordinador')
                                                             ? "#"
                                                             : location.pathname.includes('dashboard-estudiante')
-                                                                ? `/dashboard-estudiante/actualizar-actividad/${item.inicio}`
+                                                                ? `/dashboard-estudiante/actualizar-actividad/${item.slug}`
                                                                 : "/dashboard-voae/gestion-solicitud"
                                                     }
-                                                    className="flex justify-center items-center font-bold group"
+                                                    className="flex justify-center items-center font-bold group"                                                    
                                                 >
+                                                    <MdOutlineRemoveRedEye className="group-hover:text-blue-500 hidden md:block h-7 w-7" />
                                                     <FaEdit className="w-5 h-5 text-red-600 group-hover:text-blue-500" />
-                                                    <span className="hover:text-blue-500 group-hover:text-blue-500 md:hidden">Ver detalles</span>
+                                                    <span className="hover:text-blue-500 group-hover:text-blue-500 md:hidden">Revisión</span>
                                                 </NavLink>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <NavLink
-                                                    to={
-                                                        location.pathname.includes('dashboard-coordinador')
-                                                            ? "#"
-                                                            : location.pathname.includes('dashboard-estudiante')
-                                                                ? `/dashboard-estudiante/detalles-actividad/${item.final}`
-                                                                : "/dashboard-voae/gestion-solicitud"
-                                                    }
-                                                    className="flex justify-center items-center font-bold group"
-                                                >
-                                            <MdOutlineRemoveRedEye className="group-hover:text-blue-500 hidden md:block h-7 w-7" />
-
-                                                    <span className="hover:text-blue-500 group-hover:text-blue-500 md:hidden">Ver detalles</span>
-                                                </NavLink>
-                                            </>
-                                        )}
                                     </td>
-
-
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
             </div>
-
-            <Pagination PaginaInicial={PaginaInicial} TotalPaginas={TotalPaginas} onPageChange={handlePageChange} />
+            
+            <Pagination PaginaInicial={paginaInicial} TotalPaginas={totalPaginas} onPageChange={handlePageChange} />
         </div>
     );
 };
