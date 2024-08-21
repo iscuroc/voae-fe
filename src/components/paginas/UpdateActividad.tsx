@@ -354,7 +354,7 @@ const CrearActividad = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-8">
-        <h1 className="text-center text-3xl font-semibold mb-8 text-gray-800">Formulario de solicitud</h1>
+        <h1 className="text-center text-3xl font-semibold mb-8 text-gray-800">Formulario de edicion de solicitud</h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Name */}
@@ -789,7 +789,7 @@ const CrearActividad = () => {
           <div className="flex justify-center">
             <button
               disabled={isLoading} className="bg-blue-700 hover:bg-blue-600 text-white py-2 px-4 rounded">
-              {isLoading ? (<FiLoader className="mr-2 animate-spin" />) : ('Enviar Solicitud')}
+              {isLoading ? (<FiLoader className="mr-2 animate-spin" />) : ('Reenviar Solicitud')}
             </button>
           </div>
           <SuccessModal

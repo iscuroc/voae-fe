@@ -44,7 +44,7 @@ export interface ActividadEstado {
     lastRequestedAt: string;
     activityStatus: number;
     lastReviewedAt: string;
-    reviewObservations: string;
+    reviewObservations: string[];
     organizers: Organizer[];
     supervisor: Person;
     coordinator: Person;
@@ -54,6 +54,16 @@ export interface ActividadEstado {
 }
 
 export const ObtenerActividadesPorEstado = async (status: number): Promise<ActividadEstado[]> => {
+    try {
+        const response = await axiosInstance.get(`/activities?status=${status}`);
+        return Array.isArray(response.data.items) ? response.data.items : [];
+    } catch (error) {
+        console.error('Error fetching activities:', error);
+        return [];
+    }
+};
+
+export const ObtenerActividadesSolicitadas = async (status: number): Promise<ActividadEstado[]> => {
     try {
         const response = await axiosInstance.get(`/activities?status=${status}`);
         return Array.isArray(response.data.items) ? response.data.items : [];
