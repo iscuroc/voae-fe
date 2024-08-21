@@ -30,6 +30,7 @@ import ActividadesSolicitadas from './components/paginas/ActividadesSolicitadas'
 import GestionUsuarios from './components/paginas/GestionUsuarios';
 import CambiarContrasena from './components/otraPaginas/CambiarContrasena';
 import Calendario from './components/otraPaginas/PaginaDeCalendario';
+import UpdateActividad from './components/paginas/UpdateActividad';
 // import EstudianteRoute from './api/seguridad/EstudiantesAuth';
 // import CoordinadoresAuth from './api/seguridad/CoordinadoresAuth';
 // import VoaeAuth from './api/seguridad/VoaeAuth';
@@ -63,7 +64,8 @@ root.render(
               <Route path="dashboard-estudiante/mis-actividades" element={<PaginaMisActividades />} />
               <Route path="dashboard-estudiante/unirse-actividad/:slug" element={<UnirseActividad />} />
               <Route path="dashboard-estudiante/mis-certificados" element={<MisCertificados />} />
-              <Route path="dashboard-estudiante/crear-actividad/:slug" element={<CrearActividad />} />
+              <Route path="dashboard-estudiante/crear-actividad" element={<CrearActividad />} />
+              <Route path="dashboard-estudiante/actualizar-actividad/:id" element={<UpdateActividad />} />
               <Route path="dashboard-estudiante/editar-actividad" element={<CrearActividad />} />
               <Route path="dashboard-estudiante/calendario" element={<Calendario />} />
               <Route path="dashboard-estudiante/perfil" element={<Perfil />} />

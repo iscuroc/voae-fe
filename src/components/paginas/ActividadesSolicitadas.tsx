@@ -104,7 +104,7 @@ const ActividadesSolicitadas: React.FC = () => {
                                                         location.pathname.includes('dashboard-coordinador')
                                                             ? "#"
                                                             : location.pathname.includes('dashboard-estudiante')
-                                                                ? "/dashboard-estudiante/editar-actividad"
+                                                                ? `/dashboard-estudiante/actualizar-actividad/${item.inicio}`
                                                                 : "/dashboard-voae/gestion-solicitud"
                                                     }
                                                     className="flex justify-center items-center font-bold group"

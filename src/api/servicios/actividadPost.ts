@@ -38,3 +38,13 @@ export const crearActividad = async (actividad: ActividadCrear) => {
         throw error;
     }
 };
+
+export const updateActividad = async (id: number, actividad: ActividadCrear) => {
+    try {
+        const response = await axiosInstance.post(`/activities/${id}`, actividad);
+        return response.data;
+    } catch (error) {
+        console.error('Error al crear la actividad:', error);
+        throw error;
+    }
+};
