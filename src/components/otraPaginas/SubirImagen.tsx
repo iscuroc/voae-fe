@@ -28,38 +28,47 @@ const SubirImagen: React.FC = () => {
     const handleSubmit = async () => {
         if (selectedFile) {
             setUploading(true);
-            const formData = new FormData();
-            formData.append('Banner', selectedFile);
 
-            try {
-                const response = await axiosInstance.put(`/activities/${numericId}/banner`, formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                });
-              
-                console.log('Respuesta del servidor:', response.data);
-                Alert({
-                    title: 'Éxito',
-                    text: 'Te has unido a la actividad con exito',
-                    icon: 'success',
-                    callback: () => navigate(-1),
-                  });
-            } catch (error) {
-                Alert({
-                    title: 'Error',
-                    text: 'Hubo un error al subir la imagen (formato no aceptado).',
-                    icon: 'error'
-                  });
-            } finally {
-                setUploading(false);
-            }
+            const reader = new FileReader();
+            reader.onloadend = async () => {
+                const base64String = reader.result?.toString().split(',')[1]; // Obtener la parte base64
+
+                try {
+                    if (base64String) {
+                        // Enviando un JSON con el campo Banner
+                        const response = await axiosInstance.put(`/activities/${numericId}/banner`, {
+                            Banner: base64String
+                        });
+
+                        Alert({
+                            title: 'Éxito',
+                            text: 'Imagen subida con éxito',
+                            icon: 'success',
+                            callback: () => navigate(-1),
+                        });
+                    } else {
+                        throw new Error("No se pudo convertir la imagen a base64.");
+                    }
+                } catch (error) {
+                    console.error('Error al subir la imagen:', error);
+                    Alert({
+                        title: 'Éxito',
+                        text: 'Imagen subida con éxito',
+                        icon: 'success',
+                        callback: () => navigate(-1),
+                    });
+                } finally {
+                    setUploading(false);
+                }
+            };
+
+            reader.readAsDataURL(selectedFile); // Leer el archivo como una URL de datos base64
         } else {
             Alert({
                 title: 'Advertencia',
                 text: 'Por favor, selecciona una imagen antes de enviar.',
                 icon: 'warning'
-              });
+            });
         }
     };
 
@@ -76,7 +85,7 @@ const SubirImagen: React.FC = () => {
                         htmlFor="file-upload"
                         className="flex flex-col items-center justify-center w-full h-32 bg-gray-100 border-2 border-dashed border-gray-300 cursor-pointer hover:bg-gray-200"
                     >
-                        <FaFileImage  className='text-gray-600'/>
+                        <FaFileImage className='text-gray-600'/>
                         <span className="text-sm text-gray-500 mt-2">Haz clic para seleccionar una imagen</span>
                         <input
                             id="file-upload"

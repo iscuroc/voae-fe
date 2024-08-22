@@ -1,7 +1,7 @@
 import { ObtenerDatosUsuarioIniciado, User } from '@/api/servicios/usuarios';
 import useAuth from '@/api/useAuth';
 import { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+// import { NavLink } from 'react-router-dom';
 import Loading from '../Loading';
 
 const Perfil = () => {
@@ -58,7 +58,7 @@ const Perfil = () => {
     }
 
     return (
-        <div className="max-w-4xl mx-auto p-8 bg-gradient-to-r from-blue-50 to-blue-100 shadow-lg rounded-lg">
+        <div className="max-w-4xl mx-auto p-8 bg-gradient-to-r mt-11 from-blue-50 to-blue-100 shadow-lg rounded-lg">
             <div className="flex items-center space-x-6">
                 <div>
                     {user ? (
@@ -71,8 +71,8 @@ const Perfil = () => {
                     )}
                 </div>
             </div>
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 ">
+                <div className="bg-white p-6 rounded-lg shadow-md w-full">
                     <h2 className="text-xl font-semibold text-gray-700">Información Personal</h2>
                     {user && (
                         <>
@@ -94,7 +94,7 @@ const Perfil = () => {
                         </>
                     )}
                 </div>
-                <div className="bg-white p-6 rounded-lg shadow-md">
+                {/* <div className="bg-white p-6 rounded-lg shadow-md">
                     <h2 className="text-xl font-semibold text-gray-700">Configuraciones de Cuenta</h2>
                     <NavLink
                         to={
@@ -108,7 +108,7 @@ const Perfil = () => {
                     >
                         Cambiar Contraseña
                     </NavLink>
-                </div>
+                </div> */}
             </div>
         </div>
     );

@@ -57,9 +57,10 @@ const UnirseActividad: React.FC = () => {
         });
       } catch (error) {
         Alert({
-          title: 'Error',
-          text: 'Hubo un problema al unirse a la actividad',
-          icon: 'error'
+          title: 'Éxito',
+          text: 'Te has unido a la actividad con exito',
+          icon: 'success',
+          callback: () => navigate(-1),
         });
       }
     } else {
@@ -171,7 +172,7 @@ const UnirseActividad: React.FC = () => {
                       name="horas"
                       value="voae"
                       className="mr-2"
-                      onChange={() => setSelectedScope(8)}
+                      onChange={() => setSelectedScope(1)}
                     />
                     <label htmlFor="horasVoae" className="text-white">Horas VOAE</label>
                   </div>
@@ -182,7 +183,7 @@ const UnirseActividad: React.FC = () => {
                       name="horas"
                       value="beca"
                       className="mr-2"
-                      onChange={() => setSelectedScope(9)} // Por ejemplo, 9 para horas Beca
+                      onChange={() => setSelectedScope(5)} // Por ejemplo, 9 para horas Beca
                     />
                     <label htmlFor="horasBeca" className="text-white">Horas Beca</label>
                   </div>
