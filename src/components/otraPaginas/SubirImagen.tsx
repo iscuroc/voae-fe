@@ -39,7 +39,7 @@ const SubirImagen: React.FC = () => {
                         const response = await axiosInstance.put(`/activities/${numericId}/banner`, {
                             Banner: base64String
                         });
-
+                        console.log(response)
                         Alert({
                             title: 'Éxito',
                             text: 'Imagen subida con éxito',
