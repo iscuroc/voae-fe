@@ -15,15 +15,6 @@ const ActividadesSolicitadas: React.FC = () => {
         document.title = "Activdades Solicitadas - UNAH COPAN";
     }, []);
 
-    /*
-        const initialData = [
-            // Tu array de datos aquí
-            { nombre: "Actividad 1", coordinador: "Odair Sauceda", carrera: "Ingenieria en sistemas", ambito: "Academico", inicio: "2024-07-12 01:14:23", final: "20/06/2025 7:00pm", estado: "Pendiente" },
-            { nombre: "Actividad 2", coordinador: "Odair Sauceda", carrera: "Ingenieria en sistemas", ambito: "Social", inicio: "2024-07-10 01:14:23", final: "20/06/2025 7:00pm", estado: "Aprobado" },
-            { nombre: "Actividad 3", coordinador: "Odair Sauceda", carrera: "Ingenieria en sistemas", ambito: "Academico", inicio: "2024-07-05 01:14:23", final: "20/06/2025 7:00pm", estado: "Rechazado" },
-    
-        ];
-    */
 
     const [filtrarData, setFiltrarData] = useState<ActividadEstado[]>([]); // Estado para datos filtrados
     const [loading, setLoading] = useState<boolean>(true); // Estado para manejar la carga miestra trae los datos del backend
@@ -102,8 +93,8 @@ const ActividadesSolicitadas: React.FC = () => {
                         <thead className="block md:table-header-group">
                             <tr className="border text-sm border-gray-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto md:relative bg-yellow-500 text-black">
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Nombre</th>
-                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Coordinador</th>
-                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Carrera</th>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Encargado</th>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Entidad encargada</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Ámbito</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Fecha Inicio</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Fecha Final</th>
