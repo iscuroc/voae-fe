@@ -137,7 +137,7 @@ const DetallesRegistro: React.FC = () => {
                                 errorMessage = 'Número de cuenta inválido.';
                                 break;
                             case 'Authentication.AccountNumberInUse':
-                                errorMessage = 'Número de cuenta ya en uso.';
+                                errorMessage = 'Número de cuenta ya en uso o no valido, (si es empleado y su cuenta es de 4 digitos coloque un cero(0) al principio para completar los 5 digitos requeridos.';
                                 break;
                             default:
                                 break;
