@@ -2,16 +2,17 @@ import { useState } from 'react';
 import { IoHomeOutline } from 'react-icons/io5';
 import { MdLogin, MdRoundaboutRight } from 'react-icons/md';
 import logoCuroc from '@/assets/logoCuroc.avif'
+import { HiOutlineMenuAlt3 } from 'react-icons/hi';
 
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (
         <>
-            <header className="px-4 lg:px-6 h-14 flex items-center bg-primary text-primary-foreground bg-blue-900">
+            <header className="fixed w-full px-4 lg:px-6 h-14 flex items-center bg-primary text-primary-foreground bg-blue-900">
                 <a className="flex items-center justify-center" href="/">
                     <img src={logoCuroc} alt="logo unah" className="w-8 h-8" />
-                    <span className="text-xs md:text-lg font-bold text-white ml-2">UNAH COPAN</span>
+                    <span className="text-xs md:text-lg font-bold text-white ml-2">UNAH Campus Copán</span>
                 </a>
                 <nav className="ml-auto hidden md:flex gap-4 text-white">
                     <a href="/" className="text-sm hover:underline">Inicio</a>
@@ -20,11 +21,10 @@ export default function Header() {
                 </nav>
                 <button 
                     className="ml-auto md:hidden text-white focus:outline-none"
+                    aria-label="Abrir menu"
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
                 >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-                    </svg>
+                  <HiOutlineMenuAlt3 className='h-6 w-6'/>
                 </button>
             </header>
             {isMenuOpen && (

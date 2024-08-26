@@ -86,7 +86,7 @@ const PaginaGestionActividad: React.FC = () => {
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Nombre</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Ubicación</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Entidad Organizadora</th>
-                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Organizador</th>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Solicitante</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Ámbito</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Cupos</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Inicio</th>
@@ -107,7 +107,7 @@ const PaginaGestionActividad: React.FC = () => {
                                         <span className="inline-block w-1/3 md:hidden font-bold mr-4">Entidad organizadora:</span>{item.organizers.map(fc => fc.career?.name || fc.organization?.name).join(", ")}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Encargado:</span>{item.coordinator.names}{item.coordinator.lastNames}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Solicitante:</span>{item.requestedBy.names} {item.requestedBy.lastNames}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
                                         <span className="inline-block w-1/3 md:hidden font-bold mr-4">Ámbito:</span>{item.scopes.map(s => EtiquetasÁmbitosActividad[s.scope] || s.scope).join(", ")}

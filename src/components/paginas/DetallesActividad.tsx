@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import { ActividadNombre, ObtenerActividadesPorNombre } from '../../api/servicios/actividades';
 import { EtiquetasÁmbitosActividad, formatDate } from '../../api/servicios/enums';
 import Loading from '../Loading';
+import { MdCompareArrows } from 'react-icons/md';
 
 const DetallesActividad: React.FC = () => {
   useEffect(() => {
@@ -22,7 +23,7 @@ const DetallesActividad: React.FC = () => {
           const data = await ObtenerActividadesPorNombre(slug);
 
           if (data && typeof data === 'object' && !Array.isArray(data)) {
-            setActivity(data); 
+            setActivity(data);
           } else {
             setError('Data is not an object');
           }
@@ -40,7 +41,7 @@ const DetallesActividad: React.FC = () => {
   }, [slug]);
 
   if (loading) {
-    return <Loading/>;
+    return <Loading />;
   }
 
   if (error) {
@@ -52,10 +53,14 @@ const DetallesActividad: React.FC = () => {
   }
 
   const participants = [
-    { nombre: "Jose Luis Contreras", numerocuenta: "20182100278", carrera: "Ingenieria en sistemas"},
-    { nombre: "Jimmy Albert", numerocuenta: "20182100004", carrera: "Ingenieria en sistemas"},
-    { nombre: "Eduard Javier", numerocuenta: "20192100095", carrera: "Ingenieria en sistemas"},
-    { nombre: "Lendy Abigail", numerocuenta: "20161001633", carrera: "Ingenieria en sistemas"},
+    { nombre: "Jose Luis Contreras", numerocuenta: "20182100278", carrera: "Ingenieria en sistemas" },
+    { nombre: "Jimmy Albert", numerocuenta: "20182100004", carrera: "Ingenieria en sistemas" },
+    { nombre: "Eduard Javier", numerocuenta: "20192100095", carrera: "Ingenieria en sistemas" },
+    { nombre: "Lendy Abigail", numerocuenta: "20161001633", carrera: "Ingenieria en sistemas" },
+    { nombre: "Lendy Abigail", numerocuenta: "20161001633", carrera: "Ingenieria en sistemas" },
+    { nombre: "Lendy Abigail", numerocuenta: "20161001633", carrera: "Ingenieria en sistemas" },
+    { nombre: "Lendy Abigail", numerocuenta: "20161001633", carrera: "Ingenieria en sistemas" },
+    { nombre: "Lendy Abigail", numerocuenta: "20161001633", carrera: "Ingenieria en sistemas" },
   ];
 
   return (
@@ -90,7 +95,6 @@ const DetallesActividad: React.FC = () => {
                         </li>
                       ))}
                     </ul>
-
                   </tr>
                   <tr>
                     <td className="border px-4 py-2 bg-yellow-500">supervisor</td>
@@ -150,14 +154,27 @@ const DetallesActividad: React.FC = () => {
 
         <div className="bg-yellow-500 w-full md:w-3/5 shadow-xl relative rounded-lg">
           <div className="p-3 md:p-6">
-            <h2 className="text-base md:text-2xl font-bold mb-6 text-center text-gray-900">Lista de Participantes Inscriptos</h2>
+            <h2 className="text-base md:text-2xl font-bold  text-center text-gray-900">Lista de Participantes</h2>
+            <NavLink
+              to={
+                location.pathname.includes('dashboard-coordinador')
+                  ? `/dashboard-coordinador/lista-de-comparacion/${slug}`
+                  : location.pathname.includes('dashboard-estudiante')
+                    ? `/dashboard-estudiante/lista-de-comparacion/${slug}`
+                    : `/dashboard-voae/lista-de-comparacion/${slug}`
+              }
+               className="text-blue-800 flex items-center justify-end hover:text-blue-700"
+            >
+              <MdCompareArrows />
+              Comparar con lista real
+            </NavLink>
+
             <div className="overflow-y-auto max-h-96 rounded-lg border border-gray-200 bg-white shadow-md" style={{ scrollbarWidth: 'thin' }}>
               <table className="w-full text-left border-collapse text-xs md:text-sm bg-white rounded-lg" style={{ overflowX: 'auto' }}>
                 <thead>
                   <tr>
                     <th className="border px-4 py-2 bg-blue-900 text-white">Nombre</th>
                     <th className="border px-4 py-2 bg-blue-900 text-white">Número de Cuenta</th>
-                    <th className="border px-4 py-2 bg-blue-900 text-white">Correo institucional</th>
                     <th className="border px-4 py-2 bg-blue-900 text-white">carrera</th>
                   </tr>
                 </thead>
@@ -166,7 +183,6 @@ const DetallesActividad: React.FC = () => {
                     <tr key={index} className={index % 2 === 0 ? 'bg-gray-100' : ''}>
                       <td className="border px-4 py-2">{participant.nombre}</td>
                       <td className="border px-4 py-2">{participant.numerocuenta}</td>
-                      <td className="border px-4 py-2">{participant.nombre.toLowerCase().replace(" ", ".")}@unah.hn</td>
                       <td className="border px-4 py-2">{participant.carrera}</td>
                     </tr>
                   ))}

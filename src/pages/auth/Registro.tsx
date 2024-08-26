@@ -68,16 +68,17 @@ const Registro: React.FC = () => {
     };
 
     return (
-        <div className="flex items-center justify-center h-full my-11 md:my-32">
-            <div className="flex flex-col md:flex-row items-center justify-center space-y-6 md:space-y-0 md:space-x-8">
+        <>
+        <div className="ml-5 mr-5 h-full md:mt-32 md:mb-32 bg-white overflow-hidden flex items-center justify-center">
+            <div className="flex flex-col md:flex-row w-full h-full mb-10 items-center justify-center space-y-6 md:space-y-0 md:space-x-8">
                 <div className="flex items-center justify-center">
-                    <img src={logo1} alt="Logo 1" className="w-48 h-40 mr-7 md:mr-0 mt-5 md:mt-0 md:w-80 md:h-52" />
+                    <img src={logo1} alt="Logo 1" className="w-48 h-32 mr-7 md:mr-0 mt-5 md:mt-0 md:w-80 md:h-52" />
                 </div>
                 <div className="hidden md:flex items-center justify-center">
                     <img src={logo2} alt="Logo 2" className="w-48 h-32 md:w-80 md:h-52" />
                 </div>
-                <div className="bg-yellow-500 w-11/12 md:w-1/2 shadow-2xl rounded-lg p-4 md:p-8">
-                    <form className="p-1" onSubmit={handleSubmit(onSubmit)}>
+                <div className="bg-yellow-500 w-full sm:w-8/12 md:w-6/12 lg:w-5/12 xl:w-4/12 shadow-2xl rounded-lg p-4 sm:p-4">
+                <form className="p-1" onSubmit={handleSubmit(onSubmit)}>
                         <div className="flex items-center text-lg my-5 relative">
                             <MdOutlineAlternateEmail className='absolute ml-4' />
                             <input
@@ -109,6 +110,7 @@ const Registro: React.FC = () => {
                 </div>
             </div>
         </div>
+                                        </>
     );
 }
 

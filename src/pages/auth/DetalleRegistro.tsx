@@ -280,7 +280,7 @@ const DetallesRegistro: React.FC = () => {
                         {errors.general && <div className="text-red-500 text-sm mb-4">{errors.general}</div>}
                         <button
                             type="submit"
-                            className="bg-blue-500 text-white p-2 rounded-md shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                            className="bg-gradient-to-b from-blue-800 to-blue-900 text-white p-2 rounded-md shadow-lg hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                             disabled={isLoading}
                         >
                             {isLoading ? <FiLoader className="animate-spin" /> : 'Registrar'}

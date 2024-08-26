@@ -26,7 +26,7 @@ const UnirseActividad: React.FC = () => {
           const data = await ObtenerActividadesPorNombre(slug);
 
           if (data && typeof data === 'object' && !Array.isArray(data)) {
-            setActivity(data); // Set single activity object
+            setActivity(data);
           } else {
             setError('Data is not an object');
           }
@@ -49,25 +49,24 @@ const UnirseActividad: React.FC = () => {
         await axiosInstance.put(`/activities/${activity.id}/join`, {
           scopes: [selectedScope],
         });
-         Alert({
+        Alert({
           title: 'Éxito',
-          text: 'Te has unido a la actividad con exito',
+          text: 'Te has unido a la actividad con éxito',
           icon: 'success',
           callback: () => navigate(-1),
         });
       } catch (error) {
         Alert({
-          title: 'Éxito',
-          text: 'Te has unido a la actividad con exito',
-          icon: 'success',
-          callback: () => navigate(-1),
+          title: 'Error',
+          text: 'Hubo un error al unirte a la actividad (Ya estas partipando en la misma)',
+          icon: 'error',
         });
       }
     } else {
       Alert({
         title: 'Advertencia',
         text: 'Por favor selecciona un ámbito para unirte a la actividad.',
-        icon: 'warning'
+        icon: 'warning',
       });
     }
   };
@@ -77,7 +76,7 @@ const UnirseActividad: React.FC = () => {
   };
 
   if (loading) {
-    return <Loading/>;
+    return <Loading />;
   }
 
   if (error) {
@@ -118,7 +117,7 @@ const UnirseActividad: React.FC = () => {
                       <td className="border px-4 py-2">{activity.description}</td>
                     </tr>
                     <tr>
-                      <td className="border px-4 py-2 bg-yellow-500">Carrera admitidas</td>
+                      <td className="border px-4 py-2 bg-yellow-500">Carreras admitidas</td>
                       <td className="border px-4 py-2">
                         <ul className="list-disc pl-5">
                           {activity.foreingCareers.map((career, index) => (
@@ -164,29 +163,22 @@ const UnirseActividad: React.FC = () => {
               </div>
               <div className="flex flex-col justify-between ml-4">
                 <div className="mb-4">
-                  <h2 className='text-white'>Seleccione las horas que desea</h2>
-                  <div className="flex items-center mb-2">
-                    <input
-                      type="radio"
-                      id="horasVoae"
-                      name="horas"
-                      value="voae"
-                      className="mr-2"
-                      onChange={() => setSelectedScope(1)}
-                    />
-                    <label htmlFor="horasVoae" className="text-white">Horas VOAE</label>
-                  </div>
-                  <div className="flex items-center mb-4">
-                    <input
-                      type="radio"
-                      id="horasBeca"
-                      name="horas"
-                      value="beca"
-                      className="mr-2"
-                      onChange={() => setSelectedScope(5)} // Por ejemplo, 9 para horas Beca
-                    />
-                    <label htmlFor="horasBeca" className="text-white">Horas Beca</label>
-                  </div>
+                  <h2 className='text-white'>Seleccione el ámbito</h2>
+                  {activity.scopes.map((scope) => (
+                    <div className="flex items-center mb-2" key={scope.scope}>
+                      <input
+                        type="radio"
+                        id={`scope-${scope.scope}`}
+                        name="horas"
+                        value={scope.scope}
+                        className="mr-2"
+                        onChange={() => setSelectedScope(scope.scope)}
+                      />
+                      <label htmlFor={`scope-${scope.scope}`} className="text-white">
+                        {EtiquetasÁmbitosActividad[scope.scope] || scope.scope} | {scope.hours} horas
+                      </label>
+                    </div>
+                  ))}
                 </div>
                 <button
                   onClick={handleJoinActivity}

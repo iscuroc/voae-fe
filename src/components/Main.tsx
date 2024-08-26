@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import avoae1 from '@/assets/avoae1.jpg'
 import avoae2 from '@/assets/avoae2.jpg'
+// import logoPortal from '@/assets/logo.avif'
 const Main: React.FC = () => {
 
   const [banners, setBanners] = useState([
@@ -68,12 +69,20 @@ const Main: React.FC = () => {
   return (
     <>
       <main className="flex-1">
+        {/* <img
+          src={logoPortal}
+          alt="logo portal"
+          className="w-3/6 h-3/6 "
+          draggable="false"
+          onContextMenu={(e) => e.preventDefault()}
+          onDragStart={(e) => e.preventDefault()}
+        /> */}
         <div className="text-base md:text-4xl font-bold text-center">
-          <h1 className="mt-5 mb-5 text-4xl font-extrabold tracking-tight text-gray-900">NOVEDADES Y ACTIVIDADES</h1>
+          <h1 className="mt-8 mb-5 md:text-4xl font-extrabold tracking-tight text-gray-900">NOVEDADES Y ACTIVIDADES</h1>
           <div className=" shadow-lg rounded-lg p-6 min-h-[80vh]">
             <Banners banners={banners} />
           </div>
-          
+
         </div>
       </main>
     </>

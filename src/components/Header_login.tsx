@@ -5,6 +5,7 @@ import { FaRegCalendarAlt } from 'react-icons/fa';
 import { LuLayoutDashboard } from 'react-icons/lu';
 import useAuth from '../api/useAuth';
 import logoCuroc from '@/assets/logoCuroc.avif'
+import { HiOutlineMenuAlt3 } from 'react-icons/hi';
 
 export default function Header_login() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,12 +24,11 @@ export default function Header_login() {
                 </nav>
                 <button 
                     className="ml-auto md:hidden text-white focus:outline-none"
+                    aria-label="Abrir menu"
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
                 >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-                    </svg>
-                </button>
+                  <HiOutlineMenuAlt3 className='h-6 w-6'/>
+                  </button>
             </header>
             {isMenuOpen && (
                 <nav className="bg-blue-900 md:hidden">

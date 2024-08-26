@@ -1,7 +1,6 @@
 import { ObtenerDatosUsuarioIniciado, User } from '@/api/servicios/usuarios';
 import useAuth from '@/api/useAuth';
 import { useEffect, useState } from 'react';
-// import { NavLink } from 'react-router-dom';
 import Loading from '../Loading';
 
 const Perfil = () => {
@@ -33,7 +32,6 @@ const Perfil = () => {
         obtenerDatos();
     }, []);
     
-
     const obtenerFechaHoraActual = (): string => {
         const fecha = new Date();
         return fecha.toLocaleString('es-ES', {
@@ -50,7 +48,7 @@ const Perfil = () => {
     sessionStorage.setItem('ultimaSesion', obtenerFechaHoraActual());
 
     if (loading) {
-        return   <Loading/>
+        return <Loading />;
     }
 
     if (error) {
@@ -77,7 +75,11 @@ const Perfil = () => {
                     {user && (
                         <>
                             <p className="mt-4"><span className='font-bold'>Nº Cuenta:</span> {user.accountNumber}</p>
-                            <p className="mt-2"><span className='font-bold'>Carrera:</span> {user.career.name}</p>
+                            {user.career ? (
+                                <p className="mt-2"><span className='font-bold'>Carrera:</span> {user.career.name}</p>
+                            ) : (
+                                <p className="mt-2">No está asociado a ninguna carrera.</p>
+                            )}
                             <p className="mt-2"><span className='font-bold'>Última vez conectado:</span> {ultimaSesion}</p>
                             {user.organizations.length > 0 ? (
                                 <div className="mt-4">
@@ -112,7 +114,6 @@ const Perfil = () => {
             </div>
         </div>
     );
-    
 };
 
 export default Perfil;

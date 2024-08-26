@@ -50,7 +50,7 @@ const ActvidadesEnCurso: React.FC = () => {
     useEffect(() => {
         const obtenerDatos = async () => {
             try {
-                const data = await ObtenerActividadesPorEstado(2); // Obtén datos para el estado deseado
+                const data = await ObtenerActividadesPorEstado(3); // Obtén datos para el estado deseado
                 setInitialData(data);
                 setFiltrarData(data);
                 setLoading(false);

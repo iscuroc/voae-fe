@@ -4,7 +4,7 @@ import FiltroGS from "../filtros/FiltroGestionSolicitudes";
 import { NavLink, useLocation } from "react-router-dom";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import React, { useEffect, useState } from "react";
-import { FaEdit, FaFileImage } from "react-icons/fa";
+import { FaEdit, FaFileImage, FaLink } from "react-icons/fa";
 import Pagination from "../Pagination";
 import Skeleton from "../Skeleton";
 
@@ -93,14 +93,14 @@ const ActividadesSolicitadas: React.FC = () => {
                         <thead className="block md:table-header-group">
                             <tr className="border text-sm border-gray-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto md:relative bg-yellow-500 text-black">
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Nombre</th>
-                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Encargado</th>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Solicitante</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Entidad encargada</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Ámbito</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Fecha Inicio</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Fecha Final</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Estado</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Observaciones</th>
-                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Revision</th>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Acciones</th>
                             </tr>
                         </thead>
                         <tbody className="block md:table-row-group text-sm md:text-xs">
@@ -110,7 +110,7 @@ const ActividadesSolicitadas: React.FC = () => {
                                         <span className="inline-block w-1/3 md:hidden font-bold mr-4">Nombre:</span>{item.name}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Coordinador:</span>{item.coordinator.names} {item.coordinator.lastNames}
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Solicitante:</span>{item.requestedBy.names} {item.requestedBy.lastNames}
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
                                         <span className="inline-block w-1/3 md:hidden font-bold mr-4">Entidad organizadora:</span>{item.organizers.map(fc => fc.career?.name || fc.organization?.name).join(", ")}
@@ -136,10 +136,10 @@ const ActividadesSolicitadas: React.FC = () => {
                                                 <NavLink
                                                     to={
                                                         location.pathname.includes('dashboard-coordinador')
-                                                            ? "#"
+                                                            ? `/dashboard-coordinador/actualizar-actividad/${item.id}`
                                                             : location.pathname.includes('dashboard-estudiante')
                                                                 ? `/dashboard-estudiante/actualizar-actividad/${item.id}`
-                                                                : "/dashboard-voae/gestion-solicitud"
+                                                                : `/dashboard-voae/actualizar-actividad/${item.id}`
                                                     }
                                                     className="flex justify-center items-center font-bold group"
                                                 >
@@ -152,10 +152,10 @@ const ActividadesSolicitadas: React.FC = () => {
                                                 <NavLink
                                                     to={
                                                         location.pathname.includes('dashboard-coordinador')
-                                                            ? "#"
+                                                            ? `/dashboard-coordinador/detalles-actividad/${item.slug}`
                                                             : location.pathname.includes('dashboard-estudiante')
                                                                 ? `/dashboard-estudiante/detalles-actividad/${item.slug}`
-                                                                : "/dashboard-voae/gestion-solicitud"
+                                                                : `/dashboard-voae/detalles-actividades/${item.slug}`
                                                     }
                                                     className="flex justify-center items-center font-bold group"
                                                 >
@@ -164,11 +164,26 @@ const ActividadesSolicitadas: React.FC = () => {
                                                     <span className="hover:text-blue-500 group-hover:text-blue-500 md:hidden">Ver detalles</span>
                                                 </NavLink>
                                                 <NavLink
-                                                    to={`/dashboard-estudiante/subir-imagen/${item.id}`}
+                                                    to={
+                                                        location.pathname.includes('dashboard-coordinador')
+                                                            ? `/dashboard-coordinador/subir-imagen/${item.id}`
+                                                            : location.pathname.includes('dashboard-estudiante')
+                                                                ? `/dashboard-estudiante/subir-imagen/${item.id}`
+                                                                : `/dashboard-voae/subir-imagen/${item.id}`
+                                                    }
                                                     className="flex justify-center items-center font-bold group"
                                                 >
                                                     <FaFileImage className="group-hover:text-blue-500 hidden md:block h-5 w-5" />
                                                     <span className="hover:text-blue-500 group-hover:text-blue-500 md:hidden">Subir imagen</span>
+                                                </NavLink>
+                                                <NavLink
+                                                    to={
+                                                        `/formulario-de-participacion/${item.slug}`
+                                                    }
+                                                    className="flex justify-center items-center font-bold group"
+                                                >
+                                                    <FaLink  className="group-hover:text-blue-500 hidden md:block h-5 w-5" />
+                                                    <span className="hover:text-blue-500 group-hover:text-blue-500 md:hidden">Link de participantes</span>
                                                 </NavLink>
 
                                             </div>

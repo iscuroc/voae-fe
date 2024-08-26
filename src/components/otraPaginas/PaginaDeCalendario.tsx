@@ -25,7 +25,7 @@ const Calendario: React.FC = () => {
     const obtenerDatos = async () => {
       setLoading(true); // Iniciar carga
       try {
-        const data = await ObtenerActividadesPorEstado(0); 
+        const data = await ObtenerActividadesPorEstado(3); 
         setActividades(data);
       } catch (error) {
         setError('Failed to fetch activities');

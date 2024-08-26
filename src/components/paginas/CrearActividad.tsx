@@ -7,6 +7,7 @@ import { organizations, obtenerLasOrganizaciones } from '../../api/servicios/org
 import { FiLoader } from 'react-icons/fi';
 import axios from 'axios';
 import SuccessModal from '../Modal';
+import DatePicker from '../otraPaginas/DatePicker';
 
 
 const CrearActividad = () => {
@@ -38,6 +39,8 @@ const CrearActividad = () => {
   const [students, setStudents] = useState<UserCarrera[]>([]);
   const [error, setError] = useState<string[]>([]);
   const [selectAll, setSelectAll] = useState(false);
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
 
   useEffect(() => {
     const obtenerCarreras = async () => {
@@ -255,15 +258,19 @@ const CrearActividad = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError([]);
-    const startDate = new Date(formData.startDate).toISOString();
-    const endDate = new Date(formData.endDate).toISOString();
+    if (!startDate || !endDate) {
+      console.error("Las fechas no pueden ser nulas");
+      return;
+    }
+    const startISOString = startDate.toISOString();
+    const endISOString = endDate.toISOString();
 
     const actividad: ActividadCrear = {
       name: formData.name,
       description: formData.description,
       foreignCareersIds: formData.foreignCareersIds,
-      startDate: startDate,
-      endDate: endDate,
+      startDate: startISOString,
+      endDate: endISOString,
       goals: formData.goals,
       scopes: formData.scopes,
       supervisorId: formData.supervisorId,
@@ -322,7 +329,7 @@ const CrearActividad = () => {
               acc.push('La fecha debe ser posterior a la fecha actual.');
             }
             if (msg.includes('\'End Date\' must be greater than')) {
-              acc.push('La fecha y hora de finalizacion no deben ser iguales a la de Inicio.');
+              acc.push('La fecha y hora de finalizacion no es correcta.');
             }
             if (msg.includes('\'Foreign Careers Ids\' must not be empty')) {
               acc.push('El campo de carreras permitidas no pueden estar vacíos.');
@@ -441,30 +448,21 @@ const CrearActividad = () => {
           {/* Start Date */}
           <div className='block md:flex ml-auto w-full gap-4'>
 
-            <div className="w-full">
-              <label htmlFor="startDate" className="text-sm font-bold text-gray-700 mb-1">Fecha Inicio:</label>
-              <input
-                type="datetime-local"
-                id="startDate"
-                value={formData.startDate}
-                onChange={handleChange}
-                className="border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-
+            <DatePicker
+              id="startDate"
+              label="Fecha Inicio:"
+              selectedDate={startDate}
+              onChange={(date) => setStartDate(date)}
+            />
             {/* End Date */}
-            <div className="w-full">
-              <label htmlFor="endDate" className="text-sm font-bold text-gray-700 mb-1">Fecha Final:</label>
-              <input
-                type="datetime-local"
-                id="endDate"
-                value={formData.endDate}
-                onChange={handleChange}
-                className="border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
+            <DatePicker
+              id="endDate"
+              label="Fecha Final:"
+              selectedDate={endDate}
+              onChange={(date) => setEndDate(date)}
+            />
+
+
           </div>
 
           {/* Goals */}
@@ -788,11 +786,12 @@ const CrearActividad = () => {
           <SuccessModal
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
-            onConfirm={() => setIsModalOpen(false)} 
+            onConfirm={() => setIsModalOpen(false)}
             message="La solicitud de actividad se enviado con exito."
           />
         </form>
       </div>
+
     </div>
   );
 };

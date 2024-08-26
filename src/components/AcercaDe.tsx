@@ -10,13 +10,13 @@ export default function AcercaDe() {
           <div className="text-center max-w-2xl mx-auto">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Acerca de</h2>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              Bienvenidos a la página de administración de horas VOAE de la Universidad Nacional Autónoma de Honduras (UNAH) - Centro Universitario Regional del Occidente (campus COPAN).
+              Bienvenidos a la página de administración de horas VOAE de la Universidad Nacional Autónoma de Honduras - Campus Copán.
             </p>
           </div>
           <div className="mt-12 max-w-3xl mx-auto text-left">
             <h3 className="text-2xl font-semibold text-gray-900">Nuestra Misión</h3>
             <p className="mt-4 text-lg text-gray-600">
-              Nuestra misión es facilitar la gestión eficiente y transparente de las horas de Artículo 140 sección b de las Normas Académicas UNAH, para los estudiantes deL campus COPAN. Nos comprometemos a brindar un sistema accesible y confiable que permita a los estudiantes registrar, monitorear y validar sus horas de servicio comunitario, un componente esencial para su desarrollo académico y profesional.
+              Nuestra misión es facilitar la gestión eficiente y transparente de las horas de Artículo 140 sección b de las Normas Académicas UNAH, para los estudiantes deL campus Copán. Nos comprometemos a brindar un sistema accesible y confiable que permita a los estudiantes registrar, monitorear y validar sus horas de servicio comunitario, un componente esencial para su desarrollo académico y profesional.
             </p>
 
             <h3 className="mt-8 text-2xl font-semibold text-gray-900">Qué Ofrecemos</h3>

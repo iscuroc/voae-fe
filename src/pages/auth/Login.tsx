@@ -39,12 +39,10 @@ const Login: React.FC = () => {
     setIsLoading(true);
     setError('');
     try {
-      console.time('Login Request');
       const response = await axiosInstance.post('/auth/login', {
         email,
         password,
       });
-      console.timeEnd('Login Request');
       const { accessToken, role } = response.data;
       login(accessToken, role, email);
       if (role === 0) {
