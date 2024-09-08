@@ -2,71 +2,98 @@ import React, { useState, useEffect } from 'react';
 import { CiEdit } from 'react-icons/ci';
 import { MdDeleteForever } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import Loading from '../Loading';
 
 interface Participant {
   nombre: string;
-  numerocuenta: string;
-  carrera: string;
+  numero_cuenta: string;
+  carrera_nombre: string;
 }
 
 const ListaDeComparacion: React.FC = () => {
-  useEffect(() => {
-    document.title = "Detalle de Actividad - UNAH COPAN";
-  }, []);
   const { slug } = useParams<{ slug?: string }>();
 
-  // Usamos el estado para manejar la lista de inscriptos y permitir eliminarlos temporalmente
-  const [inscriptos, setInscriptos] = useState<Participant[]>([
-    { nombre: "Alejandro Martínez", numerocuenta: "20182100278", carrera: "Ingeniería Civil" },
-    { nombre: "Carlos García", numerocuenta: "20182100004", carrera: "Derecho" },
-    { nombre: "Elena Ruiz", numerocuenta: "20161001645", carrera: "Psicología" },
-    { nombre: "Lucía Fernández", numerocuenta: "20192100095", carrera: "Arquitectura" },
-    { nombre: "María López", numerocuenta: "20161001463", carrera: "Medicina" },
-    { nombre: "Miguel Pérez", numerocuenta: "20161001663", carrera: "Economía" },
-    { nombre: "Sofía Rodríguez", numerocuenta: "20161001633", carrera: "Ingeniería Química" },
-  ]);
-  
-  const participants2: Participant[] = [
-    { nombre: "Alejandro Martínez", numerocuenta: "20182100278", carrera: "Ingeniería Civil" },
-    { nombre: "Carlos García", numerocuenta: "20182100004", carrera: "Derecho" },
-    { nombre: "Lucía Fernández", numerocuenta: "20192100095", carrera: "Arquitectura" },
-    { nombre: "Miguel Pérez", numerocuenta: "20161001663", carrera: "Economía" },
-  ];
-
-  // Estado para controlar el modal de confirmación
+  const [participants2, setParticipants2] = useState<Participant[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [participantToDelete, setParticipantToDelete] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [inscriptos, setInscriptos] = useState<Participant[]>([
+    { nombre: "Alejandro Martínez", numero_cuenta: "20182100278", carrera_nombre: "Ingeniería Civil" },
+    { nombre: "Carlos García", numero_cuenta: "20182100004", carrera_nombre: "Derecho" },
+    { nombre: "Elena Ruiz", numero_cuenta: "20161001645", carrera_nombre: "Psicología" },
+    { nombre: "Lucía Fernández", numero_cuenta: "20192100095", carrera_nombre: "Arquitectura" },
+    { nombre: "María López", numero_cuenta: "20161001463", carrera_nombre: "Medicina" },
+    { nombre: "Miguel Pérez", numero_cuenta: "20161001663", carrera_nombre: "Economía" },
+    { nombre: "Sofía Rodríguez", numero_cuenta: "20161001633", carrera_nombre: "Ingeniería Química" },
+  ]);
 
-  // Función para verificar si un participante está en la lista de participants2
-  const isInParticipants2 = (participant: Participant): boolean => {
-    return participants2.some(p => p.numerocuenta === participant.numerocuenta);
-  };
+  useEffect(() => {
+    document.title = "Participantes - UNAH COPAN";
+    
+    const fetchData = async () => {
+      try {
+        // console.log('Fetching data for slug:', slug);
+        // const response = await axios.get(`/api/v1/lista-participacion/${slug}`);
+        // console.log('Inscriptos data:', response.data);
 
-  // Función para mostrar el modal de confirmación
-  const openModal = (numerocuenta: string) => {
-    setParticipantToDelete(numerocuenta);
+        // setInscriptos([{
+        //   nombre: response.data.nombre,
+        //   numero_cuenta: response.data.numero_cuenta,
+        //   carrera_nombre: response.data.carrera_nombre // Asegúrate de que este campo sea correcto
+        // }]);
+        
+        const response2 = await axios.get(`https://lista-participacion.vercel.app/api/v1/lista-participacion/${slug}`);
+        console.log('Participants2 data:', response2.data);
+
+        setParticipants2(response2.data);
+
+        setLoading(false);
+      } catch (err) {
+        console.error('Error fetching participation data:', err);
+        setError('Error al obtener los datos de participación.Recargue la pagina');
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [slug]);
+
+  const openModal = (numero_cuenta: string) => {
+    setParticipantToDelete(numero_cuenta);
     setIsModalOpen(true);
   };
 
-  // Función para cerrar el modal
   const closeModal = () => {
     setIsModalOpen(false);
     setParticipantToDelete(null);
   };
 
-  // Función para eliminar un participante de la lista temporalmente
   const handleRemoveParticipant = () => {
     if (participantToDelete) {
-      setInscriptos(inscriptos.filter(participant => participant.numerocuenta !== participantToDelete));
+      setInscriptos(inscriptos.filter(participant => participant.numero_cuenta !== participantToDelete));
       closeModal();
     }
   };
- 
+
+  const isInParticipants2 = (participant: Participant): boolean => {
+    return participants2.some(p => p.numero_cuenta === participant.numero_cuenta);
+  };
+
+  if (loading) {
+    return <div><Loading/></div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
   return (
     <>
       <div className="my-1"></div>
-        <h1 className='block text-center text-3xl  font-semibold '>Comparacion de listas: {slug}</h1>
-      <div className="h-full mx-3 md:mx-6  overflow-hidden flex flex-col md:flex-row items-center justify-center space-y-8 lg:space-y-0 lg:space-x-4">
+      <h1 className='block text-center text-3xl font-semibold '>Comparación de listas: {slug}</h1>
+      <div className="h-full mx-3 md:mx-6 overflow-hidden flex flex-col md:flex-row items-center justify-center space-y-8 lg:space-y-0 lg:space-x-4">
         <div className="bg-blue-800 w-full md:w-3/5 shadow-xl relative rounded-lg">
           <div className="p-3 md:p-6">
             <h2 className="text-sm md:text-base font-bold mb-6 text-center text-white">Lista de Inscriptos</h2>
@@ -89,14 +116,14 @@ const ListaDeComparacion: React.FC = () => {
                       }`}
                     >
                       <td className="border px-4 py-2">{participant.nombre}</td>
-                      <td className="border px-4 py-2">{participant.numerocuenta}</td>
-                      <td className="border px-4 py-2">{participant.carrera}</td>
+                      <td className="border px-4 py-2">{participant.numero_cuenta}</td>
+                      <td className="border px-4 py-2">{participant.carrera_nombre}</td>
                       <td className="border px-4 py-2">
                         {!isInParticipants2(participant) && (
                           <button
                             className="bg-red-500 text-white px-2 py-1 rounded"
                             aria-label='borrar elemento'
-                            onClick={() => openModal(participant.numerocuenta)}
+                            onClick={() => openModal(participant.numero_cuenta)}
                           >
                             <MdDeleteForever className='w-6 h-6 '/>
                           </button>
@@ -126,8 +153,8 @@ const ListaDeComparacion: React.FC = () => {
                   {participants2.map((participant, index) => (
                     <tr key={index} className={index % 2 === 0 ? 'bg-gray-100' : ''}>
                       <td className="border px-4 py-2">{participant.nombre}</td>
-                      <td className="border px-4 py-2">{participant.numerocuenta}</td>
-                      <td className="border px-4 py-2">{participant.carrera}</td>
+                      <td className="border px-4 py-2">{participant.numero_cuenta}</td>
+                      <td className="border px-4 py-2">{participant.carrera_nombre}</td>
                     </tr>
                   ))}
                 </tbody>

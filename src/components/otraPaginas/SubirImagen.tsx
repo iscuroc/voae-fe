@@ -49,10 +49,9 @@ const SubirImagen: React.FC = () => {
             } catch (error) {
                 console.error('Error al subir la imagen:', error);
                 Alert({
-                    title: 'Éxito',
-                    text: 'Imagen subida con éxito',
-                    icon: 'success',
-                    callback: () => navigate(-1),
+                    title: 'Error',
+                    text: 'Error al subir la imagen(formato incorrecto)',
+                    icon: 'error'
                 });
             } finally {
                 setUploading(false);

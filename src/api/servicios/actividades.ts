@@ -62,6 +62,15 @@ export const ObtenerActividadesPorEstado = async (status: number): Promise<Activ
         return [];
     }
 };
+export const ObtenerTodasLasActividades= async (): Promise<ActividadEstado[]> => {
+    try {
+        const response = await axiosInstance.get(`/activities`);
+        return Array.isArray(response.data.items) ? response.data.items : [];
+    } catch (error) {
+        console.error('Error fetching activities:', error);
+        return [];
+    }
+};
 
 export const ObtenerActividadesSolicitadas = async (): Promise<ActividadEstado[]> => {
     try {
@@ -136,3 +145,19 @@ export const RechazarActividad = async (id: number, reviewerObservation: string)
         throw error;
     }
 };
+
+export interface Scope {
+    activityScope: number;  // ID del ámbito
+    hours: number;          // Cantidad de horas asignadas al ámbito
+}
+
+export interface MisActividades {
+    id: number;             // ID de la actividad
+    name: string;           // Nombre de la actividad
+    description: string;    // Descripción de la actividad
+    scopes: Scope[];        // Lista de ámbitos y sus respectivas horas
+    startDate: string;      // Fecha de inicio de la actividad
+    endDate: string;        // Fecha de finalización de la actividad
+    slug: string;           // Slug de la actividad (identificador único)
+    activityStatus: number; // Estado de la actividad
+}

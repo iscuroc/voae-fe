@@ -3,8 +3,8 @@ import { NavLink, useLocation } from "react-router-dom";
 import Pagination from "../Pagination";
 import Skeleton from "../Skeleton";
 import FiltroGS from "../filtros/FiltroGestionSolicitudes";
-import { ActividadEstado, ObtenerActividadesPorEstado } from "../../api/servicios/actividades";
-import { EtiquetasÁmbitosActividad, formatDate } from "../../api/servicios/enums";
+import { ActividadEstado, ObtenerTodasLasActividades } from "../../api/servicios/actividades";
+import { EtiquetasEstadoActividad, EtiquetasÁmbitosActividad, formatDate } from "../../api/servicios/enums";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 
 const PaginaGestionActividad: React.FC = () => {
@@ -19,11 +19,11 @@ const PaginaGestionActividad: React.FC = () => {
         const obtenerDatos = async () => {
             setLoading(true); // Inicia la carga
             try {
-                const data = await ObtenerActividadesPorEstado(0); // El número es el estado que quieres filtrar
+                const data = await ObtenerTodasLasActividades(); // El número es el estado que quieres filtrar
                 console.log("Datos obtenidos de la API:", data); // Verifica todos los datos obtenidos
                 setFiltrarData(data);
             } catch (error) {
-                setError('Failed to fetch activities');
+                setError('Hay problemas de conexion con el Servidor');
             } finally {
                 setLoading(false); // Finaliza la carga
             }
@@ -69,7 +69,7 @@ const PaginaGestionActividad: React.FC = () => {
     }
 
     if (error) {
-        return <div>Error: {error}</div>; // Muestra un error si ocurre
+        return <div className="text-2xl font-bold text-center mt-20">Error: {error}</div>;
     }
 
     return (
@@ -91,6 +91,7 @@ const PaginaGestionActividad: React.FC = () => {
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Cupos</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Inicio</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Final</th>
+                                <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Estado</th>
                                 <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Acción</th>
                             </tr>
                         </thead>
@@ -121,6 +122,9 @@ const PaginaGestionActividad: React.FC = () => {
                                     </td>
                                     <td className="p-1 md:border md:border-gray-500 block md:table-cell">
                                         <span className="inline-block w-1/3 md:hidden font-bold mr-4">Fecha Final:</span>{formatDate(item.endDate)}
+                                    </td>
+                                    <td className="p-1 md:border md:border-gray-500 block md:table-cell">
+                                        <span className="inline-block w-1/3 md:hidden font-bold mr-4">Estado:</span>{EtiquetasEstadoActividad[item.activityStatus] || item.activityStatus}
                                     </td>
                                     <td className="p-1 md:border text-center md:border-gray-500 block md:table-cell relative">
                                         <NavLink

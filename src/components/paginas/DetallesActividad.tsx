@@ -78,7 +78,7 @@ const DetallesActividad: React.FC = () => {
                     <td className="border px-4 py-2">{activity.name}</td>
                   </tr>
                   <tr>
-                    <td className="border px-4 py-2 bg-yellow-500">Ubicaxion</td>
+                    <td className="border px-4 py-2 bg-yellow-500">Ubicacion</td>
                     <td className="border px-4 py-2">{activity.location}</td>
                   </tr>
                   <tr>
