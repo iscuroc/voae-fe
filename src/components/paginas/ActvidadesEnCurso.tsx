@@ -50,7 +50,8 @@ const ActvidadesEnCurso: React.FC = () => {
     useEffect(() => {
         const obtenerDatos = async () => {
             try {
-                const data = await ObtenerActividadesPorEstado(3); // Obtén datos para el estado deseado
+                const data = await ObtenerActividadesPorEstado(2); // Obtén datos para el estado deseado
+                console.log(data)
                 setInitialData(data);
                 setFiltrarData(data);
                 setLoading(false);
@@ -78,7 +79,7 @@ const ActvidadesEnCurso: React.FC = () => {
                         {paginatedData.map((item, index) => (
                             <div key={index} className="flex flex-col rounded-lg shadow-md overflow-hidden bg-white border border-gray-200">
                                 <img
-                                    src={item.bannerLink}
+                                    src={'h' + item.bannerLink}
                                     alt={item.name}
                                     className="w-full h-60 object-cover"
                                 />

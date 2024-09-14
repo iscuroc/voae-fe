@@ -146,18 +146,24 @@ export const RechazarActividad = async (id: number, reviewerObservation: string)
     }
 };
 
-export interface Scope {
-    activityScope: number;  // ID del ámbito
-    hours: number;          // Cantidad de horas asignadas al ámbito
+export interface Scope3 {
+    scope: number;  // ID del ámbito asociado a la actividad
+    hours: number;  // Cantidad de horas asignadas al ámbito
+}
+
+export interface MemberScope {
+    scope: number;  // ID del ámbito asociado al miembro
+    hours: number;  // Cantidad de horas asignadas al miembro en este ámbito
 }
 
 export interface MisActividades {
     id: number;             // ID de la actividad
     name: string;           // Nombre de la actividad
     description: string;    // Descripción de la actividad
-    scopes: Scope[];        // Lista de ámbitos y sus respectivas horas
-    startDate: string;      // Fecha de inicio de la actividad
-    endDate: string;        // Fecha de finalización de la actividad
+    memberScopes: MemberScope[];  // Lista de ámbitos asociados a los miembros y sus horas
+    activityScopes: Scope3[]; // Lista de ámbitos asociados a la actividad y sus horas
+    startDate: string;      // Fecha de inicio de la actividad (ISO string)
+    endDate: string;        // Fecha de finalización de la actividad (ISO string)
     slug: string;           // Slug de la actividad (identificador único)
     activityStatus: number; // Estado de la actividad
 }

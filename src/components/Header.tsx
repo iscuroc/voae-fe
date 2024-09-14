@@ -9,7 +9,7 @@ export default function Header() {
 
     return (
         <>
-            <header className="fixed w-full px-4 lg:px-6 h-14 flex items-center bg-primary text-primary-foreground bg-blue-900">
+            <header className="fixed z-20 w-full px-4 lg:px-6 h-14 flex items-center bg-primary text-primary-foreground bg-blue-900">
                 <a className="flex items-center justify-center" href="/">
                     <img src={logoCuroc} alt="logo unah" className="w-8 h-8" />
                     <span className="text-xs md:text-lg font-bold text-white ml-2">UNAH Campus Copán</span>
@@ -28,7 +28,7 @@ export default function Header() {
                 </button>
             </header>
             {isMenuOpen && (
-                <nav className="bg-blue-900 md:hidden">
+                <nav className="bg-blue-900 md:hidden mt-14">
                     <a href="/" className="flex px-4 py-2 text-sm text-white hover:underline items-center"><IoHomeOutline className='mr-1'/>Inicio</a>
                     <a href="/about" className="flex px-4 py-2 text-sm text-white hover:underline items-center"><MdRoundaboutRight className='mr-1'/>Acerca de</a>
                     <a href="/login" className="flex px-4 py-2 text-sm text-white hover:underline items-center"><MdLogin className='mr-1'/>Acceder</a>

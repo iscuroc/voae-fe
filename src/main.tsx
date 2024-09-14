@@ -19,7 +19,6 @@ import DetallesActividad from './components/paginas/DetallesActividad';
 import GestionSolicitudes from './components/paginas/GestionSolicitudes';
 import PaginaGestionActividad from './components/paginas/PaginaGestionActividad';
 import Perfil from './components/paginas/PaginaPerfil';
-import MisCertificados from './components/paginas/MisCertificados';
 import HorasVOAE from './components/paginas/HorasVoae';
 import DetalleRegistro from './pages/auth/DetalleRegistro';
 import Login from './pages/auth/Login';
@@ -27,7 +26,6 @@ import Registro from './pages/auth/Registro';
 import ForgotPassword from './pages/auth/forgot-password';
 import ResetPassword from './pages/auth/reset-password';
 import ActividadesSolicitadas from './components/paginas/ActividadesSolicitadas';
-import GestionUsuarios from './components/paginas/GestionUsuarios';
 import CambiarContrasena from './components/otraPaginas/CambiarContrasena';
 import Calendario from './components/otraPaginas/PaginaDeCalendario';
 import UpdateActividad from './components/paginas/UpdateActividad';
@@ -35,8 +33,6 @@ import SubirImagen from './components/otraPaginas/SubirImagen';
 import CoordinadoresAuth from './api/seguridad/CoordinadoresAuth';
 import EstudianteRoute from './api/seguridad/EstudiantesAuth';
 import VoaeAuth from './api/seguridad/VoaeAuth';
-import ListaDeParticipante from './components/otraPaginas/ListaDeParticipante';
-import ListaDeComparacion from './components/otraPaginas/ListaDeComparacion';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
@@ -55,7 +51,6 @@ root.render(
             <Route path="confirmar-cuenta" element={<DetalleRegistro />} />
             <Route path="forgot-password" element={<ForgotPassword />} />
             <Route path="restablecer-contrasena" element={<ResetPassword />} />
-            <Route path="formulario-de-participacion/:slug" element={<ListaDeParticipante />} />
           </Route>
 
           {/* Rutas que utilizan el Layout de Login */}
@@ -68,7 +63,6 @@ root.render(
               <Route path="dashboard-estudiante/actividades-en-curso" element={<ActvidadesEnCurso />} />
               <Route path="dashboard-estudiante/mis-actividades" element={<PaginaMisActividades />} />
               <Route path="dashboard-estudiante/unirse-actividad/:slug" element={<UnirseActividad />} />
-              <Route path="dashboard-estudiante/mis-certificados" element={<MisCertificados />} />
               <Route path="dashboard-estudiante/crear-actividad" element={<CrearActividad />} />
               <Route path="dashboard-estudiante/actualizar-actividad/:id" element={<UpdateActividad />} />
               <Route path="dashboard-estudiante/editar-actividad" element={<CrearActividad />} />
@@ -77,7 +71,6 @@ root.render(
               <Route path="dashboard-estudiante/cambiar-contrasena" element={<CambiarContrasena />} />
               <Route path="dashboard-estudiante/detalles-actividad/:slug" element={<DetallesActividad />} />
               <Route path="dashboard-estudiante/subir-imagen/:id" element={<SubirImagen />} />
-              <Route path="dashboard-estudiante/lista-de-comparacion/:slug" element={<ListaDeComparacion />} />
             </Route>
 
             {/* Dashboard de coordinadores */}
@@ -95,7 +88,6 @@ root.render(
               <Route path="dashboard-coordinador/actividades-solicitadas" element={<ActividadesSolicitadas />} />
               <Route path="dashboard-coordinador/actualizar-actividad/:id" element={<UpdateActividad />} />
               <Route path="dashboard-coordinador/subir-imagen/:id" element={<SubirImagen />} />
-              <Route path="dashboard-coordinador/lista-de-comparacion/:slug" element={<ListaDeComparacion />} />
             </Route>
 
             {/* Dashboard de voae */}
@@ -113,11 +105,9 @@ root.render(
               <Route path="dashboard-voae/perfil" element={<Perfil />} />
               <Route path="dashboard-voae/cambiar-contrasena" element={<CambiarContrasena />} />
               <Route path="dashboard-voae/horas-estudiantes" element={<HorasVOAE />} />
-              <Route path="dashboard-voae/gestion-usuarios" element={<GestionUsuarios />} />
               <Route path="dashboard-voae/actividades-solicitadas" element={<ActividadesSolicitadas />} />
               <Route path="dashboard-voae/actualizar-actividad/:id" element={<UpdateActividad />} />
               <Route path="dashboard-voae/subir-imagen/:id" element={<SubirImagen />} />
-              <Route path="dashboard-voae/lista-de-comparacion/:slug" element={<ListaDeComparacion />} />
             </Route>
           </Route>
 

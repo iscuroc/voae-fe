@@ -21,6 +21,7 @@ export default function PaginaMisActividades() {
             setLoading(true);
             try {
                 const response = await axiosInstance.get('/users/my-activities', {});
+                console.log(response.data)
                 setFiltrarData(response.data);
             } catch (error) {
                 setError('Hay problemas de conexion con el Servidor');
@@ -48,7 +49,7 @@ export default function PaginaMisActividades() {
             const inicioDate = new Date(item.startDate.split(' ')[0]);
 
             return (
-                (ambito === "" || item.scopes.some(s => EtiquetasÁmbitosActividad[s.scope] === ambito)) &&
+                (ambito === "" || item.activityScopes.some(s => EtiquetasÁmbitosActividad[s.scope] === ambito)) &&
                 (!fechaInicioDate || inicioDate >= fechaInicioDate) &&
                 (!fechaFinDate || inicioDate <= fechaFinDate) &&
                 (busqueda === "" || item.name.toLowerCase().includes(busqueda.toLowerCase()))
@@ -71,12 +72,12 @@ export default function PaginaMisActividades() {
     const ambitosHoras: { [ambito: string]: number } = {};
 
     filtrarData.forEach(actividad => {
-        actividad.scopes.forEach(scope => {
-            const ambitoNombre = EtiquetasÁmbitosActividad[scope.activityScope] || `Ámbito ${scope.activityScope}`;
+        actividad.memberScopes.forEach(memberScopes => {
+            const ambitoNombre = EtiquetasÁmbitosActividad[memberScopes.scope] || `Ámbito ${memberScopes.scope}`;
             if (!ambitosHoras[ambitoNombre]) {
                 ambitosHoras[ambitoNombre] = 0;
             }
-            ambitosHoras[ambitoNombre] += scope.hours;
+            ambitosHoras[ambitoNombre] += memberScopes.hours;
         });
     });
 
@@ -93,32 +94,32 @@ export default function PaginaMisActividades() {
                 <h2 className="text-center my-5 text-xl font-bold underline">Horas</h2>
                 <div className="bg-white shadow-lg rounded-lg overflow-hidden">
                     <div className="overflow-x-auto">
-                        <table className="min-w-full table-auto bg-white border border-gray-200">
-                            <thead className="hidden md:table-header-group">
-                                <tr className="bg-blue-900 text-white">
-                                    <th className="p-4 font-bold text-left">Ámbito</th>
-                                    {ambitos.map((ambito, index) => (
-                                        <th key={index} className="p-4 font-bold text-left">{ambito}</th>
-                                    ))}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {/* Para pantallas pequeñas */}
-                                {ambitos.map((ambito, index) => (
-                                    <tr key={index} className="md:hidden text-white">
-                                        <td className="p-4 bg-blue-900 font-bold text-left">{ambito}</td>
-                                        <td className="p-4 text-black border-b border-gray-200">{horas[index]}</td>
-                                    </tr>
-                                ))}
-                                {/* Para pantallas más grandes */}
-                                <tr className="hidden md:table-row bg-white">
-                                    <td className="p-4 font-bold text-left">Horas</td>
-                                    {horas.map((hora, index) => (
-                                        <td key={index} className="p-4 border-b border-gray-200">{hora}</td>
-                                    ))}
-                                </tr>
-                            </tbody>
-                        </table>
+                    <table className="min-w-full table-auto bg-white border border-gray-200">
+    <thead className="hidden md:table-header-group">
+        <tr className="bg-blue-900 text-white">
+            <th className="p-4 font-bold text-left">Ámbito</th>
+            <th className="p-4 font-bold text-left">Horas Totales</th>
+        </tr>
+    </thead>
+    <tbody>
+        {/* Para pantallas pequeñas */}
+        {ambitos.map((ambito, index) => (
+            <tr key={index} className="md:hidden text-white">
+                <td className="p-4 bg-blue-900 font-bold text-left">{ambito}</td>
+                <td className="p-4 text-black border-b border-gray-200">{horas[index]}</td>
+            </tr>
+        ))}
+
+        {/* Para pantallas más grandes */}
+        {ambitos.map((ambito, index) => (
+            <tr key={index} className="hidden md:table-row bg-white">
+                <td className="p-4 font-bold text-left">{ambito}</td>
+                <td className="p-4 border-b border-gray-200">{horas[index]}</td>
+            </tr>
+        ))}
+    </tbody>
+</table>
+
                     </div>
                 </div>
 
@@ -130,7 +131,7 @@ export default function PaginaMisActividades() {
                                 <tr className="border text-sm border-gray-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto md:relative bg-yellow-500 text-black">
                                     <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Nombre</th>
                                     <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Descripcion</th>
-                                    <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Ámbito</th>
+                                    <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Ámbitos</th>
                                     <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Fecha Inicio</th>
                                     <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Fecha Final</th>
                                     <th className="p-2 font-bold md:border md:border-grey-500 text-left block md:table-cell">Estado</th>
@@ -146,7 +147,7 @@ export default function PaginaMisActividades() {
                                             <span className="inline-block w-1/3 md:hidden font-bold mr-4">Descripcion:</span>{item.description}
                                         </td>
                                         <td className="p-1 md:border md:border-gray-500 block md:table-cell">
-                                            <span className="inline-block w-1/3 md:hidden font-bold mr-4">Ámbitos:</span>{item.scopes.map(s => EtiquetasÁmbitosActividad[s.scope] || s.scope).join(", ")}
+                                            <span className="inline-block w-1/3 md:hidden font-bold mr-4">Ámbitos:</span>{item.activityScopes.map(s => EtiquetasÁmbitosActividad[s.scope] || s.scope).join(", ")}
                                         </td>
                                         <td className="p-1 md:border md:border-gray-500 block md:table-cell">
                                             <span className="inline-block w-1/3 md:hidden font-bold mr-4">Fecha Inicio:</span>{formatDate(item.startDate)}

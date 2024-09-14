@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { ActividadNombre, ObtenerActividadesPorNombre } from '../../api/servicios/actividades';
 import { EtiquetasÁmbitosActividad, formatDate } from '../../api/servicios/enums';
 import Loading from '../Loading';
-import { MdCompareArrows } from 'react-icons/md';
 
 const DetallesActividad: React.FC = () => {
   useEffect(() => {
@@ -154,20 +153,7 @@ const DetallesActividad: React.FC = () => {
 
         <div className="bg-yellow-500 w-full md:w-3/5 shadow-xl relative rounded-lg">
           <div className="p-3 md:p-6">
-            <h2 className="text-base md:text-2xl font-bold  text-center text-gray-900">Lista de Participantes</h2>
-            <NavLink
-              to={
-                location.pathname.includes('dashboard-coordinador')
-                  ? `/dashboard-coordinador/lista-de-comparacion/${slug}`
-                  : location.pathname.includes('dashboard-estudiante')
-                    ? `/dashboard-estudiante/lista-de-comparacion/${slug}`
-                    : `/dashboard-voae/lista-de-comparacion/${slug}`
-              }
-               className="text-blue-800 flex items-center justify-end hover:text-blue-700"
-            >
-              <MdCompareArrows />
-              Comparar con lista real
-            </NavLink>
+            <h2 className="text-base md:text-2xl font-bold  text-center text-gray-900">Lista de Inscriptos</h2>
 
             <div className="overflow-y-auto max-h-96 rounded-lg border border-gray-200 bg-white shadow-md" style={{ scrollbarWidth: 'thin' }}>
               <table className="w-full text-left border-collapse text-xs md:text-sm bg-white rounded-lg" style={{ overflowX: 'auto' }}>

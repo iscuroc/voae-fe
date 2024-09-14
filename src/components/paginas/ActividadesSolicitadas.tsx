@@ -4,7 +4,7 @@ import FiltroGS from "../filtros/FiltroGestionSolicitudes";
 import { NavLink, useLocation } from "react-router-dom";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import React, { useEffect, useState } from "react";
-import { FaEdit, FaFileImage, FaLink } from "react-icons/fa";
+import { FaEdit, FaFileImage } from "react-icons/fa";
 import Pagination from "../Pagination";
 import Skeleton from "../Skeleton";
 
@@ -176,15 +176,7 @@ const ActividadesSolicitadas: React.FC = () => {
                                                     <FaFileImage className="group-hover:text-blue-500 hidden md:block h-5 w-5" />
                                                     <span className="hover:text-blue-500 group-hover:text-blue-500 md:hidden">Subir imagen</span>
                                                 </NavLink>
-                                                <NavLink
-                                                    to={
-                                                        `/formulario-de-participacion/${item.slug}`
-                                                    }
-                                                    className="flex justify-center items-center font-bold group"
-                                                >
-                                                    <FaLink  className="group-hover:text-blue-500 hidden md:block h-5 w-5" />
-                                                    <span className="hover:text-blue-500 group-hover:text-blue-500 md:hidden">Link de participantes</span>
-                                                </NavLink>
+                                               
 
                                             </div>
                                         )}

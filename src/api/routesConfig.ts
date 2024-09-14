@@ -26,9 +26,7 @@ export const estudianteRoutes = {
     "Actividades": "/dashboard-voae/gestion-actividad",
     "Actividades Disponibles": "/dashboard-voae/actividad-en-curso",
     "Crear Actividad": "/dashboard-voae/crear-actividad",
-    // "Horas por Usuario": "/dashboard-voae/horas-estudiantes",
     "Actividades Solicitadas": "/dashboard-voae/actividades-solicitadas",
-  // "Gestión de Usuarios" : "/dashboard-voae/gestion-usuarios"
 } as const;
 
 export type VoaeRouteKeys = keyof typeof voaeRoutes;
