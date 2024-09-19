@@ -1,88 +1,53 @@
-import React, { useEffect, useState } from "react";
-import avoae1 from '@/assets/avoae1.jpg'
-import avoae2 from '@/assets/avoae2.jpg'
-// import logoPortal from '@/assets/logo.avif'
+import React, { useEffect } from "react";
+
 const Main: React.FC = () => {
-
-  const [banners, setBanners] = useState([
-    { id: 1, src: `${avoae1}`, title: "Musica virtual" },
-    { id: 2, src: `${avoae2}`, title: "Torneo de futbol" },
-  ]);
-
-
   useEffect(() => {
-    // título de la pestaña del navegador
     document.title = "Inicio - UNAH COPAN";
   }, []);
 
-  useEffect(() => {
-    // Fetch banners from API
-    const fetchBanners = async () => {
-      try {
-        // Replace with your API endpoint
-        const response = await fetch('/api/get-banners');
-        const data = await response.json();
-        setBanners(data);
-      } catch (error) {
-        console.error('Error fetching banners:', error);
-      }
-    };
-
-    fetchBanners();
-  }, []);
-
-  // Componente Banners definido dentro de Main
-  const Banners: React.FC<{ banners: typeof banners }> = ({ banners }) => {
-    const renderBanners = () => {
-      const bannerRows = [];
-      for (let i = 0; i < banners.length; i += 2) {
-        bannerRows.push(
-          <div className="flex flex-col md:flex-row mb-4" key={i}>
-            <div className="flex-1 shadow-md rounded-lg p-4 mb-4 md:mb-0 md:mr-4">
-              <h2 className="text-xl font-bold mb-2">{banners[i].title}</h2>
-              <img
-                src={banners[i].src}
-                alt={banners[i].title}
-                className="w-full h-64 object-contain rounded-lg mb-2"
-              />
-            </div>
-            {banners[i + 1] && (
-              <div className="flex-1  shadow-md rounded-lg p-4">
-                <h2 className="text-xl font-bold mb-2">{banners[i + 1].title}</h2>
-                <img
-                  src={banners[i + 1].src}
-                  alt={banners[i + 1].title}
-                  className="w-full h-64 object-contain rounded-lg mb-2"
-                />
-              </div>
-            )}
-          </div>
-        );
-      }
-      return bannerRows;
-    };
-
-    return <>{renderBanners()}</>;
-  };
-
-
   return (
     <>
-      <main className="flex-1">
-        {/* <img
-          src={logoPortal}
-          alt="logo portal"
-          className="w-3/6 h-3/6 "
-          draggable="false"
-          onContextMenu={(e) => e.preventDefault()}
-          onDragStart={(e) => e.preventDefault()}
-        /> */}
-        <div className="text-base md:text-4xl font-bold text-center">
-          <h1 className="mt-8 mb-5 md:text-4xl font-extrabold tracking-tight text-gray-900">NOVEDADES Y ACTIVIDADES</h1>
-          <div className=" shadow-lg rounded-lg p-6 min-h-[80vh]">
-            <Banners banners={banners} />
+      <main className="flex-1 flex flex-col items-center w-full">
+        
+          <h1 className="mt-8 mb-5 md:text-4xl font-extrabold tracking-tight text-gray-900">
+            Áreas del Articulo 140
+          </h1>
+      
+        <div className="flex flex-wrap justify-around gap-2 w-full pt-6">
+          <div className="p-4">
+            <h3 className="text-2xl font-bold text-center ">Académica</h3>
+            <img 
+            src="https://pub-9272dcfd138340a5ab886ccb8308ed78.r2.dev/assets/academica.png"
+            width={200}
+            height={200}
+            />
           </div>
-
+          <div className="p-4">
+            <h3 className="text-2xl font-bold text-center ">
+              Cultural/Artistico
+            </h3>
+            <img 
+            src="https://pub-9272dcfd138340a5ab886ccb8308ed78.r2.dev/assets/artistica.png"
+            width={200}
+            height={200}
+            />
+          </div>
+          <div className="p-4">
+            <h3 className="text-2xl font-bold text-center ">Sociales</h3>
+            <img 
+            src="https://pub-9272dcfd138340a5ab886ccb8308ed78.r2.dev/assets/sociales.png"
+            width={200}
+            height={200}
+            />
+          </div>
+          <div className="p-4">
+            <h3 className="text-2xl font-bold text-center ">Deportiva</h3>
+            <img 
+            src="https://pub-9272dcfd138340a5ab886ccb8308ed78.r2.dev/assets/deportiva.png"
+            width={200}
+            height={200}
+            />
+          </div>
         </div>
       </main>
     </>
@@ -90,4 +55,3 @@ const Main: React.FC = () => {
 };
 
 export default Main;
-
