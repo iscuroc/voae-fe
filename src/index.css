@@ -2,24 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.zoom:hover {
-    transform: scale(1.1);
-}
-
-body::-webkit-scrollbar {
-    width: 12px;         
-  }
-  
-  body::-webkit-scrollbar-track {
-    background: #ffffff;       
-  }
-  
-  body::-webkit-scrollbar-thumb {
-    background-color: #eab308;   
-    border-radius: 20px;       
-  }
-
-
   /* Skeleton css */
 .skeleton {
   background: #e0e0e0;
