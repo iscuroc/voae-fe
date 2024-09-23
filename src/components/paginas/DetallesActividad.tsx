@@ -39,7 +39,7 @@ const DetallesActividad: React.FC = () => {
   return (
     <>
       <div className="my-3"></div>
-      <div className="h-full mx-3 md:mx-6 overflow-hidden flex flex-col md:flex-row items-center justify-center space-y-8 lg:space-y-0 lg:space-x-4">
+      <div className="h-full mx-3 md:mx-6 overflow-hidden flex flex-col md:flex-row justify-center space-y-8 lg:space-y-0 lg:space-x-4">
         <div className="bg-blue-900 w-full md:w-2/3 shadow-xl relative rounded-lg ">
           <div className="p-3 md:p-6">
             <div className="flex justify-between align-middle  mb-2">
@@ -169,10 +169,10 @@ const DetallesActividad: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-yellow-500 w-full md:w-3/5 shadow-xl relative rounded-lg">
-          <div className="p-3 md:p-6">
+        <div className="w-full md:w-3/5 shadow-xl relative">
+          <div className="p-3 md:p-6 bg-yellow-500 rounded-lg">
             <h2 className="text-base md:text-2xl font-bold  text-center text-gray-900">
-              Lista de Inscriptos
+              Participantes
             </h2>
 
             <div
@@ -192,25 +192,33 @@ const DetallesActividad: React.FC = () => {
                       Número de Cuenta
                     </th>
                     <th className="border px-4 py-2 bg-blue-900 text-white">
-                      carrera
+                      Carrera
+                    </th>
+                    <th className="border px-4 py-2 bg-blue-900 text-white">
+                      Ámbitos
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {/* {activity?.members?.map((participant, index) => (
+                  {activity?.members?.map((participant, index) => (
                     <tr
                       key={index}
                       className={index % 2 === 0 ? "bg-gray-100" : ""}
                     >
-                      <td className="border px-4 py-2">{participant.nombre}</td>
                       <td className="border px-4 py-2">
-                        {participant.numerocuenta}
+                        {participant.names + " " + participant.lastnames}
                       </td>
                       <td className="border px-4 py-2">
-                        {participant.carrera}
+                        {participant.account}
+                      </td>
+                      <td className="border px-4 py-2">{participant.career}</td>
+                      <td className="border px-4 py-2">
+                        {participant.scopes
+                          ?.map((a) => EtiquetasAmbitosActividad[a])
+                          .join(", ")}
                       </td>
                     </tr>
-                  ))} */}
+                  ))}
                 </tbody>
               </table>
             </div>

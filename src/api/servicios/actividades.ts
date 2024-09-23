@@ -19,7 +19,7 @@ export enum ActivityStatus {
   Published,
   Cancelled,
   InProgress,
-  Completed
+  Completed,
 }
 
 export interface Person {
@@ -39,6 +39,15 @@ export interface Scope {
   hourAmount: number;
   scope: number;
 }
+
+export type ActivityMember = {
+  id: number;
+  names: string;
+  lastnames: string;
+  account: number;
+  career: string;
+  scopes: number[];
+};
 
 export interface ActividadEstado {
   id: number;
@@ -127,16 +136,19 @@ export interface ActividadNombre {
   totalSpots: number;
   startDate: string;
   endDate: string;
-  members: Person[];
+  members: ActivityMember[];
   requestedBy: Person;
 }
 
 export const useObtenerActividadesPorNombre = (slug: string) => {
-  const response = useAxios<ActividadNombre>({
-    url: `/activities/by-slug/${slug}`,
-  },{
-    useCache: false,
-  });
+  const response = useAxios<ActividadNombre>(
+    {
+      url: `/activities/by-slug/${slug}`,
+    },
+    {
+      useCache: false,
+    }
+  );
   return response;
 };
 
@@ -170,7 +182,7 @@ export const RechazarActividad = async (
   }
 };
 
-export const usePublishActivityMutation =   (id?: number)  => {
+export const usePublishActivityMutation = (id?: number) => {
   if (!id) {
     throw new Error("No se ha proporcionado un ID de actividad");
   }
@@ -178,13 +190,13 @@ export const usePublishActivityMutation =   (id?: number)  => {
   const mutation = useAxios(
     {
       url: `/activities/${id}/publish`,
-      method: "PUT"
+      method: "PUT",
     },
     { manual: true }
   );
 
   return mutation;
-}
+};
 
 export interface Scope3 {
   scope: number; // ID del ámbito asociado a la actividad
