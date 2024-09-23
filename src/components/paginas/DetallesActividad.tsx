@@ -197,7 +197,7 @@ const DetallesActividad: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {activity?.members?.map((participant, index) => (
+                  {/* {activity?.members?.map((participant, index) => (
                     <tr
                       key={index}
                       className={index % 2 === 0 ? "bg-gray-100" : ""}
@@ -210,7 +210,7 @@ const DetallesActividad: React.FC = () => {
                         {participant.carrera}
                       </td>
                     </tr>
-                  ))}
+                  ))} */}
                 </tbody>
               </table>
             </div>

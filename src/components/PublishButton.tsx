@@ -1,7 +1,5 @@
 import {
-  ActividadEstado,
-  ActivityStatus,
-  usePublishActivityMutation,
+  usePublishActivityMutation
 } from "@/api/servicios/actividades";
 import { Role } from "@/api/servicios/usuarios";
 import useAuth from "@/api/useAuth";
