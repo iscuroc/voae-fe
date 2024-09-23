@@ -282,7 +282,7 @@ const CrearActividad = () => {
     };
     setIsLoading(true);
     try {
-      const result = await crearActividad(actividad);
+       await crearActividad(actividad);
  
       // Reset form data after successful creation
       setFormData({
