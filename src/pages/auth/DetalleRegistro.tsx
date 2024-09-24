@@ -22,7 +22,7 @@ interface FormData {
   password: string;
   passwordConfirmation: string;
   emailConfirmationToken: string;
-  careerId: number | string | null;
+  careerId: number | string;
   organizationIds: number[];
 }
 
@@ -60,14 +60,14 @@ const DetallesRegistro: React.FC = () => {
     organizationIds: [],
   });
   console.log("formData", formData);
-  
+
   const [carrera, setCarreras] = useState<Carrera[]>([]);
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showPasswordConfirmation, setShowPasswordConfirmation] =
     useState<boolean>(false);
 
-  const [{ data: organizations = [],   loading: loadingOrganizations }] =
+  const [{ data: organizations = [], loading: loadingOrganizations }] =
     useGetOrganizationsQuery();
 
   const [selected, setSelected] = useState<Option[]>([]);
@@ -87,10 +87,10 @@ const DetallesRegistro: React.FC = () => {
 
   const handleSelectOrganization = (selected: Option[]) => {
     setSelected(selected);
-      setFormData((prevState) => ({
-        ...prevState,
-        organizationIds: selected.map((s) => s.value),
-      }));
+    setFormData((prevState) => ({
+      ...prevState,
+      organizationIds: selected.map((s) => s.value),
+    }));
     if (!formData.careerId) return;
     const isValidCareer = validateStudentsOrganizations(selected);
 
@@ -126,7 +126,6 @@ const DetallesRegistro: React.FC = () => {
       }));
     }
   }, []);
- 
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -181,8 +180,8 @@ const DetallesRegistro: React.FC = () => {
     if (validateForm()) {
       setIsLoading(true);
       try {
-        const dto =formData
-        if(!formData.careerId){
+        const dto = { ...formData } as Record<string, unknown>;
+        if (!formData.careerId) {
           dto.careerId = null;
         }
         await axiosInstance.post("/auth/confirm", formData);
