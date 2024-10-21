@@ -1,9 +1,9 @@
 // rutas de dashboard Estudiantes
 export const estudianteRoutes = {
-    "Mis Horas VOAE": "/dashboard-estudiante/mis-actividades",
-    "Actividades Disponibles": "/dashboard-estudiante/actividades-en-curso",
-    "Actividades Solicitadas": "/dashboard-estudiante/actividades-solicitadas",
-    "Crear Actividad": "/dashboard-estudiante/crear-actividad",
+    "Mis Horas VOAE": "/mis-actividades",
+    "Actividades Disponibles": "/actividades-en-curso",
+    "Actividades Solicitadas": "/actividades-solicitadas",
+    "Crear Actividad": "/crear-actividad",
     // "Mis Certificados": "/dashboard-estudiante/mis-certificados",
   } as const;
   

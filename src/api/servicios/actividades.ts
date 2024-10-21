@@ -1,5 +1,7 @@
+import { QueryFunction } from "@tanstack/react-query";
 import axiosInstance, { useAxios } from "../axiosInstance";
 import { ActivityScope } from "./enums";
+import { OrganizerType } from "./actividadPost";
 
 export interface Organizer {
   career: {
@@ -152,6 +154,16 @@ export const useObtenerActividadesPorNombre = (slug: string) => {
   return response;
 };
 
+
+export const obtenerActividadesPorNombre: QueryFunction = async (props) => {
+  console.log(props);
+
+  const response = await axiosInstance.get(`/activities/by-slug/${slug}`, {
+    signal: props.signal,
+  });
+  return response.data;
+};
+
 export const AprobarActividad = async (
   id: number,
   reviewerObservation: string
@@ -198,7 +210,7 @@ export const usePublishActivityMutation = (id?: number) => {
   return mutation;
 };
 
-export interface Scope3 {
+export interface Scope {
   scope: number; // ID del ámbito asociado a la actividad
   hours: number; // Cantidad de horas asignadas al ámbito
 }
@@ -213,9 +225,32 @@ export interface MisActividades {
   name: string; // Nombre de la actividad
   description: string; // Descripción de la actividad
   memberScopes: MemberScope[]; // Lista de ámbitos asociados a los miembros y sus horas
-  activityScopes: Scope3[]; // Lista de ámbitos asociados a la actividad y sus horas
+  activityScopes: Scope[]; // Lista de ámbitos asociados a la actividad y sus horas
   startDate: string; // Fecha de inicio de la actividad (ISO string)
   endDate: string; // Fecha de finalización de la actividad (ISO string)
   slug: string; // Slug de la actividad (identificador único)
   activityStatus: number; // Estado de la actividad
 }
+
+
+export type UpdateActivityRequest = {
+  name: string;
+  description: string;
+  foreignCareersIds: number[];
+  startDate: string;
+  endDate: string;
+  goals: string[];
+  scopes: Scope[];
+  supervisorId: number;
+  coordinatorId: number;
+  totalSpots: number;
+  location: string;
+  mainActivities: string[];
+  organizers: OrganizerRequest[];
+};
+
+export type OrganizerRequest = {
+  careerId: number;
+  organizationId: number;
+  type: OrganizerType;
+};

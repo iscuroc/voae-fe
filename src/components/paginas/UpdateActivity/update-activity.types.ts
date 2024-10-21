@@ -1,4 +1,11 @@
-export type CreateActivityFormValues = {
+import {
+  Goal,
+  MainActivity,
+  OrganizerId,
+  Scope,
+} from "../CreateActivity/types";
+
+export type UpdateActivityFormValues = {
   name: string;
   description: string;
   foreignCareersIds: number[];
@@ -13,24 +20,4 @@ export type CreateActivityFormValues = {
   organizationId: number[];
   supervisorId: OrganizerId;
   coordinatorId: OrganizerId;
-};
-
-export type OrganizerId = {
-  label: string;
-  value: number;
-  key: number;
-  title: string;
-};
-
-export type Goal = {
-  goal: string;
-};
-
-export type MainActivity = {
-  activity: string;
-};
-
-export type Scope = {
-  scope: number;
-  hours: number;
 };

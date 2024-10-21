@@ -1,176 +1,241 @@
-import React from "react";
-import { CiLogout, CiUser } from "react-icons/ci";
-import { FaRegCalendarAlt } from "react-icons/fa";
-import { LuLayoutDashboard } from "react-icons/lu";
-import { NavLink, useNavigate } from "react-router-dom";
-import useAuth from "../api/useAuth";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import logoCuroc from "@/assets/logoCuroc.avif";
+import { ProLayout } from "@ant-design/pro-components";
+import { Dropdown, Flex, Typography, theme } from "antd";
+import React, { ReactNode } from "react";
+import { CiLogout, CiUser } from "react-icons/ci";
+import { LuLayoutDashboard } from "react-icons/lu";
+import { useLocation, useNavigate } from "react-router-dom";
+import useAuth from "../api/useAuth";
+import { Role, User } from "@/api/servicios/usuarios";
+import {
+  coordinadorRoutes,
+  estudianteRoutes,
+  voaeRoutes,
+} from "@/api/routesConfig";
 
-const Sidebar: React.FC = () => {
-  const { logout } = useAuth();
+const { useToken } = theme;
+
+const Sidebar: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const getRoutesByRole = (user?: User) => {
+    if (!user) return {};
+    const roleRoutes: Record<Role, Record<string, string>> = {
+      [Role.STUDENT]: estudianteRoutes,
+      [Role.TEACHER]: coordinadorRoutes,
+      [Role.VOAE]: voaeRoutes,
+    };
+
+    return roleRoutes[user.role as Role];
+  };
+
+  const routes = getRoutesByRole(user);
+  const maappedRoutes = Object.entries(routes).map(([name, path]) => ({
+    path,
+    name,
+    icon: <LuLayoutDashboard />,
+  }));
+  const { token, theme } = useToken();
+  const customThemeVariations = [
+    {
+      name: "Ocean Blue",
+      colorPrimary: "#004c8b",
+      colorMenuBackground: "#1967b1",
+      colorTextMenuTitle: "#b3dae7",
+      colorMenuItemDivider: "#d1f4ff",
+      colorTextMenu: "#ffffff",
+      colorTextMenuSecondary: "#66a3c7",
+      colorTextMenuSelected: "#003b74",
+      colorTextMenuActive: "#66a3c7",
+      colorTextMenuItemHover: "#ccf2ff",
+      colorBgMenuItemActive: "#004c8b",
+      colorBgMenuItemHover: "#004c8b",
+      colorBgMenuItemSelected: "#ebb730",
+      colorBgMenuItemCollapsedElevated: "#00396b",
+      colorBgCollapsedButton: "#002e4f",
+      colorTextCollapsedButton: "#66a3c7",
+      colorTextCollapsedButtonHover: "#ccf2ff",
+    },
+    {
+      name: "Ocean Blue",
+      colorPrimary: "#0b66ac",
+      colorMenuBackground: "#2a75b3",
+      colorTextMenuTitle: "#ffffff",
+      colorMenuItemDivider: "#1565c0",
+      colorTextMenu: "#ffffff",
+      colorTextMenuSecondary: "#f7dd72",
+      colorTextMenuSelected: "#ffd700",
+      colorTextMenuActive: "#ffffff",
+      colorTextMenuItemHover: "#ffd700",
+      colorBgMenuItemActive: "#ffd700",
+      colorBgMenuItemHover: "#f7dd72",
+      colorBgMenuItemSelected: "#f7dd72",
+      colorBgMenuItemCollapsedElevated: "#2a75b3",
+      colorBgCollapsedButton: "#0b66ac",
+      colorTextCollapsedButton: "#ffffff",
+      colorTextCollapsedButtonHover: "#ffd700",
+    },
+    {
+      name: "Twilight Blue",
+      colorPrimary: "#0b66ac",
+      colorMenuBackground: "#2a75b3",
+      colorTextMenuTitle: "#ffffff",
+      colorMenuItemDivider: "#1565c0",
+      colorTextMenu: "#ffffff",
+      colorTextMenuSecondary: "#f7dd72",
+      colorTextMenuSelected: "#ffd700",
+      colorTextMenuActive: "#ffffff",
+      colorTextMenuItemHover: "#ffd700",
+      colorBgMenuItemActive: "#ffd700",
+      colorBgMenuItemHover: "#f7dd72",
+      colorBgMenuItemSelected: "#f7dd72",
+      colorBgMenuItemCollapsedElevated: "#2a75b3",
+      colorBgCollapsedButton: "#0b66ac",
+      colorTextCollapsedButton: "#ffffff",
+      colorTextCollapsedButtonHover: "#ffd700",
+    },
+    {
+      name: "Skyline Blue",
+      colorPrimary: "#0b66ac",
+      colorMenuBackground: "#2a75b3",
+      colorTextMenuTitle: "#ffffff",
+      colorMenuItemDivider: "#1565c0",
+      colorTextMenu: "#ffffff",
+      colorTextMenuSecondary: "#f7dd72",
+      colorTextMenuSelected: "#ffd700",
+      colorTextMenuActive: "#ffffff",
+      colorTextMenuItemHover: "#ffd700",
+      colorBgMenuItemActive: "#ffd700",
+      colorBgMenuItemHover: "#f7dd72",
+      colorBgMenuItemSelected: "#f7dd72",
+      colorBgMenuItemCollapsedElevated: "#2a75b3",
+      colorBgCollapsedButton: "#0b66ac",
+      colorTextCollapsedButton: "#ffffff",
+      colorTextCollapsedButtonHover: "#ffd700",
+    },
+    {
+      name: "Deep Sea",
+      colorPrimary: "#0b66ac",
+      colorMenuBackground: "#2a75b3",
+      colorTextMenuTitle: "#ffffff",
+      colorMenuItemDivider: "#1565c0",
+      colorTextMenu: "#ffffff",
+      colorTextMenuSecondary: "#f7dd72",
+      colorTextMenuSelected: "#ffd700",
+      colorTextMenuActive: "#ffffff",
+      colorTextMenuItemHover: "#ffd700",
+      colorBgMenuItemActive: "#ffd700",
+      colorBgMenuItemHover: "#f7dd72",
+      colorBgMenuItemSelected: "#f7dd72",
+      colorBgMenuItemCollapsedElevated: "#2a75b3",
+      colorBgCollapsedButton: "#0b66ac",
+      colorTextCollapsedButton: "#ffffff",
+      colorTextCollapsedButtonHover: "#ffd700",
+    },
+    {
+      name: "Arctic Blue",
+      colorPrimary: "#0b66ac",
+      colorMenuBackground: "#2a75b3",
+      colorTextMenuTitle: "#ffffff",
+      colorMenuItemDivider: "#1565c0",
+      colorTextMenu: "#ffffff",
+      colorTextMenuSecondary: "#f7dd72",
+      colorTextMenuSelected: "#ffd700",
+      colorTextMenuActive: "#ffffff",
+      colorTextMenuItemHover: "#ffd700",
+      colorBgMenuItemActive: "#ffd700",
+      colorBgMenuItemHover: "#f7dd72",
+      colorBgMenuItemSelected: "#f7dd72",
+      colorBgMenuItemCollapsedElevated: "#2a75b3",
+      colorBgCollapsedButton: "#0b66ac",
+      colorTextCollapsedButton: "#ffffff",
+      colorTextCollapsedButtonHover: "#ffd700",
+    },
+  ];
+
   return (
-    <aside className="bg-blue-900 text-white h-screen w-40 hidden md:flex text-sm bottom-0 fixed">
-      {" "}
-      {/* Ajustar top */}
-      {/* Opciones de navegación */}
-      <nav className="mt-5">
-        <ul className="space-y-2">
-          <li>
-            <span
-              className="flex items-center justify-center"
-              onClick={() => {
-                navigate("/");
-              }}
-            >
-              <img src={logoCuroc} alt="logo unah" className="w-10 h-10" />
-              <span className="text-sm font-bold text-white ml-2">
-                UNAH COPAN
-              </span>
-            </span>
-          </li>
-          {location.pathname.includes("dashboard-coordinador") && (
-            <>
-              <li>
-                <NavLink
-                  to="/dashboard-coordinador/main"
-                  className={({ isActive }) =>
-                    `flex items-center py-3 px-6 hover:bg-gray-700 ${
-                      isActive ? "bg-gray-700" : ""
-                    }`
-                  }
-                >
-                  <LuLayoutDashboard className="h-6 w-6 mr-2" />
-                  Dashboard
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/dashboard-coordinador/perfil"
-                  className={({ isActive }) =>
-                    `flex items-center py-3 px-6 hover:bg-gray-700 ${
-                      isActive ? "bg-gray-700" : ""
-                    }`
-                  }
-                >
-                  <CiUser className="h-6 w-6 mr-2" />
-                  Perfil
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/dashboard-coordinador/calendario"
-                  className={({ isActive }) =>
-                    `flex items-center py-3 px-6 hover:bg-gray-700 ${
-                      isActive ? "bg-gray-700" : ""
-                    }`
-                  }
-                >
-                  <FaRegCalendarAlt className="h-6 w-6 mr-2" />
-                  Calendario
-                </NavLink>
-              </li>
-            </>
-          )}
-          {location.pathname.includes("dashboard-estudiante") && (
-            <>
-              <li>
-                <NavLink
-                  to="/dashboard-estudiante/main"
-                  className={({ isActive }) =>
-                    `flex items-center py-3 px-6 hover:bg-gray-700 ${
-                      isActive ? "bg-gray-700" : ""
-                    }`
-                  }
-                >
-                  <LuLayoutDashboard className="h-6 w-6 mr-2" />
-                  Dashboard
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/dashboard-estudiante/perfil"
-                  className={({ isActive }) =>
-                    `flex items-center py-3 px-6 hover:bg-gray-700 ${
-                      isActive ? "bg-gray-700" : ""
-                    }`
-                  }
-                >
-                  <CiUser className="h-6 w-6 mr-2" />
-                  Perfil
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/dashboard-estudiante/calendario"
-                  className={({ isActive }) =>
-                    `flex items-center py-3 px-6 hover:bg-gray-700 ${
-                      isActive ? "bg-gray-700" : ""
-                    }`
-                  }
-                >
-                  <FaRegCalendarAlt className="h-6 w-6 mr-2" />
-                  Calendario
-                </NavLink>
-              </li>
-            </>
-          )}
-          {location.pathname.includes("dashboard-voae") && (
-            <>
-              <li>
-                <NavLink
-                  to="/dashboard-voae/main"
-                  className={({ isActive }) =>
-                    `flex items-center py-3 px-6 hover:bg-gray-700 ${
-                      isActive ? "bg-gray-700" : ""
-                    }`
-                  }
-                >
-                  <LuLayoutDashboard className="h-6 w-6 mr-2" />
-                  Dashboard
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/dashboard-voae/perfil"
-                  className={({ isActive }) =>
-                    `flex items-center py-3 px-6 hover:bg-gray-700 ${
-                      isActive ? "bg-gray-700" : ""
-                    }`
-                  }
-                >
-                  <CiUser className="h-6 w-6 mr-2" />
-                  Perfil
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/dashboard-voae/calendario"
-                  className={({ isActive }) =>
-                    `flex items-center py-3 px-6 hover:bg-gray-700 ${
-                      isActive ? "bg-gray-700" : ""
-                    }`
-                  }
-                >
-                  <FaRegCalendarAlt className="h-6 w-6 mr-2" />
-                  Calendario
-                </NavLink>
-              </li>
-            </>
-          )}
-          <hr className="my-4 border-t border-gray-300" />
-          <li>
-            <a
-              onClick={logout}
-              className={`flex items-center py-3 px-6 hover:bg-red-700`}
-            >
-              <CiLogout className="h-6 w-6 mr-2" />
-              Cerrar Sesión
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </aside>
+    <div style={{ height: "100dvh" }}>
+      <ProLayout
+        menuProps={{
+          onSelect: (e) => {
+            navigate(e.key);
+          },
+        }}
+        logo={logoCuroc}
+        title="UNAH COPAN"
+        token={{
+          colorPrimary: token.colorPrimary,
+          sider: {
+            colorMenuBackground: "#1967b1",
+            colorTextMenuTitle: "#ffffff",
+            colorMenuItemDivider: "#ffffff",
+            colorTextMenu: "#ffffff",
+            colorTextMenuSecondary: "#66a3c7",
+            colorTextMenuSelected: "#003b74",
+            colorTextMenuActive: "#ffffff",
+            colorTextMenuItemHover: "#ffffff",
+            colorBgMenuItemActive: "#004c8b",
+            colorBgMenuItemHover: "#004c8b",
+            colorBgMenuItemSelected: "#ebb730",
+            colorBgMenuItemCollapsedElevated: "#0e4a98",
+            colorBgCollapsedButton: "#ffffff",
+            colorTextCollapsedButton: "#0e4a98",
+            colorTextCollapsedButtonHover: "#0e4a98",
+            colorTextSubMenuSelected: "#ffffff",
+          },
+          bgLayout: "#f0f2f5",
+        }}
+        route={{
+          path: "/",
+          children: maappedRoutes,
+        }}
+        location={{
+          pathname: location.pathname,
+        }}
+        menuFooterRender={() => (
+          <Dropdown
+            trigger={["click"]}
+            placement="topRight"
+            menu={{
+              items: [
+                {
+                  label: "Perfil",
+                  icon: <CiUser />,
+                  key: "perfil",
+                  onClick: () => navigate("/perfil"),
+                },
+                {
+                  type: "divider",
+                },
+                {
+                  label: "Cerrar sesión",
+                  icon: <CiLogout />,
+                  key: "logout",
+                  onClick: logout,
+                },
+              ],
+              style: {
+                borderRadius: "10px",
+              },
+            }}
+          >
+            <Flex style={{ marginTop: "100%" }} justify="center" align="center">
+              <Typography.Title level={4} style={{ cursor: "pointer" }}>
+                Menú
+              </Typography.Title>
+            </Flex>
+          </Dropdown>
+        )}
+        // menuDataRender={(menuData) =>
+        //   menuData.filter((item) => location.pathname.includes(item.path))
+        // }
+      >
+        {children}
+      </ProLayout>
+    </div>
   );
 };
 

@@ -3,15 +3,16 @@ import { ToastContainer } from "react-toastify";
 
 import dayjs from "dayjs";
 import "dayjs/locale/es";
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import relativeTime from "dayjs/plugin/relativeTime";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 import { RouterProvider } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import "./index.css";
 import { AntdProvider } from "./providers/antd.provider";
 import { routes } from "./Routes";
+import { TanstackQueryProvider } from "./providers/tanstack-query.provider";
 
 dayjs.locale("es");
 dayjs.extend(utc);
@@ -25,7 +26,9 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <AntdProvider>
-    <RouterProvider router={routes} />
+    <TanstackQueryProvider>
+      <RouterProvider router={routes} />
+    </TanstackQueryProvider>
     <ToastContainer />
   </AntdProvider>
 );

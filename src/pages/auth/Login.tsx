@@ -38,6 +38,12 @@ const Login: React.FC = () => {
     }
   };
 
+  const { user } = useAuth();
+
+  if (user) {
+    navigate("/dashboard");
+  }
+
   return (
     <>
       <div className="ml-5 mr-5 h-full md:mt-20 md:mb-11 bg-white overflow-hidden flex items-center justify-center">

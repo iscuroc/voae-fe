@@ -1,4 +1,5 @@
 import axiosInstance, { useAxios } from "../axiosInstance";
+import { UpdateActivityRequest } from "./actividades";
 
 export enum OrganizerType {
   Career = 0,
@@ -55,7 +56,7 @@ export const useCreateActivity = () => {
 
 export const updateActividad = async (
   id: number,
-  actividad: ActividadCrear
+  actividad: UpdateActivityRequest
 ) => {
   try {
     const response = await axiosInstance.put(`/activities/${id}`, actividad);
