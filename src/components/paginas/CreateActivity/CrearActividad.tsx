@@ -1,5 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { EtiquetasAmbitosActividad } from "@/api/servicios/enums";
-import { Role, roleMapper, useGetUsersByRoles } from "@/api/servicios/usuarios";
+import {
+  Role,
+  roleMapper,
+  SimpleUserResponse,
+  useGetUsersByRoles,
+} from "@/api/servicios/usuarios";
+import { CustomError, Pagination } from "@/api/types/common";
 import { daysify } from "@/utils/formatDate";
 import {
   ProForm,
@@ -12,8 +19,8 @@ import {
   ProFormTextArea,
 } from "@ant-design/pro-components";
 import { Divider } from "antd";
-import { useForm } from "antd/es/form/Form";
-import { useState } from "react";
+import { RefetchFunction } from "axios-hooks";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   ActividadCrear,
@@ -23,24 +30,20 @@ import {
 } from "../../../api/servicios/actividadPost";
 import { obtenerTodasLasCarreras } from "../../../api/servicios/carreras";
 import { obtenerLasOrganizaciones } from "../../../api/servicios/organizaciones";
-import SuccessModal from "../../Modal";
 import { CreateActivityFormValues } from "./types";
-import { useNavigate } from "react-router-dom";
 
 const dateFormat = "DD/MM/YYYY HH:mm";
 
 const CrearActividad = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [{ loading: isLoading }, createActivitymutation] = useCreateActivity();
   const navigate = useNavigate();
-  const handleSubmit = async (values: ActividadCrear) => {
-    console.log(values);
+  const [form] = ProForm.useForm();
 
+  const handleSubmit = async (values: ActividadCrear) => {
     const formatedStartDate = daysify(
       values.startDate,
       dateFormat
     ).toISOString();
-
     const formatedEndDate = daysify(values.endDate, dateFormat).toISOString();
 
     try {
@@ -53,10 +56,11 @@ const CrearActividad = () => {
       });
       toast.success("La solicitud de actividad se envió con éxito.");
       navigate("/actividades");
-    } catch (error) {
+    } catch (e) {
+      const error = e as CustomError;
       if (
         error.response.status === 409 &&
-        error.response.data.errors.at(0).code ===
+        error.response.data.errors.at(0)?.code ===
           "Activity.ActivityNameAlreadyExists"
       ) {
         toast.error(
@@ -66,30 +70,48 @@ const CrearActividad = () => {
     }
   };
 
-  const [form] = useForm();
-
   const selectedScopes = (ProForm.useWatch("scopes", form) ?? []) as {
     scope: number;
     hours: number;
   }[];
 
-  const getAvailableScopes = (index: number) => {
-    return Object.entries(EtiquetasAmbitosActividad)
-      .map(([key, value]) => ({
-        value: key,
-        label: value,
-      }))
+  const getAvailableScopes = (index: number) =>
+    Object.entries(EtiquetasAmbitosActividad)
+      .map(([value, label]) => ({ value: +value, label }))
       .filter(
-        (scope) =>
+        ({ value }) =>
           !selectedScopes.some(
-            (selectedScope, i) =>
-              selectedScope.scope == scope.value && index !== i
+            (selectedScope, i) => selectedScope.scope === value && index !== i
           )
       );
-  };
 
+  // al parecer esta libreria no soporta el uso de la misma funcion en dos lugares distintos del mismo componente
   const [, getUsersByRoles] = useGetUsersByRoles();
   const [, getUsersByRoles2] = useGetUsersByRoles();
+
+  const fetchUsersByRoles = async (
+    roles: Role[],
+    keyWords: string,
+    fetchFunc: RefetchFunction<any, Pagination<SimpleUserResponse>>
+  ) => {
+    const { data } = await fetchFunc({
+      params: {
+        Query: keyWords,
+        ...roles.reduce(
+          (acc, role, index) => ({ ...acc, [`Role[${index}]`]: role }),
+          {}
+        ),
+        PageNumber: 1,
+        PageSize: 20,
+      },
+    });
+    return data.items.map((user) => ({
+      value: user.id,
+      label: `${user.names} / ${
+        user.careerName ?? "Sin carrera"
+      } / ${roleMapper(user.role)}`,
+    }));
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -112,24 +134,19 @@ const CrearActividad = () => {
             );
 
             const dto = {
+              ...values,
+              supervisorId: values.supervisorId.value,
               coordinatorId: values.coordinatorId.value,
-              description: values.description,
-              endDate: values.endDate,
               foreignCareersIds: values.foreignCareersIds,
               goals: values.goals.map((goal) => goal.goal),
-              location: values.location,
               mainActivities: values.mainActivities.map(
                 (activity) => activity.activity
               ),
-              name: values.name,
               organizers: [...careers, ...organizations],
               scopes: values.scopes.map((scope) => ({
                 scope: +scope.scope,
                 hours: scope.hours,
               })),
-              supervisorId: values.supervisorId.value,
-              totalSpots: values.totalSpots,
-              startDate: values.startDate,
             } as ActividadCrear;
             await handleSubmit(dto);
           }}
@@ -144,6 +161,7 @@ const CrearActividad = () => {
             },
           }}
           loading={isLoading}
+          form={form}
         >
           <ProFormText
             name="name"
@@ -185,7 +203,6 @@ const CrearActividad = () => {
                   required: true,
                   message: "Debe seleccionar la fecha de inicio",
                 },
-                //validar que la fecha se mayor a la actual
                 {
                   type: "date",
                   validator: async (_, value) => {
@@ -207,13 +224,12 @@ const CrearActividad = () => {
 
             <ProFormDatePicker
               name="endDate"
-              label="Fecha de inicio"
+              label="Fecha de finalización"
               rules={[
                 {
                   required: true,
                   message: "Debe seleccionar la fecha de finalización",
                 },
-                //validar que la fecha de finalización sea mayor a la de inicio
                 {
                   type: "date",
                   validator: async (_, value) => {
@@ -232,7 +248,6 @@ const CrearActividad = () => {
               ]}
               fieldProps={{
                 format: (value) => (value ? value.format(dateFormat) : ""),
-
                 showTime: true,
               }}
             />
@@ -313,6 +328,7 @@ const CrearActividad = () => {
             creatorButtonProps={{
               position: "bottom",
               creatorButtonText: "Agregar Ámbito",
+              disabled: selectedScopes.length === 5,
             }}
             deleteIconProps={{ tooltipText: "Eliminar" }}
             copyIconProps={{ tooltipText: "Copiar" }}
@@ -359,7 +375,6 @@ const CrearActividad = () => {
             }}
           </ProFormList>
           <Divider>Organizadores</Divider>
-
           <ProFormSelect
             name="careerId"
             label="Carrera"
@@ -374,7 +389,6 @@ const CrearActividad = () => {
             placeholder="Seleccione una carrera"
             rules={[{ required: true }]}
           />
-
           <ProFormSelect
             name="organizationId"
             label="Organización"
@@ -392,66 +406,33 @@ const CrearActividad = () => {
           <ProFormSelect.SearchSelect
             name="supervisorId"
             label="Catedrático (Supervisor)"
-            request={async ({ keyWords }) => {
-              const { data } = await getUsersByRoles({
-                params: {
-                  Query: keyWords,
-                  "Role[0]": Role.TEACHER,
-                  "Role[1]": Role.VOAE,
-                  PageNumber: 1,
-                  PageSize: 20,
-                },
-              });
-
-              return data.items.map((user) => ({
-                value: user.id,
-                label: `${user.names} / ${
-                  user.careerName ?? "Sin carrera"
-                } / ${roleMapper(user.role)}`,
-              }));
-            }}
+            request={async ({ keyWords }) =>
+              fetchUsersByRoles(
+                [Role.TEACHER, Role.VOAE],
+                keyWords,
+                getUsersByRoles
+              )
+            }
             debounceTime={500}
             mode="single"
             help="Puede buscar por nombre o correo"
             placeholder="Seleccione un catedrático"
             rules={[{ required: true }]}
-            // disabled={!organizationId}
           />
           <ProFormSelect.SearchSelect
             name="coordinatorId"
             mode="single"
             help="Puede buscar por nombre o correo"
             label="Encargado de la Actividad (Estudiante/Coordinador)"
-            request={async ({ keyWords }) => {
-              const { data } = await getUsersByRoles2({
-                params: {
-                  Query: keyWords,
-                  "Role[0]": Role.STUDENT,
-                  PageNumber: 1,
-                  PageSize: 20,
-                },
-              });
-
-              return data.items.map((user) => ({
-                value: user.id,
-                label: `${user.names} / ${user.careerName} / ${roleMapper(
-                  user.role
-                )}`,
-                optionType: "option",
-              }));
-            }}
+            request={async ({ keyWords }) =>
+              fetchUsersByRoles([Role.STUDENT], keyWords, getUsersByRoles2)
+            }
             valuePropName="value"
             debounceTime={500}
             placeholder="Seleccione un encargado"
             rules={[{ required: true, message: "El encargado es obligatorio" }]}
           />
         </ProForm>
-        <SuccessModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          onConfirm={() => setIsModalOpen(false)}
-          message="La solicitud de actividad se envió con éxito."
-        />
       </div>
     </div>
   );

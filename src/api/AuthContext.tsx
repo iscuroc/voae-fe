@@ -80,24 +80,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem("accessToken");
   };
 
-  // useEffect(() => {
-  //   document.title = "Login - UNAH COPAN";
-
-  //   // Redirigir al dashboard respectivo si ya está logueado
-  //   if (accessToken) {
-  //     const role = user?.role;
-  //     if (role === Role.STUDENT) {
-  //       navigate("/dashboard-estudiante/main");
-  //     } else if (role === Role.TEACHER) {
-  //       navigate("/dashboard-coordinador/main");
-  //     } else if (role === Role.VOAE) {
-  //       navigate("/dashboard-voae/main");
-  //     } else {
-  //       navigate("/");
-  //     }
-  //   }
-  // }, [user?.role, navigate, accessToken]);
-
   return (
     <AuthContext.Provider
       value={{

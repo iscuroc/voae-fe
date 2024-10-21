@@ -1,5 +1,5 @@
 import axiosInstance, { useAxios } from "../axiosInstance";
-import { Pagination } from "../types/Pagination";
+import { Pagination } from "../types/common";
 
 export interface Career {
   id: number;

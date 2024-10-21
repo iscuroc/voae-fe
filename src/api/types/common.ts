@@ -5,3 +5,12 @@ export type Pagination<T> = {
   totalCount: number;
   totalPages: number;
 };
+
+export type CustomError = {
+  response: {
+    status: number;
+    data: {
+      errors: { code: string }[];
+    };
+  };
+};

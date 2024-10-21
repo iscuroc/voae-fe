@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ActividadCrear, updateActividad } from '@/api/servicios/actividadPost';
+import { ActividadCrear, OrganizerType, updateActividad } from '@/api/servicios/actividadPost';
 import { Carrera, obtenerEstudiantesPorCarreras, obtenerProfesorPorCarreras, obtenerTodasLasCarreras, UserCarrera } from '../../api/servicios/carreras';
 import { EtiquetasAmbitosActividad } from '@/api/servicios/enums';
 // import { useLocation, useNavigate } from 'react-router-dom';
@@ -24,7 +24,7 @@ const CrearActividad = () => {
     totalSpots: 0,
     location: '',
     mainActivities: [''],
-    organizers: [{ careerId: null, organizationId: 0, type: 1 }],
+    organizers: [{ careerId: undefined, organizationId: 0, type: 1 }],
     supervisorText: '',   // Añadir estado para el texto del supervisor
     coordinatorText: '',  // Añadir estado para el texto del coordinador
   });
@@ -69,8 +69,8 @@ const CrearActividad = () => {
   }, []);
 
   // Proporcionar un valor predeterminado en caso de undefined
-  const supervisorText = formData.supervisorText ?? '';
-  const coordinatorText = formData.coordinatorText ?? '';
+  const supervisorText =   '';
+  const coordinatorText ='';
 
   useEffect(() => {
     const fetchTeachers = async () => {
@@ -186,20 +186,20 @@ const CrearActividad = () => {
 
   const handleOrganizerChange = (index: number, event: React.ChangeEvent<HTMLSelectElement>) => {
     const { id, value } = event.target;
-    const updatedValue = value === "" ? null : Number(value);
+    const updatedValue = value === "" ? undefined : Number(value);
 
     const updatedOrganizers = formData.organizers.map((org, i) => {
       if (i === index) {
         if (id === 'type') {
-          return { ...org, type: Number(value), careerId: null, organizationId: null };
+          return { ...org, type: Number(value), careerId: undefined, organizationId: undefined };
         } else if (id === 'careersSelect') {
-          return { ...org, careerId: updatedValue, organizationId: null };
+          return { ...org, careerId: updatedValue, organizationId: undefined };
         } else if (id === 'organizationId') {
-          return { ...org, organizationId: updatedValue, careerId: null };
+          return { ...org, organizationId: updatedValue};
         }
       }
       return org;
-    });
+    })
 
     setFormData({ ...formData, organizers: updatedOrganizers });
   };
@@ -296,7 +296,7 @@ const CrearActividad = () => {
         totalSpots: 0,
         location: '',
         mainActivities: [''],
-        organizers: [{ careerId: null, organizationId: 3, type: 1 }]
+        organizers: [{ careerId: undefined, organizationId: 3, type: 1 }]
       });
       setIsModalOpen(true);
     } else {

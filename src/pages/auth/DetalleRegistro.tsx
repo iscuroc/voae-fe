@@ -59,7 +59,6 @@ const DetallesRegistro: React.FC = () => {
     careerId: 0,
     organizationIds: [],
   });
-  console.log("formData", formData);
 
   const [carrera, setCarreras] = useState<Carrera[]>([]);
   const navigate = useNavigate();
@@ -132,10 +131,7 @@ const DetallesRegistro: React.FC = () => {
   ) => {
     const { id, value } = e.target;
     if (id === "careerId") {
-      console.log("careerId", value);
-
       const isValidCareer = validateStudentsOrganizations(selected);
-      console.log("isValidCareer", isValidCareer);
 
       if (!isValidCareer) {
         toast.info("Las áreas seleccionadas no son válidas para estudiantes");
