@@ -1,6 +1,7 @@
 // api/AuthContext.tsx
 import { createContext, useState, ReactNode, useEffect } from "react";
 import { ObtenerDatosUsuarioIniciado, Role, User } from "./servicios/usuarios";
+import { useNavigate } from "react-router-dom";
 
 export interface AuthContextType {
   accessToken: string | null;
@@ -24,15 +25,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [email, setEmail] = useState<string | null>();
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | undefined>();
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (accessToken) {
       setLoading(true);
       ObtenerDatosUsuarioIniciado()
         .then((user) => {
-          if (user) {
-            setUser(user);
-            setEmail(user.email);
+          if (!user) {
+            logout();
+            return;
+          }
+          setUser(user);
+          setEmail(user.email);
+
+          if (user.role === Role.STUDENT) {
+            navigate("/dashboard-estudiante/main");
+          } else if (user.role === Role.TEACHER) {
+            navigate("/dashboard-coordinador/main");
+          } else if (user.role === Role.VOAE) {
+            navigate("/dashboard-voae/main");
+          } else {
+            navigate("/");
           }
         })
         .catch(() => {
@@ -43,7 +56,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
       localStorage.removeItem("accessToken");
     }
-  }, [accessToken]);
+  }, [accessToken, navigate]);
 
   useEffect(() => {
     if (accessToken) {
@@ -62,7 +75,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     setAccessToken(null);
     setEmail(null);
+    console.log("logout");
+
+    localStorage.removeItem("accessToken");
   };
+
+  // useEffect(() => {
+  //   document.title = "Login - UNAH COPAN";
+
+  //   // Redirigir al dashboard respectivo si ya está logueado
+  //   if (accessToken) {
+  //     const role = user?.role;
+  //     if (role === Role.STUDENT) {
+  //       navigate("/dashboard-estudiante/main");
+  //     } else if (role === Role.TEACHER) {
+  //       navigate("/dashboard-coordinador/main");
+  //     } else if (role === Role.VOAE) {
+  //       navigate("/dashboard-voae/main");
+  //     } else {
+  //       navigate("/");
+  //     }
+  //   }
+  // }, [user?.role, navigate, accessToken]);
 
   return (
     <AuthContext.Provider
