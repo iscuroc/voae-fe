@@ -160,6 +160,7 @@ const CrearActividad = () => {
           }}
           loading={isLoading}
           form={form}
+          variant="filled"
         >
           <ProFormText
             name="name"
@@ -357,17 +358,13 @@ const CrearActividad = () => {
                 <ProFormGroup>
                   <ProFormSelect
                     name={"scope"}
-                    label="Ámbito"
                     options={availableScopes}
                     placeholder="Seleccione el ámbito"
                     rules={[{ required: true }]}
-                    width="md"
                   />
                   <ProFormDigit
                     name={"hours"}
-                    label="Horas"
                     placeholder="Ingrese el número de horas"
-                    min={1}
                     rules={[
                       { required: true },
                       {
@@ -376,7 +373,6 @@ const CrearActividad = () => {
                         message: "Debe ser mayor a 0",
                       },
                     ]}
-                    width="sm"
                   />
                 </ProFormGroup>
               );
@@ -395,14 +391,21 @@ const CrearActividad = () => {
             }}
             mode="multiple"
             placeholder="Seleccione una carrera"
+            initialValue={[]}
             rules={[
               {
+                type: "array",
                 //es requerida si no se ah seleccionado una organizacion
                 validator: async (_, value) => {
-                  const organizationId = form.getFieldValue("organizationId");
-                  if (organizationId.length === 0 && value.length === 0) {
+                  const organizationIdlength =
+                    form.getFieldValue("organizationId")?.length ?? 0;
+
+                  if (
+                    organizationIdlength === 0 &&
+                    (value?.length ?? 0) === 0
+                  ) {
                     return Promise.reject(
-                      new Error("Debe seleccionar al menos una carrera")
+                      new Error("Debe seleccionar al menos una carrera u organización")
                     );
                   }
                 },
@@ -412,6 +415,7 @@ const CrearActividad = () => {
           <ProFormSelect
             name="organizationId"
             label="Organización"
+            initialValue={[]}
             request={async () => {
               const response = await obtenerLasOrganizaciones();
               return response.map((org) => ({
@@ -424,10 +428,11 @@ const CrearActividad = () => {
             rules={[
               {
                 validator: async (_, value) => {
-                  const careerId = form.getFieldValue("careerId");
-                  if (careerId.length === 0 && value.length === 0) {
+                  const careerIdlength =
+                    form.getFieldValue("careerId")?.length ?? 0;
+                  if (careerIdlength === 0 && (value?.length ?? 0) === 0) {
                     return Promise.reject(
-                      new Error("Debe seleccionar al menos una organización")
+                      new Error("Debe seleccionar al menos una organización o carrera")
                     );
                   }
                 },
