@@ -19,6 +19,7 @@ import {
   ActivityScope,
   EtiquetasAmbitosActividad,
 } from "../../api/servicios/enums";
+import { Role } from "@/api/servicios/usuarios";
 
 const UnirseActividad: React.FC = () => {
   useEffect(() => {
@@ -87,7 +88,7 @@ const UnirseActividad: React.FC = () => {
       });
     }
   };
-  const { user } = useAuth();
+  const { userRole } = useAuth();
 
   const handleGoBack = () => {
     navigate(-1);
@@ -111,7 +112,8 @@ const UnirseActividad: React.FC = () => {
         !imJoined &&
         [ActivityStatus.Approved, ActivityStatus.Published].includes(
           activity?.activityStatus as ActivityStatus
-        ) && (
+        ) &&
+        userRole === Role.STUDENT && (
           <Button
             onClick={() => setOpen(true)}
             className="bg-green-500 text-white"
