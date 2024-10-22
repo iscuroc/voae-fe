@@ -2,6 +2,8 @@
 import axiosInstance from "@/api/axiosInstance";
 import {
   ActividadNombre,
+  ActivityStatus,
+  activityStatusMapper,
   useObtenerActividadesPorNombre,
 } from "@/api/servicios/actividades";
 import useAuth from "@/api/useAuth";
@@ -10,7 +12,7 @@ import { CustomPageContainer } from "@/components/CustomPageContainer";
 import { MembersTable } from "@/components/paginas/MembersTable";
 import RadioWithSubcategories from "@/components/RadioWithSubcategories";
 import { ProDescriptions } from "@ant-design/pro-components";
-import { Modal } from "antd";
+import { Badge, Button, Modal, Progress } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -86,8 +88,9 @@ const UnirseActividad: React.FC = () => {
     }
   };
   const { user } = useAuth();
+
   const handleGoBack = () => {
-    window.history.back();
+    navigate(-1);
   };
 
   const [open, setOpen] = useState(false);
@@ -95,25 +98,26 @@ const UnirseActividad: React.FC = () => {
     return <div>Error: {error}</div>;
   }
 
-  console.log(user);
-  console.log(activity?.members);
-
   const imJoined = activity?.members?.some(
     (member) => member.account === member.account
   );
+
   return (
     <CustomPageContainer
       onBack={handleGoBack}
       title={"Detalles de actividad: " + activity?.name}
       extra={
+        activity &&
         !imJoined &&
-        activity && (
-          <button
+        [ActivityStatus.Approved, ActivityStatus.Published].includes(
+          activity?.activityStatus as ActivityStatus
+        ) && (
+          <Button
             onClick={() => setOpen(true)}
-            className="bg-green-500 text-white py-2 px-4 rounded shadow hover:bg-green-600 focus:outline-none"
+            className="bg-green-500 text-white"
           >
             Unirse a la Actividad
-          </button>
+          </Button>
         )
       }
     >
@@ -132,6 +136,16 @@ const UnirseActividad: React.FC = () => {
                 title: "Objetivos",
                 dataIndex: "goals",
                 key: "goals",
+              },
+              {
+                title: "Estado",
+                dataIndex: "activityStatus",
+                render: (_activityStatus, { activityStatus }) => (
+                  <Badge
+                    status="processing"
+                    text={activityStatusMapper(activityStatus)}
+                  />
+                ),
               },
               {
                 title: "Descripción",
@@ -185,6 +199,21 @@ const UnirseActividad: React.FC = () => {
                 title: "Cupos",
                 dataIndex: "totalSpots",
                 key: "totalSpots",
+              },
+              {
+                title: "Cupos disponibles",
+                dataIndex: "totalSpots",
+                render: (_dom, { members, totalSpots }) => {
+                  const joinedMembers = members?.length || 0;
+                  return (
+                    <Progress
+                      percent={(joinedMembers / totalSpots) * 100}
+                      format={(percent) =>
+                        `${joinedMembers}/${totalSpots} - ${percent}%`
+                      }
+                    />
+                  );
+                },
               },
               {
                 title: "Fecha Inicio",

@@ -381,7 +381,7 @@ const ActualizarActividad = () => {
           loading={isPending}
           form={form}
           disabled={isDisabled}
-         >
+        >
           <Image width={200} src={data?.bannerLink} className="mb-4" />
           <ProFormText
             name="name"
@@ -514,6 +514,21 @@ const ActualizarActividad = () => {
             min={1}
             rules={[{ required: true }]}
           />
+          {[
+            ActivityStatus.Published,
+            ActivityStatus.Completed,
+            ActivityStatus.InProgress,
+            ActivityStatus.Approved,
+          ].includes(data?.activityStatus as ActivityStatus) && (
+            <ProFormDigit
+              label="Cupos Disponibles"
+              placeholder="Ingrese el número de cupos"
+              fieldProps={{
+                value: (data?.totalSpots || 0) - (data?.members.length ?? 0),
+              }}
+              readonly
+            />
+          )}
           <ProFormText
             name="location"
             label="Ubicación"
