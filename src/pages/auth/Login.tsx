@@ -1,12 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import axiosInstance from "@/api/axiosInstance";
+import useAuth from "@/api/useAuth";
 import logo1 from "@/assets/logo.avif";
 import logo2 from "@/assets/logo2.avif";
+import React, { useEffect, useState } from "react";
 import { FiLoader } from "react-icons/fi";
-import useAuth from "@/api/useAuth";
-import { AuthContext } from "@/api/AuthContext";
-import axiosInstance from "@/api/axiosInstance";
-import { Role } from "@/api/servicios/usuarios";
+import { useNavigate } from "react-router-dom";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -16,25 +14,10 @@ const Login: React.FC = () => {
 
   const navigate = useNavigate();
   const { login } = useAuth();
-  const authContext = useContext(AuthContext);
 
   useEffect(() => {
     document.title = "Login - UNAH COPAN";
-
-    // Redirigir al dashboard respectivo si ya está logueado
-    if (authContext?.accessToken) {
-      const role = authContext?.user?.role;
-      if (role === Role.STUDENT) {
-        navigate("/dashboard-estudiante/main");
-      } else if (role === Role.TEACHER) {
-        navigate("/dashboard-coordinador/main");
-      } else if (role === Role.VOAE) {
-        navigate("/dashboard-voae/main");
-      } else {
-        navigate("/");
-      }
-    }
-  }, [authContext, navigate, authContext?.accessToken]);
+  }, []);
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -48,21 +31,18 @@ const Login: React.FC = () => {
       const { accessToken, role } = response.data;
 
       login(accessToken, role, email);
-      if (role === Role.STUDENT) {
-        navigate("/dashboard-estudiante/main");
-      } else if (role === Role.TEACHER) {
-        navigate("/dashboard-coordinador/main");
-      } else if (role === Role.VOAE) {
-        navigate("/dashboard-voae/main");
-      } else {
-        navigate("/");
-      }
     } catch {
       setError("Correo o contraseña incorrectos.");
     } finally {
       setIsLoading(false);
     }
   };
+
+  const { user } = useAuth();
+
+  if (user) {
+    navigate("/dashboard");
+  }
 
   return (
     <>
