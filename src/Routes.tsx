@@ -13,7 +13,6 @@ import SubirImagen from "./components/otraPaginas/SubirImagen";
 import ActividadesSolicitadas from "./components/paginas/ActividadesSolicitadas";
 import ActvidadesEnCurso from "./components/paginas/ActvidadesEnCurso";
 import CrearActividad from "./components/paginas/CreateActivity/CrearActividad";
-import DetallesActividad from "./components/paginas/DetallesActividad";
 import GestionSolicitudes from "./components/paginas/GestionSolicitudes";
 import HorasVOAE from "./components/paginas/HorasVoae";
 import PaginaGestionActividad from "./components/paginas/PaginaGestionActividad";
@@ -31,7 +30,6 @@ import DashboardEstudiante from "./pages/estudiantes_dashboard/DashboardEstudian
 import PaginaMisActividades from "./pages/estudiantes_dashboard/PaginaMisActividades";
 import UnirseActividad from "./pages/estudiantes_dashboard/UnirseActividades";
 import NovedadesAdmin from "./pages/voae_dashboard/NovedadesAdmin";
-import PaginaGestionSolicitudesVOAE from "./pages/voae_dashboard/PaginaAprobarSolicitudesVOAE";
 import ActualizarActividad from "./components/paginas/UpdateActivity/UpdateActividad";
 
 export const routes = createBrowserRouter(

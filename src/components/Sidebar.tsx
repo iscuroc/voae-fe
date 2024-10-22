@@ -7,15 +7,15 @@ import {
 import { Role, roleMapper, User } from "@/api/servicios/usuarios";
 import logoCuroc from "@/assets/logoCuroc.avif";
 import { siderToken } from "@/globals/theme";
-import { PageContainer, ProLayout } from "@ant-design/pro-components";
+import { ProLayout } from "@ant-design/pro-components";
 import { Dropdown, theme } from "antd";
 import React, { ReactNode } from "react";
 import { CiUser } from "react-icons/ci";
+import { FaRegCalendarAlt } from "react-icons/fa";
 import { IoLogOutOutline } from "react-icons/io5";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../api/useAuth";
-import { FaRegCalendarAlt } from "react-icons/fa";
 
 const { useToken } = theme;
 

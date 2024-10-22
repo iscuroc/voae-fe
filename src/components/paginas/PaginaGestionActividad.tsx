@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import Pagination from "../Pagination";
-import Skeleton from "../Skeleton";
-import FiltroGS from "../filtros/FiltroGestionSolicitudes";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
+import { NavLink } from "react-router-dom";
 import {
   ActividadEstado,
   ObtenerTodasLasActividades,
@@ -12,14 +10,15 @@ import {
   EtiquetasAmbitosActividad,
   formatDate,
 } from "../../api/servicios/enums";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
+import Pagination from "../Pagination";
+import Skeleton from "../Skeleton";
+import FiltroGS from "../filtros/FiltroGestionSolicitudes";
 
 const PaginaGestionActividad: React.FC = () => {
   const [filtrarData, setFiltrarData] = useState<ActividadEstado[]>([]); // Estado para datos filtrados
   const [loading, setLoading] = useState<boolean>(true); // Estado para manejar la carga miestra trae los datos del backend
   const [error, setError] = useState<string | null>(null); // Estado para manejar errores
   const [paginaInicial, setPaginaInicial] = useState(1); // Página inicial para paginación
-  const location = useLocation(); //(trae la url y ayuda redigir a ptr pagina dependiendo el path)
   // Obtener los datos
   useEffect(() => {
     const obtenerDatos = async () => {

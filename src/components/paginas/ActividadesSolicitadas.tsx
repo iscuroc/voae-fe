@@ -1,17 +1,17 @@
+import React, { useEffect, useState } from "react";
+import { FaFileImage } from "react-icons/fa";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
+import { NavLink } from "react-router-dom";
+import {
+  ActividadEstado,
+  ObtenerActividadesSolicitadas,
+} from "../../api/servicios/actividades";
 import {
   EtiquetasAmbitosActividad,
   estadoActividadMap,
   formatDate,
 } from "../../api/servicios/enums";
-import {
-  ActividadEstado,
-  ObtenerActividadesSolicitadas,
-} from "../../api/servicios/actividades";
 import FiltroGS from "../filtros/FiltroGestionSolicitudes";
-import { NavLink, useLocation } from "react-router-dom";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
-import React, { useEffect, useState } from "react";
-import { FaEdit, FaFileImage } from "react-icons/fa";
 import Pagination from "../Pagination";
 import Skeleton from "../Skeleton";
 
@@ -24,8 +24,7 @@ const ActividadesSolicitadas: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true); // Estado para manejar la carga miestra trae los datos del backend
   const [error, setError] = useState<string | null>(null); // Estado para manejar errores
   const [paginaInicial, setPaginaInicial] = useState(1); // Página inicial para paginación
-  const location = useLocation(); //(trae la url y ayuda redigir a ptr pagina dependiendo el path)
-
+ 
   // obtener los datos
   useEffect(() => {
     const obtenerDatos = async () => {

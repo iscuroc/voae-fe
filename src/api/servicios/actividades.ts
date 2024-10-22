@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axiosInstance, { useAxios } from "../axiosInstance";
 import { OrganizerType } from "./actividadPost";
 import { ActivityScope } from "./enums";
@@ -168,7 +169,7 @@ export const useObtenerActividadesPorNombre = (slug: string) => {
   return response;
 };
 
-export const obtenerActividadesPorNombre = async (props) => {
+export const obtenerActividadesPorNombre = async (props:any) => {
   const slug = props.queryKey[1];
 
   const response = await axiosInstance.get(`/activities/by-slug/${slug}`, {
