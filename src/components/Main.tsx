@@ -12,7 +12,7 @@ const Main: React.FC = () => {
           Áreas del Articulo 140
         </h1>
 
-      
+
         {/* Contenedor de las áreas en formato de cards */}
         <div className="flex flex-wrap justify-around gap-6 w-full pt-6 pb-6">
 

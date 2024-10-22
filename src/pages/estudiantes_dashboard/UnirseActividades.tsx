@@ -1,14 +1,22 @@
-import { useObtenerActividadesPorNombre } from "@/api/servicios/actividades";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import axiosInstance from "@/api/axiosInstance";
+import {
+  ActividadNombre,
+  useObtenerActividadesPorNombre,
+} from "@/api/servicios/actividades";
+import useAuth from "@/api/useAuth";
+import Alert from "@/components/Alert";
+import { CustomPageContainer } from "@/components/CustomPageContainer";
+import { MembersTable } from "@/components/paginas/MembersTable";
+import RadioWithSubcategories from "@/components/RadioWithSubcategories";
+import { ProDescriptions } from "@ant-design/pro-components";
+import { Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  EtiquetasAmbitosActividad,
-  formatDate,
   ActivityScope,
+  EtiquetasAmbitosActividad,
 } from "../../api/servicios/enums";
-import axiosInstance from "@/api/axiosInstance";
-import Alert from "@/components/Alert";
-import RadioWithSubcategories from "@/components/RadioWithSubcategories";
 
 const UnirseActividad: React.FC = () => {
   useEffect(() => {
@@ -53,7 +61,7 @@ const UnirseActividad: React.FC = () => {
           .filter((scope) => scope[1])
           .map((scope) => +scope[0]);
         await axiosInstance.put(`/activities/${activity.id}/join`, {
-          scopes: scopes
+          scopes: scopes,
         });
         Alert({
           title: "Éxito",
@@ -61,6 +69,7 @@ const UnirseActividad: React.FC = () => {
           icon: "success",
           callback: () => navigate(-1),
         });
+        setOpen(false);
       } catch (error) {
         Alert({
           title: "Error",
@@ -76,170 +85,154 @@ const UnirseActividad: React.FC = () => {
       });
     }
   };
-
+  const { user } = useAuth();
   const handleGoBack = () => {
     window.history.back();
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
+  const [open, setOpen] = useState(false);
   if (error) {
     return <div>Error: {error}</div>;
   }
 
-  if (!activity) {
-    return <div>Actividad no encontrada</div>;
-  }
+  console.log(user);
+  console.log(activity?.members);
 
+  const imJoined = activity?.members?.some(
+    (member) => member.account === member.account
+  );
   return (
-    <>
-      <div className="my-2"></div>
-      <div className="h-full overflow-hidden flex items-center justify-center space-x-8">
-        <div className="bg-blue-900 lg:w-4/5 md:w-6/12 w-full mx-2 shadow-xl relative rounded-lg">
-          <div className="p-4 md:p-8">
-            <h2 className="text-3xl font-bold mb-6 text-center text-white">
-              Detalles de la Actividad
-            </h2>
-            <div className="flex flex-col lg:flex-row">
-              <div
-                className="overflow-y-auto max-h-96 rounded-lg border border-gray-200 bg-white shadow-md flex-grow"
-                style={{ scrollbarWidth: "thin" }}
-              >
-                <table
-                  className="w-full text-left border-collapse bg-white rounded-lg text-xs md:text-base"
-                  style={{ overflowX: "auto" }}
-                >
-                  <tbody>
-                    <tr>
-                      <td className="border px-4 py-2 bg-yellow-500 w-1/4">
-                        Nombre de la Actividad
-                      </td>
-                      <td className="border px-4 py-2">{activity.name}</td>
-                    </tr>
-                    <tr>
-                      <td className="border px-4 py-2 bg-yellow-500">
-                        Objetivos
-                      </td>
-                      <td className="border px-4 py-2">
-                        <ul className="list-disc pl-5">
-                          {activity.goals.map((goal, index) => (
-                            <li key={index}>{goal}</li>
-                          ))}
-                        </ul>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="border px-4 py-2 bg-yellow-500">
-                        Descripción
-                      </td>
-                      <td className="border px-4 py-2">
-                        {activity.description}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="border px-4 py-2 bg-yellow-500">
-                        Carrera admitidas
-                      </td>
-                      <td className="border px-4 py-2">
-                        <ul className="list-disc pl-5">
-                          {activity.foreingCareers.map((career, index) => (
-                            <li key={index}>{career.name}</li>
-                          ))}
-                        </ul>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="border px-4 py-2 bg-yellow-500">
-                        Ámbitos
-                      </td>
-                      <td className="border px-4 py-2">
-                        <ul className="list-disc pl-5">
-                          {activity.scopes.map((scope, index) => (
-                            <li key={index}>
-                              {EtiquetasAmbitosActividad[scope.scope] ||
-                                scope.scope}{" "}
-                              | {scope.hours} horas
-                            </li>
-                          ))}
-                        </ul>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="border px-4 py-2 bg-yellow-500">
-                        Supervisor
-                      </td>
-                      <td className="border px-4 py-2">
-                        {activity.supervisor.names}{" "}
-                        {activity.supervisor.lastnames}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="border px-4 py-2 bg-yellow-500">
-                        Encargado de Actividad
-                      </td>
-                      <td className="border px-4 py-2">
-                        {activity.coordinator.names}{" "}
-                        {activity.coordinator.lastnames}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="border px-4 py-2 bg-yellow-500">Cupos</td>
-                      <td className="border px-4 py-2">
-                        {activity.totalSpots}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="border px-4 py-2 bg-yellow-500">
-                        Fecha Inicio
-                      </td>
-                      <td className="border px-4 py-2">
-                        {formatDate(activity.startDate)}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="border px-4 py-2 bg-yellow-500">
-                        Fecha Final
-                      </td>
-                      <td className="border px-4 py-2">
-                        {formatDate(activity.endDate)}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+    <CustomPageContainer
+      onBack={handleGoBack}
+      title={"Detalles de actividad: " + activity?.name}
+      extra={
+        !imJoined &&
+        activity && (
+          <button
+            onClick={() => setOpen(true)}
+            className="bg-green-500 text-white py-2 px-4 rounded shadow hover:bg-green-600 focus:outline-none"
+          >
+            Unirse a la Actividad
+          </button>
+        )
+      }
+    >
+      <div className="space-x-8">
+        <div className="mx-5 shadow-xl relative rounded-lg p-8">
+          <ProDescriptions<ActividadNombre>
+            loading={loading}
+            dataSource={activity}
+            columns={[
+              {
+                title: "Nombre de la Actividad",
+                dataIndex: "name",
+                key: "name",
+              },
+              {
+                title: "Objetivos",
+                dataIndex: "goals",
+                key: "goals",
+              },
+              {
+                title: "Descripción",
+                dataIndex: "description",
+                key: "description",
+              },
+              {
+                title: "Carreras admitidas",
+                dataIndex: "foreingCareers",
+                key: "foreingCareers",
+                render: (_careers, { careers }) => (
+                  <ul>
+                    {careers?.map((career) => (
+                      <li key={career.id}>{career.name}</li>
+                    ))}
+                  </ul>
+                ),
+              },
+              {
+                title: "Ámbitos",
+                dataIndex: "scopes",
+                key: "scopes",
+                render: (_scopes, { scopes }) => (
+                  <ul>
+                    {scopes?.map((scope) => (
+                      <li key={scope.id}>
+                        {EtiquetasAmbitosActividad[scope.scope] || scope.scope}{" "}
+                        | {scope.hours} horas
+                      </li>
+                    ))}
+                  </ul>
+                ),
+              },
+              {
+                title: "Supervisor",
+                dataIndex: "supervisor",
+                key: "supervisor",
+                renderText(text) {
+                  return `${text.names} ${text.lastnames}`;
+                },
+              },
+              {
+                title: "Encargado de Actividad",
+                dataIndex: "coordinator",
+                key: "coordinator",
+                renderText(text) {
+                  return `${text.names} ${text.lastnames}`;
+                },
+              },
+              {
+                title: "Cupos",
+                dataIndex: "totalSpots",
+                key: "totalSpots",
+              },
+              {
+                title: "Fecha Inicio",
+                dataIndex: "startDate",
+                key: "startDate",
+                valueType: "dateTime",
+                fieldProps: {
+                  format: "DD/MM/YYYY HH:mm",
+                },
+              },
+              {
+                title: "Fecha Final",
+                dataIndex: "endDate",
+                key: "endDate",
+                valueType: "dateTime",
+                fieldProps: {
+                  format: "DD/MM/YYYY HH:mm",
+                },
+              },
+            ]}
+          />
+          {!imJoined && (
+            <Modal
+              open={open}
+              onOk={handleJoinActivity}
+              onCancel={() => setOpen(false)}
+            >
+              <div className="flex flex-col justify-between p-8">
+                <>
+                  <div className="bg-white shadow-lg rounded-lg p-8 ">
+                    <h4 className="text-lg font-bold text-gray-800 mb-6">
+                      Seleccione sus horas
+                    </h4>
 
-              <div className="flex flex-col justify-between ml-4">
-                <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
-                  <h4 className="text-lg font-bold text-gray-800 mb-6">
-                    Seleccione sus horas
-                  </h4>
-
-                  <RadioWithSubcategories
-                    scopes={activity.scopes}
-                    selectedOption={selectedScopes}
-                    handleCheckboxChange={handleCheckboxChange}
-                  />
-                </div>
-                <button
-                  onClick={handleJoinActivity}
-                  className="bg-green-500 text-white py-2 px-4 rounded shadow hover:bg-green-600 focus:outline-none"
-                >
-                  Unirse a la Actividad
-                </button>
-                <button
-                  onClick={handleGoBack}
-                  className="bg-red-500 text-white py-2 px-4 rounded shadow hover:bg-red-600 focus:outline-none"
-                >
-                  Volver
-                </button>
+                    <RadioWithSubcategories
+                      scopes={activity?.scopes}
+                      selectedOption={selectedScopes}
+                      handleCheckboxChange={handleCheckboxChange}
+                    />
+                  </div>
+                </>
               </div>
-            </div>
-          </div>
+            </Modal>
+          )}
+          <MembersTable members={activity?.members} />
         </div>
       </div>
-    </>
+    </CustomPageContainer>
   );
 };
 

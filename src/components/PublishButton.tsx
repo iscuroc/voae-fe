@@ -1,18 +1,18 @@
-import {
-  usePublishActivityMutation
-} from "@/api/servicios/actividades";
+import { usePublishActivityMutation } from "@/api/servicios/actividades";
 import { Role } from "@/api/servicios/usuarios";
 import useAuth from "@/api/useAuth";
+import { Button, Tooltip } from "antd";
 import { toast } from "react-toastify";
 
 export const PublishButton = ({
-  activityOwnerId,
   activityId,
+  hasBanner,
 }: {
   activityOwnerId: number;
   activityId: number;
+  hasBanner: boolean;
 }) => {
-  const { userRole, user } = useAuth();
+  const { userRole } = useAuth();
 
   const [{ loading }, publishActivityMutation] =
     usePublishActivityMutation(activityId);
@@ -23,19 +23,23 @@ export const PublishButton = ({
     toast.success("Actividad publicada exitosamente");
   };
 
-  const isActoivotyOwnerOrVOAE =
-    userRole === Role.VOAE || user?.id === activityOwnerId;
+  const isActoivotyOwnerOrVOAE = userRole === Role.VOAE;
 
   if (!isActoivotyOwnerOrVOAE) {
     return null;
   }
 
   return (
-    <button
-      className="bg-yellow-500 text-white py-2 px-4 rounded-lg"
-      onClick={handlePublishActivity}
-    >
-      {loading ? "Publicando..." : "Publicar"}
-    </button>
+    <Tooltip title={!hasBanner ? "La actividad debe tener un banner" : ""}>
+      <Button
+        variant="solid"
+        color="primary"
+        onClick={handlePublishActivity}
+        disabled={!hasBanner}
+        loading={loading}
+      >
+        {loading ? "Publicando..." : "Publicar"}
+      </Button>
+    </Tooltip>
   );
 };
