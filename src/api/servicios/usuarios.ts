@@ -17,7 +17,8 @@ export enum Role {
   VOAE = 2,
 }
 
-export const roleMapper = (role: Role | number) => {
+export const roleMapper = (role?: Role | number) => {
+  if (role === undefined) return "Desconocido";
   const roles: Record<Role | number, string> = {
     [Role.STUDENT]: "Estudiante",
     [Role.TEACHER]: "Docente",

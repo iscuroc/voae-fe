@@ -32,6 +32,7 @@ import PaginaMisActividades from "./pages/estudiantes_dashboard/PaginaMisActivid
 import UnirseActividad from "./pages/estudiantes_dashboard/UnirseActividades";
 import NovedadesAdmin from "./pages/voae_dashboard/NovedadesAdmin";
 import PaginaGestionSolicitudesVOAE from "./pages/voae_dashboard/PaginaAprobarSolicitudesVOAE";
+import ActualizarActividad from "./components/paginas/UpdateActivity/UpdateActividad";
 
 export const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -77,14 +78,14 @@ export const routes = createBrowserRouter(
         <Route path="gestionar-solicitud" element={<GestionSolicitudes />} />
         <Route
           path="solicitudes/:slug"
-          element={<PaginaGestionSolicitudesVOAE />}
+          element={<UpdateActividad />}
         />
         <Route path="horas-estudiantes" element={<HorasVOAE />} />
         <Route path="mis-actividades" element={<PaginaMisActividades />} />
         {/* Ruta con parámetro dinámico 'slug' para ver detalles de una actividad */}
         <Route
           path="detalles-actividad/:slug"
-          element={<DetallesActividad />}
+          element={<ActualizarActividad />}
         />
         {/* Ruta con parámetro dinámico 'id' para actualizar una actividad */}
         <Route path="actualizar-actividad/:id" element={<UpdateActividad />} />
@@ -92,7 +93,7 @@ export const routes = createBrowserRouter(
         <Route path="subir-imagen/:id" element={<SubirImagen />} />
         {/* Ruta con parámetro dinámico 'slug' para unirse a una actividad (solo estudiantes) */}
         <Route
-          path="dashboard-estudiante/unirse-actividad/:slug"
+          path="unirse-actividad/:slug"
           element={<UnirseActividad />}
         />
       </Route>

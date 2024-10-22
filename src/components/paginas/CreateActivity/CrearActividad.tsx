@@ -31,6 +31,7 @@ import {
 import { obtenerTodasLasCarreras } from "../../../api/servicios/carreras";
 import { obtenerLasOrganizaciones } from "../../../api/servicios/organizaciones";
 import { CreateActivityFormValues } from "./types";
+import { CustomPageContainer } from "@/components/CustomPageContainer";
 
 const dateFormat = "DD/MM/YYYY HH:mm";
 
@@ -114,11 +115,8 @@ const CrearActividad = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-8">
-        <h1 className="text-center text-3xl font-semibold mb-8 text-gray-800">
-          Formulario de solicitud
-        </h1>
+    <CustomPageContainer>
+      <div className="  shadow-lg rounded-lg p-8 sm:m-0">
         <ProForm<CreateActivityFormValues>
           onFinish={async (values) => {
             const careers: Organizer[] = values.careerId.map((careerId) => ({
@@ -175,7 +173,10 @@ const CrearActividad = () => {
             placeholder="Describa la actividad"
             rules={[
               { required: true, message: "La descripción es obligatoria" },
-              { min: 4, message: "Debe tener al menos 4 caracteres de largo" },
+              {
+                min: 4,
+                message: "Debe tener al menos 4 caracteres de largo",
+              },
             ]}
           />
           <ProFormSelect
@@ -292,7 +293,10 @@ const CrearActividad = () => {
             placeholder="Ingrese la ubicación"
             rules={[
               { required: true },
-              { min: 4, message: "Debe tener al menos 4 caracteres de largo" },
+              {
+                min: 4,
+                message: "Debe tener al menos 4 caracteres de largo",
+              },
             ]}
           />
           <ProFormList
@@ -366,7 +370,11 @@ const CrearActividad = () => {
                     min={1}
                     rules={[
                       { required: true },
-                      { type: "number", min: 1, message: "Debe ser mayor a 0" },
+                      {
+                        type: "number",
+                        min: 1,
+                        message: "Debe ser mayor a 0",
+                      },
                     ]}
                     width="sm"
                   />
@@ -387,7 +395,19 @@ const CrearActividad = () => {
             }}
             mode="multiple"
             placeholder="Seleccione una carrera"
-            rules={[{ required: true }]}
+            rules={[
+              {
+                //es requerida si no se ah seleccionado una organizacion
+                validator: async (_, value) => {
+                  const organizationId = form.getFieldValue("organizationId");
+                  if (organizationId.length === 0 && value.length === 0) {
+                    return Promise.reject(
+                      new Error("Debe seleccionar al menos una carrera")
+                    );
+                  }
+                },
+              },
+            ]}
           />
           <ProFormSelect
             name="organizationId"
@@ -401,7 +421,18 @@ const CrearActividad = () => {
             }}
             mode="multiple"
             placeholder="Seleccione una organización"
-            rules={[{ required: true }]}
+            rules={[
+              {
+                validator: async (_, value) => {
+                  const careerId = form.getFieldValue("careerId");
+                  if (careerId.length === 0 && value.length === 0) {
+                    return Promise.reject(
+                      new Error("Debe seleccionar al menos una organización")
+                    );
+                  }
+                },
+              },
+            ]}
           />
           <ProFormSelect.SearchSelect
             name="supervisorId"
@@ -434,7 +465,7 @@ const CrearActividad = () => {
           />
         </ProForm>
       </div>
-    </div>
+    </CustomPageContainer>
   );
 };
 

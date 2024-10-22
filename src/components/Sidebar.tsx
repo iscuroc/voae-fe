@@ -1,18 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import logoCuroc from "@/assets/logoCuroc.avif";
-import { ProLayout } from "@ant-design/pro-components";
-import { Dropdown, Flex, Typography, theme } from "antd";
-import React, { ReactNode } from "react";
-import { CiLogout, CiUser } from "react-icons/ci";
-import { LuLayoutDashboard } from "react-icons/lu";
-import { useLocation, useNavigate } from "react-router-dom";
-import useAuth from "../api/useAuth";
-import { Role, User } from "@/api/servicios/usuarios";
 import {
   coordinadorRoutes,
   estudianteRoutes,
   voaeRoutes,
 } from "@/api/routesConfig";
+import { Role, roleMapper, User } from "@/api/servicios/usuarios";
+import logoCuroc from "@/assets/logoCuroc.avif";
+import { siderToken } from "@/globals/theme";
+import { PageContainer, ProLayout } from "@ant-design/pro-components";
+import { Dropdown, theme } from "antd";
+import React, { ReactNode } from "react";
+import { CiUser } from "react-icons/ci";
+import { IoLogOutOutline } from "react-icons/io5";
+import { LuLayoutDashboard } from "react-icons/lu";
+import { useLocation, useNavigate } from "react-router-dom";
+import useAuth from "../api/useAuth";
+import { FaRegCalendarAlt } from "react-icons/fa";
 
 const { useToken } = theme;
 
@@ -38,204 +41,76 @@ const Sidebar: React.FC<{ children: ReactNode }> = ({ children }) => {
     name,
     icon: <LuLayoutDashboard />,
   }));
-  const { token, theme } = useToken();
-  const customThemeVariations = [
-    {
-      name: "Ocean Blue",
-      colorPrimary: "#004c8b",
-      colorMenuBackground: "#1967b1",
-      colorTextMenuTitle: "#b3dae7",
-      colorMenuItemDivider: "#d1f4ff",
-      colorTextMenu: "#ffffff",
-      colorTextMenuSecondary: "#66a3c7",
-      colorTextMenuSelected: "#003b74",
-      colorTextMenuActive: "#66a3c7",
-      colorTextMenuItemHover: "#ccf2ff",
-      colorBgMenuItemActive: "#004c8b",
-      colorBgMenuItemHover: "#004c8b",
-      colorBgMenuItemSelected: "#ebb730",
-      colorBgMenuItemCollapsedElevated: "#00396b",
-      colorBgCollapsedButton: "#002e4f",
-      colorTextCollapsedButton: "#66a3c7",
-      colorTextCollapsedButtonHover: "#ccf2ff",
-    },
-    {
-      name: "Ocean Blue",
-      colorPrimary: "#0b66ac",
-      colorMenuBackground: "#2a75b3",
-      colorTextMenuTitle: "#ffffff",
-      colorMenuItemDivider: "#1565c0",
-      colorTextMenu: "#ffffff",
-      colorTextMenuSecondary: "#f7dd72",
-      colorTextMenuSelected: "#ffd700",
-      colorTextMenuActive: "#ffffff",
-      colorTextMenuItemHover: "#ffd700",
-      colorBgMenuItemActive: "#ffd700",
-      colorBgMenuItemHover: "#f7dd72",
-      colorBgMenuItemSelected: "#f7dd72",
-      colorBgMenuItemCollapsedElevated: "#2a75b3",
-      colorBgCollapsedButton: "#0b66ac",
-      colorTextCollapsedButton: "#ffffff",
-      colorTextCollapsedButtonHover: "#ffd700",
-    },
-    {
-      name: "Twilight Blue",
-      colorPrimary: "#0b66ac",
-      colorMenuBackground: "#2a75b3",
-      colorTextMenuTitle: "#ffffff",
-      colorMenuItemDivider: "#1565c0",
-      colorTextMenu: "#ffffff",
-      colorTextMenuSecondary: "#f7dd72",
-      colorTextMenuSelected: "#ffd700",
-      colorTextMenuActive: "#ffffff",
-      colorTextMenuItemHover: "#ffd700",
-      colorBgMenuItemActive: "#ffd700",
-      colorBgMenuItemHover: "#f7dd72",
-      colorBgMenuItemSelected: "#f7dd72",
-      colorBgMenuItemCollapsedElevated: "#2a75b3",
-      colorBgCollapsedButton: "#0b66ac",
-      colorTextCollapsedButton: "#ffffff",
-      colorTextCollapsedButtonHover: "#ffd700",
-    },
-    {
-      name: "Skyline Blue",
-      colorPrimary: "#0b66ac",
-      colorMenuBackground: "#2a75b3",
-      colorTextMenuTitle: "#ffffff",
-      colorMenuItemDivider: "#1565c0",
-      colorTextMenu: "#ffffff",
-      colorTextMenuSecondary: "#f7dd72",
-      colorTextMenuSelected: "#ffd700",
-      colorTextMenuActive: "#ffffff",
-      colorTextMenuItemHover: "#ffd700",
-      colorBgMenuItemActive: "#ffd700",
-      colorBgMenuItemHover: "#f7dd72",
-      colorBgMenuItemSelected: "#f7dd72",
-      colorBgMenuItemCollapsedElevated: "#2a75b3",
-      colorBgCollapsedButton: "#0b66ac",
-      colorTextCollapsedButton: "#ffffff",
-      colorTextCollapsedButtonHover: "#ffd700",
-    },
-    {
-      name: "Deep Sea",
-      colorPrimary: "#0b66ac",
-      colorMenuBackground: "#2a75b3",
-      colorTextMenuTitle: "#ffffff",
-      colorMenuItemDivider: "#1565c0",
-      colorTextMenu: "#ffffff",
-      colorTextMenuSecondary: "#f7dd72",
-      colorTextMenuSelected: "#ffd700",
-      colorTextMenuActive: "#ffffff",
-      colorTextMenuItemHover: "#ffd700",
-      colorBgMenuItemActive: "#ffd700",
-      colorBgMenuItemHover: "#f7dd72",
-      colorBgMenuItemSelected: "#f7dd72",
-      colorBgMenuItemCollapsedElevated: "#2a75b3",
-      colorBgCollapsedButton: "#0b66ac",
-      colorTextCollapsedButton: "#ffffff",
-      colorTextCollapsedButtonHover: "#ffd700",
-    },
-    {
-      name: "Arctic Blue",
-      colorPrimary: "#0b66ac",
-      colorMenuBackground: "#2a75b3",
-      colorTextMenuTitle: "#ffffff",
-      colorMenuItemDivider: "#1565c0",
-      colorTextMenu: "#ffffff",
-      colorTextMenuSecondary: "#f7dd72",
-      colorTextMenuSelected: "#ffd700",
-      colorTextMenuActive: "#ffffff",
-      colorTextMenuItemHover: "#ffd700",
-      colorBgMenuItemActive: "#ffd700",
-      colorBgMenuItemHover: "#f7dd72",
-      colorBgMenuItemSelected: "#f7dd72",
-      colorBgMenuItemCollapsedElevated: "#2a75b3",
-      colorBgCollapsedButton: "#0b66ac",
-      colorTextCollapsedButton: "#ffffff",
-      colorTextCollapsedButtonHover: "#ffd700",
-    },
-  ];
+  const { token } = useToken();
 
   return (
-    <div style={{ height: "100dvh" }}>
-      <ProLayout
-        menuProps={{
-          onSelect: (e) => {
-            navigate(e.key);
+    <ProLayout
+      menuProps={{
+        onSelect: (e) => {
+          navigate(e.key);
+        },
+      }}
+      logo={logoCuroc}
+      title="UNAH COPAN"
+      token={{
+        colorPrimary: token.colorPrimary,
+        sider: siderToken,
+        header: {
+          colorBgHeader: siderToken.colorMenuBackground,
+          colorHeaderTitle: siderToken.colorTextMenuTitle,
+          colorTextMenu: siderToken.colorTextMenu,
+        },
+        bgLayout: "#fff",
+      }}
+      route={{
+        path: "/",
+        children: [
+          ...maappedRoutes,
+          {
+            path: "/calendario",
+            name: "Calendario",
+            icon: <FaRegCalendarAlt />,
           },
-        }}
-        logo={logoCuroc}
-        title="UNAH COPAN"
-        token={{
-          colorPrimary: token.colorPrimary,
-          sider: {
-            colorMenuBackground: "#1967b1",
-            colorTextMenuTitle: "#ffffff",
-            colorMenuItemDivider: "#ffffff",
-            colorTextMenu: "#ffffff",
-            colorTextMenuSecondary: "#66a3c7",
-            colorTextMenuSelected: "#003b74",
-            colorTextMenuActive: "#ffffff",
-            colorTextMenuItemHover: "#ffffff",
-            colorBgMenuItemActive: "#004c8b",
-            colorBgMenuItemHover: "#004c8b",
-            colorBgMenuItemSelected: "#ebb730",
-            colorBgMenuItemCollapsedElevated: "#0e4a98",
-            colorBgCollapsedButton: "#ffffff",
-            colorTextCollapsedButton: "#0e4a98",
-            colorTextCollapsedButtonHover: "#0e4a98",
-            colorTextSubMenuSelected: "#ffffff",
-          },
-          bgLayout: "#f0f2f5",
-        }}
-        route={{
-          path: "/",
-          children: maappedRoutes,
-        }}
-        location={{
-          pathname: location.pathname,
-        }}
-        menuFooterRender={() => (
-          <Dropdown
-            trigger={["click"]}
-            placement="topRight"
-            menu={{
-              items: [
-                {
-                  label: "Perfil",
-                  icon: <CiUser />,
-                  key: "perfil",
-                  onClick: () => navigate("/perfil"),
-                },
-                {
-                  type: "divider",
-                },
-                {
-                  label: "Cerrar sesión",
-                  icon: <CiLogout />,
-                  key: "logout",
-                  onClick: logout,
-                },
-              ],
-              style: {
-                borderRadius: "10px",
-              },
-            }}
-          >
-            <Flex style={{ marginTop: "100%" }} justify="center" align="center">
-              <Typography.Title level={4} style={{ cursor: "pointer" }}>
-                Menú
-              </Typography.Title>
-            </Flex>
-          </Dropdown>
-        )}
-        // menuDataRender={(menuData) =>
-        //   menuData.filter((item) => location.pathname.includes(item.path))
-        // }
-      >
-        {children}
-      </ProLayout>
-    </div>
+        ],
+      }}
+      location={{
+        pathname: location.pathname,
+      }}
+      siderWidth={256}
+      avatarProps={{
+        src: "https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg",
+        size: "small",
+        title: user?.names + " " + roleMapper(user?.role),
+        render: (_props, dom) => {
+          return (
+            <Dropdown
+              menu={{
+                items: [
+                  {
+                    label: "Perfil",
+                    icon: <CiUser />,
+                    key: "perfil",
+                    onClick: () => navigate("/perfil"),
+                  },
+                  {
+                    key: "logout",
+                    icon: <IoLogOutOutline />,
+                    label: "Cerrar sesión",
+                    onClick: () => logout(),
+                  },
+                ],
+              }}
+              className="w-full"
+            >
+              {dom}
+            </Dropdown>
+          );
+        },
+      }}
+      contentWidth={"Fixed"}
+    >
+      {children}
+    </ProLayout>
   );
 };
 

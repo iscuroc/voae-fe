@@ -1,7 +1,6 @@
-import { QueryFunction } from "@tanstack/react-query";
 import axiosInstance, { useAxios } from "../axiosInstance";
-import { ActivityScope } from "./enums";
 import { OrganizerType } from "./actividadPost";
+import { ActivityScope } from "./enums";
 
 export interface Organizer {
   career: {
@@ -23,6 +22,20 @@ export enum ActivityStatus {
   InProgress,
   Completed,
 }
+export const activityStatusMapper = (status?: ActivityStatus | number) => {
+  if (status === undefined) return "Desconocido";
+  const statuses: Record<ActivityStatus | number, string> = {
+    [ActivityStatus.Pending]: "Pendiente",
+    [ActivityStatus.Rejected]: "Rechazada",
+    [ActivityStatus.Approved]: "Aprobada",
+    [ActivityStatus.Published]: "Publicada",
+    [ActivityStatus.Cancelled]: "Cancelada",
+    [ActivityStatus.InProgress]: "En progreso",
+    [ActivityStatus.Completed]: "Completada",
+  };
+
+  return statuses[status];
+};
 
 export interface Person {
   id: number;
@@ -140,6 +153,7 @@ export interface ActividadNombre {
   endDate: string;
   members: ActivityMember[];
   requestedBy: Person;
+  careers: ForeignCareer[];
 }
 
 export const useObtenerActividadesPorNombre = (slug: string) => {
@@ -154,9 +168,8 @@ export const useObtenerActividadesPorNombre = (slug: string) => {
   return response;
 };
 
-
-export const obtenerActividadesPorNombre: QueryFunction = async (props) => {
-  console.log(props);
+export const obtenerActividadesPorNombre = async (props) => {
+  const slug = props.queryKey[1];
 
   const response = await axiosInstance.get(`/activities/by-slug/${slug}`, {
     signal: props.signal,
@@ -164,19 +177,17 @@ export const obtenerActividadesPorNombre: QueryFunction = async (props) => {
   return response.data;
 };
 
-export const AprobarActividad = async (
-  id: number,
-  reviewerObservation: string
-): Promise<void> => {
-  try {
-    const response = await axiosInstance.put(`/activities/${id}/approve`, {
-      reviewerObservation,
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error al aprobar la actividad:", error);
-    throw error;
-  }
+export const AprobarActividad = async ({
+  id,
+  reviewerObservation,
+}: {
+  id: number;
+  reviewerObservation: string;
+}) => {
+  const response = await axiosInstance.put(`/activities/${id}/approve`, {
+    reviewerObservation,
+  });
+  return response.data;
 };
 
 export const RechazarActividad = async (
@@ -210,11 +221,6 @@ export const usePublishActivityMutation = (id?: number) => {
   return mutation;
 };
 
-export interface Scope {
-  scope: number; // ID del ámbito asociado a la actividad
-  hours: number; // Cantidad de horas asignadas al ámbito
-}
-
 export interface MemberScope {
   scope: number; // ID del ámbito asociado al miembro
   hours: number; // Cantidad de horas asignadas al miembro en este ámbito
@@ -232,7 +238,6 @@ export interface MisActividades {
   activityStatus: number; // Estado de la actividad
 }
 
-
 export type UpdateActivityRequest = {
   name: string;
   description: string;
@@ -240,7 +245,7 @@ export type UpdateActivityRequest = {
   startDate: string;
   endDate: string;
   goals: string[];
-  scopes: Scope[];
+  scopes: MemberScope[];
   supervisorId: number;
   coordinatorId: number;
   totalSpots: number;

@@ -1,5 +1,11 @@
 // api/AuthContext.tsx
-import { createContext, useState, ReactNode, useEffect } from "react";
+import {
+  createContext,
+  useState,
+  ReactNode,
+  useEffect,
+  useCallback,
+} from "react";
 import { ObtenerDatosUsuarioIniciado, Role, User } from "./servicios/usuarios";
 import { useNavigate } from "react-router-dom";
 
@@ -26,6 +32,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | undefined>();
   const navigate = useNavigate();
+
+  const logout = useCallback(() => {
+    setAccessToken(null);
+    setEmail(null);
+    console.log("logout");
+
+    localStorage.removeItem("accessToken");
+    navigate("/login");
+  }, [navigate]);
+
   useEffect(() => {
     if (accessToken) {
       setLoading(true);
@@ -56,7 +72,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
       localStorage.removeItem("accessToken");
     }
-  }, [accessToken, navigate]);
+  }, [accessToken, logout, navigate]);
 
   useEffect(() => {
     if (accessToken) {
@@ -70,14 +86,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setAccessToken(token);
     setEmail(email);
     localStorage.setItem("accessToken", token);
-  };
-
-  const logout = () => {
-    setAccessToken(null);
-    setEmail(null);
-    console.log("logout");
-
-    localStorage.removeItem("accessToken");
   };
 
   return (

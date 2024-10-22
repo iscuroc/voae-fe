@@ -1,13 +1,10 @@
+import { Scope } from "@/components/paginas/CreateActivity/types";
 import axiosInstance, { useAxios } from "../axiosInstance";
 import { UpdateActivityRequest } from "./actividades";
 
 export enum OrganizerType {
   Career = 0,
   Organization = 1,
-}
-export interface Scope {
-  scope: number;
-  hours: number;
 }
 
 export interface Organizer {
@@ -55,14 +52,11 @@ export const useCreateActivity = () => {
 };
 
 export const updateActividad = async (
-  id: number,
-  actividad: UpdateActivityRequest
+  actividad: UpdateActivityRequest & { id: number }
 ) => {
-  try {
-    const response = await axiosInstance.put(`/activities/${id}`, actividad);
-    return response.data;
-  } catch (error) {
-    console.error("Error al crear la actividad:", error);
-    throw error;
-  }
+  const response = await axiosInstance.put(
+    `/activities/${actividad.id}`,
+    actividad
+  );
+  return response.data;
 };

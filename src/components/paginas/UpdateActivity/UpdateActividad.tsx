@@ -9,6 +9,7 @@ import {
 import { CustomError, Pagination } from "@/api/types/common";
 import { daysify } from "@/utils/formatDate";
 import {
+  ModalForm,
   ProForm,
   ProFormDatePicker,
   ProFormDigit,
@@ -18,12 +19,19 @@ import {
   ProFormText,
   ProFormTextArea,
 } from "@ant-design/pro-components";
-import { Divider } from "antd";
+import { Badge, Button, Divider, Flex, Image } from "antd";
 import { RefetchFunction } from "axios-hooks";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { obtenerActividadesPorNombre, UpdateActivityRequest } from "@/api/servicios/actividades";
+import {
+  ActivityStatus,
+  activityStatusMapper,
+  AprobarActividad,
+  obtenerActividadesPorNombre,
+  RechazarActividad,
+  UpdateActivityRequest,
+} from "@/api/servicios/actividades";
 import {
   Organizer,
   OrganizerType,
@@ -31,39 +39,67 @@ import {
 } from "@/api/servicios/actividadPost";
 import { obtenerTodasLasCarreras } from "@/api/servicios/carreras";
 import { obtenerLasOrganizaciones } from "@/api/servicios/organizaciones";
-import { useQuery } from "@tanstack/react-query";
+import { GetActivityBySlug } from "@/api/types/activityBySlug";
+import useAuth from "@/api/useAuth";
+import Alert from "@/components/Alert";
+import { CustomPageContainer } from "@/components/CustomPageContainer";
+import { PublishButton } from "@/components/PublishButton";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { MembersTable } from "../MembersTable";
 import { UpdateActivityFormValues } from "./update-activity.types";
-import { Scope } from "../CreateActivity/types";
 
 const dateFormat = "DD/MM/YYYY HH:mm";
 
 const ActualizarActividad = () => {
-  const { id } = useParams<{ id: string }>();
+  const { slug } = useParams<{ slug: string }>();
 
   const navigate = useNavigate();
-  const [form] = ProForm.useForm();
-
-  const { data, isPending } = useQuery({
-    queryKey: ["Activity"],
+  const [form] = ProForm.useForm<UpdateActivityFormValues>();
+  const { userRole, user } = useAuth();
+  const { data, isPending } = useQuery<GetActivityBySlug>({
+    queryKey: ["Activity", slug],
     queryFn: obtenerActividadesPorNombre,
   });
 
+  const { mutateAsync } = useMutation({
+    mutationFn: updateActividad,
+    mutationKey: ["Activity", slug],
+    onError(error) {
+      console.log(error);
+    },
+  });
+
+  const { mutateAsync: aproveActivity } = useMutation({
+    mutationFn: AprobarActividad,
+    mutationKey: ["Activity", slug],
+  });
+
   const handleSubmit = async (values: UpdateActivityRequest) => {
-    const formatedStartDate = daysify(
-      values.startDate,
-      dateFormat
-    ).toISOString();
-    const formatedEndDate = daysify(values.endDate, dateFormat).toISOString();
+    console.log(values);
+
+    const formatedStartDate =
+      typeof values.startDate === "string"
+        ? daysify(values.startDate).toISOString()
+        : daysify(values.startDate, dateFormat).toISOString();
+
+    const formatedEndDate =
+      typeof values.endDate === "string"
+        ? daysify(values.endDate).toISOString()
+        : daysify(values.endDate, dateFormat).toISOString();
 
     try {
-      await updateActividad(1, {
+      await mutateAsync({
         ...values,
         startDate: formatedStartDate,
         endDate: formatedEndDate,
+        id: data?.id as number,
       });
+
       toast.success("La actividad se actualizó con éxito.");
-      navigate("/actividades");
     } catch (e) {
+      console.log(e);
+
       const error = e as CustomError;
       if (
         error.response.status === 409 &&
@@ -73,6 +109,74 @@ const ActualizarActividad = () => {
         toast.error(
           "Ya existe una actividad con este nombre, por favor elija otro."
         );
+      }
+
+      if (
+        error.response.status === 400 &&
+        error.response.data.errors.at(0)?.code ===
+          "Activity.ActivityNameAlreadyExists"
+      ) {
+        toast.error(
+          "Ya existe una actividad con este nombre, por favor elija otro."
+        );
+      }
+    }
+  };
+
+  const [isLoadingAprobar, setIsLoadingAprobar] = useState(false);
+  const [isLoadingRechazar, setIsLoadingRechazar] = useState(false);
+
+  const [isRejectedAprove, setIsRejectedAprove] = useState({
+    isRejected: false,
+    isAprove: false,
+  });
+
+  const botonAprobar = async (observation: string) => {
+    if (data) {
+      setIsLoadingAprobar(true); // Mostrar el loading
+      try {
+        await aproveActivity({
+          id: data.id,
+          reviewerObservation: observation,
+        });
+        Alert({
+          title: "Éxito",
+          text: "Actividad aprobada con éxito",
+          icon: "success",
+        });
+        setIsRejectedAprove({ isRejected: false, isAprove: false });
+      } catch (error) {
+        Alert({
+          title: "Advertencia",
+          text: "Debe colocar una Observación para aprobar la actividad",
+          icon: "warning",
+        });
+      } finally {
+        setIsLoadingAprobar(false); // Ocultar el loading
+      }
+    }
+  };
+
+  const botonRechazar = async (observation: string) => {
+    if (data) {
+      setIsLoadingRechazar(true); // Mostrar el loading
+      try {
+        await RechazarActividad(data.id, observation);
+        Alert({
+          title: "Éxito",
+          text: "Actividad rechazada con éxito",
+          icon: "success",
+          callback: () => navigate(-1),
+        });
+        setIsRejectedAprove({ isRejected: false, isAprove: false });
+      } catch (error) {
+        Alert({
+          title: "Advertencia",
+          text: "Debe ingresar una Observación para rechazar la actividad",
+          icon: "warning",
+        });
+      } finally {
+        setIsLoadingRechazar(false);
       }
     }
   };
@@ -118,12 +222,115 @@ const ActualizarActividad = () => {
     }));
   };
 
+  useEffect(() => {
+    if (!isPending) {
+      form.setFieldsValue({
+        ...data,
+        foreignCareersIds: data?.foreingCareers.map((fc) => fc.id),
+        goals: data?.goals.map((goal) => ({ goal })),
+        mainActivities: data?.mainActivities.map((activity) => ({ activity })),
+        supervisorId: {
+          value: data?.supervisor.id,
+          label: `${data?.supervisor.names} /${roleMapper(
+            data?.supervisor.role
+          )}`,
+        },
+        coordinatorId: {
+          value: data?.coordinator.id,
+          label: `${data?.coordinator.names} ${data?.coordinator.lastnames}`,
+        },
+        careerId: data?.organizers
+          ?.filter((o) => o?.career)
+          .map((organizer) => organizer?.career?.id),
+        organizationId: data?.organizers
+          .filter((o) => o?.organization)
+          ?.map((organizer) => organizer?.organization?.id),
+        description: data?.description,
+        scopes: data?.scopes.map((scope) => ({
+          scope: scope.scope,
+          hours: scope.hours,
+        })),
+      });
+    }
+  }, [data, form, isPending]);
+
+  const statusToModify = [
+    ActivityStatus.Published,
+    ActivityStatus.Completed,
+    ActivityStatus.InProgress,
+    ActivityStatus.Approved,
+  ];
+
+  const isDisabled =
+    statusToModify.includes(data?.activityStatus as ActivityStatus) ||
+    user?.id !== data?.requestedBy?.id;
+
+  const [tab, setTab] = useState("Actividad");
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-8">
-        <h1 className="text-center text-3xl font-semibold mb-8 text-gray-800">
-          Actualizar Actividad
-        </h1>
+    <CustomPageContainer
+      tabList={[
+        {
+          tab: "Actividad",
+          key: "Actividad",
+        },
+        {
+          tab: "Participantes",
+          key: "aprticipantes",
+        },
+      ]}
+      tabActiveKey={tab}
+      onTabChange={(key) => setTab(key)}
+      title={"Actualizar Actividad"}
+      extra={[
+        <>
+          {data?.activityStatus &&
+          statusToModify.includes(data?.activityStatus as ActivityStatus) ? (
+            <PublishButton
+              activityOwnerId={data?.requestedBy?.id}
+              activityId={data?.id}
+              hasBanner={!!data.bannerLink}
+            />
+          ) : null}
+        </>,
+        <Badge
+          status="processing"
+          text={activityStatusMapper(data?.activityStatus)}
+        />,
+        <Flex align="flex-end" gap={8} justify="center">
+          {userRole === Role.VOAE &&
+            data?.activityStatus === ActivityStatus.Pending && (
+              <div className="mb-4">
+                <Button
+                  onClick={() => {
+                    setIsRejectedAprove({ isRejected: false, isAprove: true });
+                  }}
+                  disabled={isLoadingAprobar}
+                >
+                  {isLoadingAprobar ? "Cargando..." : "Aprobar"}
+                </Button>
+              </div>
+            )}
+
+          {userRole === Role.VOAE &&
+            data?.activityStatus === ActivityStatus.Pending && (
+              <div className="mb-4">
+                <Button
+                  onClick={() => {
+                    setIsRejectedAprove({ isRejected: true, isAprove: false });
+                  }}
+                  danger
+                  disabled={isLoadingRechazar}
+                >
+                  {isLoadingRechazar ? "Cargando..." : "Rechazar"}
+                </Button>
+              </div>
+            )}
+        </Flex>,
+      ]}
+      loading={isPending}
+    >
+      {tab === "Actividad" && (
         <ProForm<UpdateActivityFormValues>
           onFinish={async (values) => {
             const careers: Organizer[] = values.careerId.map((careerId) => ({
@@ -149,25 +356,33 @@ const ActualizarActividad = () => {
               ),
               organizers: [...careers, ...organizations],
               scopes: values.scopes.map((scope) => ({
-                scope: +scope.scope,
+                scope: scope.scope,
                 hours: scope.hours,
-              })) as Scope[],
+              })),
             } as UpdateActivityRequest;
             await handleSubmit(dto);
           }}
-          dateFormatter={"string"}
+          // dateFormatter={false}
           submitter={{
             searchConfig: {
               submitText: "Actualizar Actividad",
               resetText: "Limpiar",
             },
             resetButtonProps: {
-              disabled: isLoading,
+              disabled: isPending,
+            },
+            render(_props, dom) {
+              if (isDisabled) {
+                return null;
+              }
+              return dom;
             },
           }}
           loading={isPending}
           form={form}
-        >
+          disabled={isDisabled}
+         >
+          <Image width={200} src={data?.bannerLink} className="mb-4" />
           <ProFormText
             name="name"
             label="Nombre Actividad"
@@ -180,7 +395,10 @@ const ActualizarActividad = () => {
             placeholder="Describa la actividad"
             rules={[
               { required: true, message: "La descripción es obligatoria" },
-              { min: 4, message: "Debe tener al menos 4 caracteres de largo" },
+              {
+                min: 4,
+                message: "Debe tener al menos 4 caracteres de largo",
+              },
             ]}
           />
           <ProFormSelect
@@ -208,6 +426,22 @@ const ActualizarActividad = () => {
                   required: true,
                   message: "Debe seleccionar la fecha de inicio",
                 },
+                {
+                  type: "date",
+                  validator: async (_, value) => {
+                    const v =
+                      typeof value === "string" ? daysify(value) : value;
+                    console.log(v, value);
+
+                    const isBefore = v.isBefore(daysify());
+
+                    if (isBefore) {
+                      throw new Error(
+                        "La fecha de inicio debe ser después de la fecha actual"
+                      );
+                    }
+                  },
+                },
               ]}
               fieldProps={{
                 format: (value) => (value ? value.format(dateFormat) : ""),
@@ -222,6 +456,22 @@ const ActualizarActividad = () => {
                 {
                   required: true,
                   message: "Debe seleccionar la fecha de finalización",
+                },
+                {
+                  validator: async (_, value) => {
+                    const v =
+                      typeof value === "string" ? daysify(value) : value;
+
+                    const isBefore = v.isAfter(
+                      daysify(form.getFieldValue("startDate"))
+                    );
+
+                    if (!isBefore) {
+                      throw new Error(
+                        "La fecha de finalización debe ser después de la fecha de inicio"
+                      );
+                    }
+                  },
                 },
               ]}
               fieldProps={{
@@ -270,7 +520,10 @@ const ActualizarActividad = () => {
             placeholder="Ingrese la ubicación"
             rules={[
               { required: true },
-              { min: 4, message: "Debe tener al menos 4 caracteres de largo" },
+              {
+                min: 4,
+                message: "Debe tener al menos 4 caracteres de largo",
+              },
             ]}
           />
           <ProFormList
@@ -306,7 +559,7 @@ const ActualizarActividad = () => {
             creatorButtonProps={{
               position: "bottom",
               creatorButtonText: "Agregar Ámbito",
-              disabled: selectedScopes.length === 5,
+              disabled: selectedScopes.length === 5 || isDisabled,
             }}
             deleteIconProps={{ tooltipText: "Eliminar" }}
             copyIconProps={{ tooltipText: "Copiar" }}
@@ -344,7 +597,11 @@ const ActualizarActividad = () => {
                     min={1}
                     rules={[
                       { required: true },
-                      { type: "number", min: 1, message: "Debe ser mayor a 0" },
+                      {
+                        type: "number",
+                        min: 1,
+                        message: "Debe ser mayor a 0",
+                      },
                     ]}
                     width="sm"
                   />
@@ -365,7 +622,19 @@ const ActualizarActividad = () => {
             }}
             mode="multiple"
             placeholder="Seleccione una carrera"
-            rules={[{ required: true }]}
+            rules={[
+              {
+                //es requerida si no se ah seleccionado una organizacion
+                validator: async (_, value) => {
+                  const organizationId = form.getFieldValue("organizationId");
+                  if (organizationId.length === 0 && value.length === 0) {
+                    return Promise.reject(
+                      new Error("Debe seleccionar al menos una carrera")
+                    );
+                  }
+                },
+              },
+            ]}
           />
           <ProFormSelect
             name="organizationId"
@@ -379,7 +648,18 @@ const ActualizarActividad = () => {
             }}
             mode="multiple"
             placeholder="Seleccione una organización"
-            rules={[{ required: true }]}
+            rules={[
+              {
+                validator: async (_, value) => {
+                  const careerId = form.getFieldValue("careerId");
+                  if (careerId.length === 0 && value.length === 0) {
+                    return Promise.reject(
+                      new Error("Debe seleccionar al menos una organización")
+                    );
+                  }
+                },
+              },
+            ]}
           />
           <ProFormSelect.SearchSelect
             name="supervisorId"
@@ -411,8 +691,29 @@ const ActualizarActividad = () => {
             rules={[{ required: true, message: "El encargado es obligatorio" }]}
           />
         </ProForm>
-      </div>
-    </div>
+      )}
+      {tab === "aprticipantes" && <MembersTable members={data?.members} />}
+      <ModalForm
+        open={isRejectedAprove.isAprove || isRejectedAprove.isRejected}
+        onFinish={async ({ observation }) => {
+          if (isRejectedAprove.isAprove) {
+            await botonAprobar(observation);
+          } else {
+            await botonRechazar(observation);
+          }
+        }}
+        modalProps={{
+          destroyOnClose: true,
+          onCancel: () =>
+            setIsRejectedAprove({ isRejected: false, isAprove: false }),
+          title: isRejectedAprove.isAprove
+            ? "Aprobar Actividad"
+            : "Rechazar Actividad",
+        }}
+      >
+        <ProFormTextArea name="observation" label="Observación" />
+      </ModalForm>
+    </CustomPageContainer>
   );
 };
 
