@@ -56,7 +56,7 @@ const CrearActividad = () => {
         },
       });
       toast.success("La solicitud de actividad se envió con éxito.");
-      navigate("/actividades");
+      navigate(-1);
     } catch (e) {
       const error = e as CustomError;
       if (
