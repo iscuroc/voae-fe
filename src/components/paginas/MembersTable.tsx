@@ -2,7 +2,13 @@ import { EtiquetasAmbitosActividad } from "@/api/servicios/enums";
 import { Member } from "@/api/types/activityBySlug";
 import { ProTable } from "@ant-design/pro-components";
 
-export const MembersTable = ({ members }: { members?: Member[] }) => {
+export const MembersTable = ({
+  members,
+  loading,
+}: {
+  members?: Member[];
+  loading?: boolean;
+}) => {
   return (
     <ProTable
       headerTitle="Miembros"
@@ -10,10 +16,12 @@ export const MembersTable = ({ members }: { members?: Member[] }) => {
       dataSource={members}
       options={false}
       ghost
+      loading={loading}
       columns={[
         {
           title: "Nombre",
           dataIndex: "names",
+          ellipsis: true,
           renderText: (_text, obj) => `${obj.names} ${obj.lastnames}`,
         },
         {
@@ -31,7 +39,8 @@ export const MembersTable = ({ members }: { members?: Member[] }) => {
             record.scopes?.map((a) => EtiquetasAmbitosActividad[a]).join(", "),
         },
       ]}
-      scroll={{ x: 568 }}
+      rowKey="id"
+      size="small"
     />
   );
 };

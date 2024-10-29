@@ -95,6 +95,7 @@ const UnirseActividad: React.FC = () => {
   };
 
   const [open, setOpen] = useState(false);
+
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -102,7 +103,6 @@ const UnirseActividad: React.FC = () => {
   const imJoined = activity?.members?.some(
     (member) => member.account === user?.accountNumber
   );
-  console.log(imJoined);
 
   return (
     <CustomPageContainer
@@ -120,16 +120,18 @@ const UnirseActividad: React.FC = () => {
             onClick={() => setOpen(true)}
             className="bg-green-500 text-white"
           >
-            Unirse a la Actividad
+            Unirme a la Actividad
           </Button>
         )
       }
     >
       <ProDescriptions<ActividadNombre>
-        loading={loading}
+        // loading={loading}
         dataSource={activity}
         emptyText="No se encontró la actividad"
         bordered
+        loading={loading}
+        size="small"
         column={{ xs: 1, sm: 1, md: 2, lg: 2, xl: 4, xxl: 4 }}
         columns={[
           {
@@ -137,7 +139,6 @@ const UnirseActividad: React.FC = () => {
             dataIndex: "name",
             key: "name",
             span: 1,
-
           },
           {
             title: "Objetivos",
@@ -220,6 +221,7 @@ const UnirseActividad: React.FC = () => {
                 />
               );
             },
+            span: 2,
           },
           {
             title: "Fecha Inicio",
@@ -264,7 +266,7 @@ const UnirseActividad: React.FC = () => {
           </div>
         </Modal>
       )}
-      <MembersTable members={activity?.members} />
+      <MembersTable members={activity?.members} loading={loading} />
     </CustomPageContainer>
   );
 };
