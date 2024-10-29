@@ -158,9 +158,9 @@ const UnirseActividad: React.FC = () => {
                 title: "Carreras admitidas",
                 dataIndex: "foreingCareers",
                 key: "foreingCareers",
-                render: (_careers, { careers }) => (
+                render: (_careers, { foreingCareers }) => (
                   <ul>
-                    {careers?.map((career) => (
+                    {foreingCareers?.map((career) => (
                       <li key={career.id}>{career.name}</li>
                     ))}
                   </ul>
@@ -209,7 +209,7 @@ const UnirseActividad: React.FC = () => {
                   const joinedMembers = members?.length || 0;
                   return (
                     <Progress
-                      percent={(joinedMembers / totalSpots) * 100}
+                      percent={Math.round((joinedMembers / totalSpots) * 100)}
                       format={(percent) =>
                         `${joinedMembers}/${totalSpots} - ${percent}%`
                       }
