@@ -88,7 +88,7 @@ const UnirseActividad: React.FC = () => {
       });
     }
   };
-  const { userRole } = useAuth();
+  const { userRole, user } = useAuth();
 
   const handleGoBack = () => {
     navigate(-1);
@@ -100,7 +100,7 @@ const UnirseActividad: React.FC = () => {
   }
 
   const imJoined = activity?.members?.some(
-    (member) => member.account === member.account
+    (member) => member.account === user?.accountNumber
   );
 
   return (
