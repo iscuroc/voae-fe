@@ -1,8 +1,9 @@
+import { ENV } from "@/globals/env";
 import axios from "axios";
 import { makeUseAxios } from "axios-hooks";
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_URL_BACK,
+  baseURL: ENV.URL_BACK,
   // headers: {
   //   'Content-Type': 'application/json',
   // },
