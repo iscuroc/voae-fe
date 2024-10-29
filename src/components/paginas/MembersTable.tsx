@@ -9,6 +9,7 @@ export const MembersTable = ({ members }: { members?: Member[] }) => {
       search={false}
       dataSource={members}
       options={false}
+      ghost
       columns={[
         {
           title: "Nombre",
@@ -30,6 +31,7 @@ export const MembersTable = ({ members }: { members?: Member[] }) => {
             record.scopes?.map((a) => EtiquetasAmbitosActividad[a]).join(", "),
         },
       ]}
+      scroll={{ x: 568 }}
     />
   );
 };
