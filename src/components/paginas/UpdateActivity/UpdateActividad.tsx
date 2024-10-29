@@ -76,8 +76,6 @@ const ActualizarActividad = () => {
   });
 
   const handleSubmit = async (values: UpdateActivityRequest) => {
-    console.log(values);
-
     const formatedStartDate =
       typeof values.startDate === "string"
         ? daysify(values.startDate).toISOString()
