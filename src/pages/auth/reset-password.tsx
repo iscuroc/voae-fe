@@ -45,8 +45,6 @@ const ResetPassword: React.FC = () => {
       message.success("Contraseña restablecida exitosamente.");
     },
     onError: (e: string) => {
-      console.log(e);
-
       message.error(e ?? "Error al restablecer la contraseña.");
     },
   });
