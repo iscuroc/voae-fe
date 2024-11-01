@@ -52,16 +52,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           }
           setUser(user);
           setEmail(user.email);
-
-          // if (user.role === Role.STUDENT) {
-          //   navigate("/dashboard-estudiante/main");
-          // } else if (user.role === Role.TEACHER) {
-          //   navigate("/dashboard-coordinador/main");
-          // } else if (user.role === Role.VOAE) {
-          //   navigate("/dashboard-voae/main");
-          // } else {
-          //   navigate("/");
-          // }
         })
         .catch(() => {
           logout();

@@ -6,7 +6,7 @@ export default function UnautorizeLayout() {
   return (
     <div className="flex flex-col min-h-[100dvh]">
       <Header />
-      <main className="flex-1 mt-14">
+      <main className="flex flex-1 items-center">
         <Outlet />
       </main>
       <Footer />
