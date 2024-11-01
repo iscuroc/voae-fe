@@ -21,3 +21,17 @@ export const loginAction = async (
   );
   return response;
 };
+
+export const registerAction = async (email: string) => {
+  const response = await axiosInstance.post("/auth/register", { email });
+
+  return response;
+};
+
+export const forgotPasswordAction = async (email: string) => {
+  const response = await axiosInstance.post("/auth/forgot-password", {
+    email,
+  });
+
+  return response;
+};

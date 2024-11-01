@@ -10,4 +10,5 @@ export type ErrorItem = {
   code: string;
   description: string;
   type: number;
+  isUnexpectedError?: boolean;
 };
