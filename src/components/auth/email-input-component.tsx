@@ -31,7 +31,10 @@ export const EmailInput: FC<Partial<EmailInputProps>> = (props) => (
       },
       //el correo dbe ser de la unah unah.hn o unah.edu.hn o parecidos
       {
-        pattern: /^[\w-\.]+@unah\.(edu|hn)$/,
+        // pattern: /^[\w-\.]+@unah\.(edu|hn)$/,
+      // el patron debe recibir este tipo dfe correos
+      //emarita@unah.edu.hn y emarita@unah.hn
+      pattern: /^[\w-\.]+@(unah\.edu\.hn|unah\.hn)$/,
         message:
           "Por favor ingrese un correo de la UNAH @unah.hn o @unah.edu.hn",
       },
