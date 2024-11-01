@@ -90,9 +90,7 @@ const DetallesRegistro: React.FC = () => {
         form={form}
         className="w-[400px] p-8"
         onFinish={(data) => {
-          console.log(data);
-          console.log(form.getFieldsError());
-
+   
           confirmAccountMutation(data);
         }}
         submitter={{
