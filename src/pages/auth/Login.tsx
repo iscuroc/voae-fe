@@ -3,7 +3,11 @@ import useAuth from "@/api/useAuth";
 import { EmailInput } from "@/components/auth/email-input-component";
 import { LoginBase } from "@/components/auth/login-base";
 import { PasswordInputComponent } from "@/components/auth/password-input-component";
-import { getErrorData, getFirstErrorDescription } from "@/utils/errors.util";
+import {
+  getErrorData,
+  getFirstErrorDescription,
+  getTranslatedError,
+} from "@/utils/errors.util";
 import { showAlert } from "@/utils/show-error-toast";
 import { LoginForm } from "@ant-design/pro-components";
 import { useMutation } from "@tanstack/react-query";
@@ -28,7 +32,7 @@ const Login: React.FC = () => {
         getErrorData(error)?.errors
       );
 
-      showAlert(errorMessage, {
+      showAlert(getTranslatedError(errorMessage), {
         type: "error",
       });
     },
@@ -50,6 +54,7 @@ const Login: React.FC = () => {
   return (
     <LoginBase>
       <LoginForm<LoginRequest>
+        title="Login"
         form={form}
         onFinish={(data) => {
           loginMutation(data);
