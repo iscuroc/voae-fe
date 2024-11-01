@@ -19,6 +19,8 @@ import { useNavigate } from "react-router-dom";
 const Login: React.FC = () => {
   const [form] = useForm();
 
+  const navigate = useNavigate();
+  const { login } = useAuth();
   const { mutateAsync: loginMutation, isPending } = useMutation({
     mutationFn: async (data: { email: string; password: string }) => {
       const response = await loginAction(data);
@@ -26,6 +28,7 @@ const Login: React.FC = () => {
     },
     onSuccess(data) {
       login(data.accessToken, data.role, data.email);
+      navigate("/dashboard");
     },
     onError(error) {
       const errorMessage = getFirstErrorDescription(
@@ -38,8 +41,6 @@ const Login: React.FC = () => {
     },
   });
 
-  const navigate = useNavigate();
-  const { login } = useAuth();
 
   useEffect(() => {
     document.title = "Login - UNAH COPAN";

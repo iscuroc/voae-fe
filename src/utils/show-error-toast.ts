@@ -1,11 +1,9 @@
-import { toast, ToastOptions } from "react-toastify";
 import { message as antdMessage } from "antd";
 import { TypeOpen } from "antd/es/message/interface";
+import { ToastOptions } from "react-toastify";
 export type TypeOptions = "info" | "success" | "warning" | "error" | "default";
 
 export const showAlert = (message?: string, opts?: ToastOptions<unknown>) => {
-  toast(message, opts);
-
   const messagesTypes: Record<TypeOptions, TypeOpen> = {
     success: antdMessage.success,
     error: antdMessage.error,
