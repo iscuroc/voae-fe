@@ -41,15 +41,15 @@ export const validateStrongPassword: Rule[] = [
 
 export const PasswordInfo = () => (
   <div>
-    La contraseña debe contener:
+    La contraseña debe contener al menos:
     <ul
       style={{
         paddingLeft: '25px',
       }}
     >
       <li>8 caracteres</li>
-      <li>Un número,</li>
-      <li>Una letra mayúscula</li>
+      <li>un número,</li>
+      <li>una letra mayúscula</li>
       <li>Caracter especial</li>
     </ul>
   </div>
