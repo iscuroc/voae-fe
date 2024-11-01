@@ -10,7 +10,7 @@ export default function Header() {
   const navigate = useNavigate();
   return (
     <>
-      <header className="fixed z-20 w-full px-4 lg:px-6 h-14 flex items-center bg-primary text-primary-foreground bg-blue-900">
+      <header className=" z-20 w-full px-4 lg:px-6 h-14 flex items-center bg-primary text-primary-foreground bg-blue-900">
         <span
           className="flex items-center justify-center"
           onClick={() => {

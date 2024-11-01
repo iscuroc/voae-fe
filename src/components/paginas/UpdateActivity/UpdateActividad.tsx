@@ -96,8 +96,7 @@ const ActualizarActividad = () => {
 
       toast.success("La actividad se actualizó con éxito.");
     } catch (e) {
-      console.log(e);
-
+ 
       const error = e as CustomError;
       if (
         error.response.status === 409 &&
