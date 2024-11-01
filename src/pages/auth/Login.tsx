@@ -23,12 +23,13 @@ const Login: React.FC = () => {
   const { login } = useAuth();
   const { mutateAsync: loginMutation, isPending } = useMutation({
     mutationFn: async (data: { email: string; password: string }) => {
-      const response = await loginAction(data);
-      return response;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const response = (await loginAction(data)) as any;
+      return { data: response?.data };
     },
-    onSuccess(data) {
+    onSuccess({ data }) {
       login(data.accessToken, data.role, data.email);
-      navigate("/dashboard");
+      navigate("/actividades-en-curso");
     },
     onError(error) {
       const errorMessage = getFirstErrorDescription(
@@ -41,7 +42,6 @@ const Login: React.FC = () => {
     },
   });
 
-
   useEffect(() => {
     document.title = "Login - UNAH COPAN";
   }, []);
@@ -49,7 +49,7 @@ const Login: React.FC = () => {
   const { user } = useAuth();
 
   if (user) {
-    navigate("/dashboard");
+    navigate("/actividades-en-curso");
   }
 
   return (

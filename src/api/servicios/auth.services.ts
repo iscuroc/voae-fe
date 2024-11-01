@@ -6,7 +6,7 @@ export type LoginRequest = {
   password: string;
 };
 
-type LoginResponse = {
+export type LoginResponse = {
   accessToken: string;
   role: Role;
   email: string;
