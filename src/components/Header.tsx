@@ -10,7 +10,7 @@ export default function Header() {
   const navigate = useNavigate();
   return (
     <>
-      <header className=" z-20 w-full px-4 lg:px-6 h-14 flex items-center bg-primary text-primary-foreground bg-blue-900">
+      <header className=" z-20 w-full px-4 lg:px-6 h-14 flex items-center bg-primary text-primary-foreground bg-unah-blue">
         <span
           className="flex items-center justify-center"
           onClick={() => {
@@ -57,7 +57,7 @@ export default function Header() {
         </button>
       </header>
       {isMenuOpen && (
-        <nav className="bg-blue-900 md:hidden mt-14">
+        <nav className="bg-unah-blue md:hidden mt-14">
           <span
             onClick={() => {
               navigate("/");

@@ -14,7 +14,7 @@ export default function Header_login() {
   const navigate = useNavigate();
   return (
     <>
-      <header className="px-4 lg:px-6 h-14 flex items-center bg-primary text-primary-foreground bg-blue-900">
+      <header className="px-4 lg:px-6 h-14 flex items-center bg-primary text-primary-foreground bg-unah-blue">
         <span
           className="flex md:hidden items-center justify-center"
           onClick={() => {
@@ -36,7 +36,7 @@ export default function Header_login() {
         </button>
       </header>
       {isMenuOpen && (
-        <nav className="bg-blue-900 md:hidden">
+        <nav className="bg-unah-blue md:hidden">
           <NavLink
             to={
               location.pathname.includes("dashboard-coordinador")

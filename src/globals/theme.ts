@@ -1,22 +1,22 @@
 export const token = {
-  colorPrimary: "#1967b1",
+  colorPrimary: "#253a69",
 };
 
 export const siderToken = {
-  colorMenuBackground: "#1967b1",
+  colorMenuBackground: "#253a69",
   colorTextMenuTitle: "#ffffff",
   colorMenuItemDivider: "#ffffff",
   colorTextMenu: "#ffffff",
-  colorTextMenuSecondary: "#66a3c7",
-  colorTextMenuSelected: "#003b74",
+  colorTextMenuSecondary: "#1f2b4c",
+  colorTextMenuSelected: "#ffffff",
   colorTextMenuActive: "#ffffff",
   colorTextMenuItemHover: "#ffffff",
-  colorBgMenuItemActive: "#004c8b",
-  colorBgMenuItemHover: "#004c8b",
-  colorBgMenuItemSelected: "#ebb730",
-  colorBgMenuItemCollapsedElevated: "#0e4a98",
+  colorBgMenuItemActive: "#1f2b4c",
+  colorBgMenuItemHover: "#1f2b4c",
+  colorBgMenuItemSelected: "#1f2b4c",
+  colorBgMenuItemCollapsedElevated: "#253a69",
   colorBgCollapsedButton: "#ffffff",
-  colorTextCollapsedButton: "#0e4a98",
-  colorTextCollapsedButtonHover: "#0e4a98",
+  colorTextCollapsedButton: "#253a69",
+  colorTextCollapsedButtonHover: "#253a69",
   colorTextSubMenuSelected: "#ffffff",
 };
