@@ -95,7 +95,7 @@ export default function PaginaMisActividades() {
                     <div className="overflow-x-auto">
                     <table className="min-w-full table-auto bg-white border border-gray-200">
     <thead className="hidden md:table-header-group">
-        <tr className="bg-blue-900 text-white">
+        <tr className="bg-unah-blue text-white">
             <th className="p-4 font-bold text-left">Ámbito</th>
             <th className="p-4 font-bold text-left">Horas Totales</th>
         </tr>
@@ -104,7 +104,7 @@ export default function PaginaMisActividades() {
         {/* Para pantallas pequeñas */}
         {ambitos.map((ambito, index) => (
             <tr key={index} className="md:hidden text-white">
-                <td className="p-4 bg-blue-900 font-bold text-left">{ambito}</td>
+                <td className="p-4 bg-unah-blue font-bold text-left">{ambito}</td>
                 <td className="p-4 text-black border-b border-gray-200">{horas[index]}</td>
             </tr>
         ))}

@@ -156,7 +156,7 @@ const Filtro: React.FC<FiltroProps> = ({ aplicarFiltros }) => {
             </div>
             <div className="col-span-1 md:col-span-2 flex justify-center md:justify-end mt-6 md:mt-24 ml-0 md:ml-5">
                 <button
-                    className="h-10 px-6 py-2 text-sm font-medium text-white bg-blue-900 rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 mr-2"
+                    className="h-10 px-6 py-2 text-sm font-medium text-white bg-unah-blue rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 mr-2"
                     onClick={handleFiltrarClick}
                 >
                     Filtrar
