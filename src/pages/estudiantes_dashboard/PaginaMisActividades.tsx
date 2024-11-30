@@ -44,6 +44,12 @@ export default function PaginaMisActividades() {
   const aplicarFiltros = (ambito: string, fechaInicio: string, fechaFin: string, busqueda: string) => {
     console.log(ambito, fechaInicio, fechaFin, busqueda);
 
+    if(!ambito && !fechaInicio && !fechaFin && !busqueda) {
+      setSearchData(filtrarData);
+      setPaginaInicial(1);
+      return;
+    }
+
     const fechaInicioDate = fechaInicio ? new Date(fechaInicio.split('T')[ 0 ]) : null;
     const fechaFinDate = fechaFin ? new Date(fechaFin.split('T')[ 0 ]) : null;
 
@@ -55,7 +61,7 @@ export default function PaginaMisActividades() {
       const cumpleFechaFin = !fechaFinDate || inicioDate <= fechaFinDate;
       const cumpleBusqueda = item.name.toLowerCase().includes(busqueda?.toLowerCase());
 
-      return cumpleAmbito && cumpleFechaInicio && cumpleFechaFin && cumpleBusqueda;
+      return cumpleAmbito || cumpleFechaInicio || cumpleFechaFin || cumpleBusqueda;
     });
 
     setSearchData(filtrar);
