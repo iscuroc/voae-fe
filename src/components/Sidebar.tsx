@@ -4,16 +4,14 @@ import {
     estudianteRoutes,
     voaeRoutes,
 } from "@/api/routesConfig";
-import {Role, roleMapper, User} from "@/api/servicios/usuarios";
+import {Role, User} from "@/api/servicios/usuarios";
 import logoCuroc from "@/assets/logoCuroc.avif";
 import {siderToken} from "@/globals/theme";
 import {ProLayout} from "@ant-design/pro-components";
 import {Dropdown, theme} from "antd";
 import React, {ReactNode} from "react";
-import {CircleUserRound} from "lucide-react";
+import {CircleUserRound, UserRoundCog, LogOut} from "lucide-react";
 import {FaRegCalendarAlt} from "react-icons/fa";
-import {LogOut} from "lucide-react";
-import {UserRoundCog} from "lucide-react";
 import {LuLayoutDashboard} from "react-icons/lu";
 import {useLocation, useNavigate} from "react-router-dom";
 import useAuth from "../api/useAuth";
@@ -81,7 +79,7 @@ const Sidebar: React.FC<{ children: ReactNode }> = ({children}) => {
             avatarProps={{
                 src: <CircleUserRound />,
                 size: "small",
-                title: user?.names + " " + roleMapper(user?.role),
+                title: user?.names + " " + user?.lastnames,
                 render: (_props, dom) => {
                     return (
                         <Dropdown

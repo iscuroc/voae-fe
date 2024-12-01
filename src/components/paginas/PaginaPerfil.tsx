@@ -1,119 +1,105 @@
-import { ObtenerDatosUsuarioIniciado, User } from '@/api/servicios/usuarios';
-import useAuth from '@/api/useAuth';
-import { useEffect, useState } from 'react';
-import Loading from '../Loading';
+import { User2Icon, Building2, Mail } from "lucide-react";
+import { ObtenerDatosUsuarioIniciado, User } from "@/api/servicios/usuarios";
+import { useEffect, useState } from "react";
+import Loading from "../Loading";
 
 const Perfil = () => {
-    useEffect(() => {
-        document.title = "Perfil - UNAH COPAN";
-    }, []);
+  useEffect(() => {
+    document.title = "Perfil - UNAH COPAN";
+  }, []);
 
-    const [user, setUser] = useState<User | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-    const { email } = useAuth();
-
-    useEffect(() => {
-        const obtenerDatos = async () => {
-            try {
-                const response = await ObtenerDatosUsuarioIniciado();
-                if (response && typeof response === 'object') {
-                    setUser(response);
-                } else {
-                    setError('No se encontró información del usuario');
-                }
-            } catch (error) {
-                setError('Error al cargar la información del usuario.');
-            } finally {
-                setLoading(false);
-            }
-        };
-        obtenerDatos();
-    }, []);
-    
-    const obtenerFechaHoraActual = (): string => {
-        const fecha = new Date();
-        return fecha.toLocaleString('es-ES', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-        });
+  useEffect(() => {
+    const obtenerDatos = async () => {
+      try {
+        const response = await ObtenerDatosUsuarioIniciado();
+        if (response && typeof response === "object") {
+          setUser(response);
+        } else {
+          setError("No se encontró información del usuario");
+        }
+      } catch (error) {
+        setError("Error al cargar la información del usuario.");
+      } finally {
+        setLoading(false);
+      }
     };
+    obtenerDatos();
+  }, []);
 
-    const ultimaSesion = localStorage.getItem('ultimaSesion') || obtenerFechaHoraActual();
-    localStorage.setItem('ultimaSesion', obtenerFechaHoraActual());
+  if (loading) {
+    return <Loading />;
+  }
 
-    if (loading) {
-        return <Loading />;
-    }
+  if (error) {
+    return <p>{error}</p>;
+  }
 
-    if (error) {
-        return <p>{error}</p>;
-    }
-
-    return (
-        <div className="max-w-4xl mx-auto p-8 bg-gradient-to-r mt-11 from-blue-50 to-blue-100 shadow-lg rounded-lg">
-            <div className="flex items-center space-x-6">
-                <div>
-                    {user ? (
-                        <>
-                            <h1 className="text-3xl font-bold text-gray-800">{user.names} {user.lastnames}</h1>
-                            <p className="text-gray-500">{email}</p>
-                        </>
-                    ) : (
-                        <p>No se encontró información del usuario</p>
-                    )}
-                </div>
-            </div>
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 ">
-                <div className="bg-white p-6 rounded-lg shadow-md w-full">
-                    <h2 className="text-xl font-semibold text-gray-700">Información Personal</h2>
-                    {user && (
-                        <>
-                            <p className="mt-4"><span className='font-bold'>Nº Cuenta:</span> {user.accountNumber}</p>
-                            {user.career ? (
-                                <p className="mt-2"><span className='font-bold'>Carrera:</span> {user.career.name}</p>
-                            ) : (
-                                <p className="mt-2">No está asociado a ninguna carrera.</p>
-                            )}
-                            <p className="mt-2"><span className='font-bold'>Última vez conectado:</span> {ultimaSesion}</p>
-                            {user.organizations.length > 0 ? (
-                                <div className="mt-4">
-                                    <h3 className="text-lg font-semibold text-gray-700">Organizaciones:</h3>
-                                    <ul className="list-disc list-inside">
-                                        {user.organizations.map((org) => (
-                                            <li key={org.id} className="text-gray-600">{org.name}</li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            ) : (
-                                <p className="mt-2">No está asociado a ninguna organización.</p>
-                            )}
-                        </>
-                    )}
-                </div>
-                {/* <div className="bg-white p-6 rounded-lg shadow-md">
-                    <h2 className="text-xl font-semibold text-gray-700">Configuraciones de Cuenta</h2>
-                    <NavLink
-                        to={
-                            location.pathname.includes('dashboard-coordinador')
-                                ? "/dashboard-coordinador/cambiar-contrasena"
-                                : location.pathname.includes('dashboard-estudiante')
-                                    ? "/dashboard-estudiante/cambiar-contrasena"
-                                    : "/dashboard-voae/cambiar-contrasena"
-                        }
-                        className="block mt-4 w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors shadow-md text-center"
-                    >
-                        Cambiar Contraseña
-                    </NavLink>
-                </div> */}
-            </div>
+  return (
+    <div className="w-full max-w-4xl mx-auto gap-4">
+      <div className="flex flex-col items-center space-y-4">
+        <div className="relative">
+          <div className="w-24 h-24 rounded-full border-4 border-primary flex items-center justify-center bg-gray-100">
+            <User2Icon className="w-12 h-12 text-gray-600" />
+          </div>
         </div>
-    );
+
+        <div className="flex flex-col items-center gap-2">
+          <h1 className="text-2xl font-semibold">
+            {user?.names} {user?.lastnames}
+          </h1>
+          <h2 >{user?.career.name}</h2>
+        </div>
+        <div className="flex items-center gap-6 text-gray-600">
+          <div className="flex items-center gap-2">
+            <Building2 className="w-4 h-4" />
+            <span>UNAH-CUROC</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Mail className="w-4 h-4" />
+            <span>{user?.email}</span>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-2xl py-8">
+          {[
+            { label: "Académico-científicas", value: "5" },
+            { label: "Sociales", value: "2" },
+            { label: "Artístico-culturales", value: "12" },
+            { label: "Deportivas", value: "7" },
+          ].map((stat) => (
+            <div
+              key={stat.label}
+              className="text-center p-4 bg-white rounded-lg shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+            >
+              <div className="text-3xl font-bold text-gray">
+                {stat.value}
+              </div>
+              <div className="text-sm text-primary mt-1">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+        <div className="w-full max-w-2xl">
+          <h2 className="text-xl font-semibold mb-4">Organizaciones</h2>
+          <div className="flex flex-wrap gap-2">
+            {[
+              "Pumas en Acción",
+              "Estudiantina",
+            ].map((skill) => (
+              <span
+                key={skill}
+                className="px-4 py-2 bg-gray-light rounded-full text-sm text-gray-dark hover:bg-gray-200 transition-colors"
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Perfil;
