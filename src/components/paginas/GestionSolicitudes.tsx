@@ -97,6 +97,7 @@ const GestionSolicitudes: React.FC = () => {
   // Mostrar los datos
   return (
     <div className="container mx-auto p-4">
+        <h1 className="text-2xl font-bold mb-6">Gestión de Solicitudes</h1>
       <div className="block md:flex items-center justify-center mb-4 mt-2">
         <FiltroGS aplicarFiltros={aplicarFiltros} />
       </div>

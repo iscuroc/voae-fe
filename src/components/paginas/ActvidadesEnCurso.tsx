@@ -85,6 +85,7 @@ const ActvidadesEnCurso: React.FC = () => {
   const { userRole } = useAuth();
   return (
     <div className="container mx-auto p-4">
+        <h1 className="text-2xl font-bold mb-6">Actividades Disponibles</h1>
       <div className="block md:flex items-center justify-center mb-4 mt-2">
         <Filtro aplicarFiltros={aplicarFiltros} />
       </div>
