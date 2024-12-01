@@ -14,7 +14,6 @@ import ActividadesSolicitadas from "./components/paginas/ActividadesSolicitadas"
 import ActvidadesEnCurso from "./components/paginas/ActvidadesEnCurso";
 import CrearActividad from "./components/paginas/CreateActivity/CrearActividad";
 import GestionSolicitudes from "./components/paginas/GestionSolicitudes";
-import HorasVOAE from "./components/paginas/HorasVoae";
 import PaginaGestionActividad from "./components/paginas/PaginaGestionActividad";
 import Perfil from "./components/paginas/PaginaPerfil";
 import UpdateActividad from "./components/paginas/UpdateActivity/UpdateActividad";
@@ -78,7 +77,6 @@ export const routes = createBrowserRouter(
           path="solicitudes/:slug"
           element={<UpdateActividad />}
         />
-        <Route path="horas-estudiantes" element={<HorasVOAE />} />
         <Route path="mis-actividades" element={<PaginaMisActividades />} />
         {/* Ruta con parámetro dinámico 'slug' para ver detalles de una actividad */}
         <Route
